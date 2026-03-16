@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zippy AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ══ THEMES ══ */
+[data-theme="light"]{
+  --bg:#eef0ff;--sb:#e4e7ff;--surf:#ffffff;--surf2:#f0f2ff;
+  --bdr:rgba(99,102,241,0.14);--bdr2:rgba(99,102,241,0.22);
+  --bdr-vis:rgba(99,102,241,0.35);
+  --txt:#1e2060;--txt2:#5558a8;--mut:#c5c8f0;--dim:#8b8ec8;
+  --acc:#6366f1;--acc2:#4f46e5;--acc3:#3730a3;
+  --accg:rgba(99,102,241,0.08);
+  --grn:#059669;--red:#dc2626;
+  --shadow:0 20px 60px rgba(99,102,241,0.15);
+  --card-bg:rgba(255,255,255,0.95);
+  --chip-bg:#eef0ff;--code-bg:#f4f5ff;
+  --table-head:rgba(99,102,241,0.08);
+  --input-bg:#ffffff;--topbar:#e4e7ff;--msg-bot:#ffffff;
+  --corner:rgba(99,102,241,0.3);
+}
+[data-theme="dark"]{
+  --bg:#0e0e1a;--sb:#13131f;--surf:#1c1c2e;--surf2:#22223a;
+  --bdr:rgba(255,255,255,0.1);--bdr2:rgba(255,255,255,0.15);
+  --bdr-vis:rgba(129,140,248,0.4);
+  --txt:#dde1f5;--txt2:#9498b8;--mut:#3a3a5c;--dim:#6668a0;
+  --acc:#818cf8;--acc2:#6366f1;--acc3:#4f46e5;
+  --accg:rgba(129,140,248,0.1);
+  --grn:#34d399;--red:#f87171;
+  --shadow:0 20px 60px rgba(0,0,0,0.55);
+  --card-bg:rgba(20,20,34,0.92);
+  --chip-bg:#1c1c2e;--code-bg:#0b0b18;
+  --table-head:rgba(99,102,241,0.18);
+  --input-bg:#1c1c2e;--topbar:#13131f;--msg-bot:#1c1c2e;
+  --corner:rgba(129,140,248,0.5);
+}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+@keyframes gradMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes spinIn{from{opacity:0;transform:rotate(-80deg) scale(.5)}to{opacity:1;transform:rotate(0) scale(1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100vh;overflow:hidden;font-size:15px;transition:background .35s,color .35s}
+
+/* ══ Z LOGO ══ */
+.z-logo{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#818cf8,#6366f1,#4f46e5);
+  color:#fff;font-family:'Syne',system-ui,sans-serif;font-weight:800;
+  line-height:1;letter-spacing:-0.02em;
+  box-shadow:0 4px 18px rgba(99,102,241,.42),inset 0 1px 0 rgba(255,255,255,.22);
+  flex-shrink:0;flex-grow:0;user-select:none;
+}
+.z-logo.lg{width:52px;height:52px;min-width:52px;font-size:27px;border-radius:16px}
+.z-logo.sm{width:30px;height:30px;min-width:30px;font-size:16px;border-radius:9px}
+.z-logo.hero{width:76px;height:76px;min-width:76px;font-size:40px;border-radius:22px;box-shadow:0 10px 40px rgba(99,102,241,.42),inset 0 1px 0 rgba(255,255,255,.22)}
+.z-logo.msg{width:34px;height:34px;min-width:34px;font-size:17px;border-radius:10px;box-shadow:0 2px 12px rgba(99,102,241,.3)}
+
+/* ══ AUTH SCREENS ══ */
+.auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative;overflow:hidden}
+.auth-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.15) 0%,transparent 55%),
+             radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.1) 0%,transparent 50%),
+             radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.12) 0%,transparent 50%);
+  background-size:200% 200%;animation:gradMove 14s ease infinite;
+}
+[data-theme="dark"] .auth-bg{
+  background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.2) 0%,transparent 55%),
+             radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.14) 0%,transparent 50%),
+             radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.16) 0%,transparent 50%);
+  background-size:200% 200%;animation:gradMove 14s ease infinite;
+}
+.auth-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(129,140,248,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(129,140,248,.05) 1px,transparent 1px);background-size:52px 52px}
+.auth-theme-btn{position:absolute;top:20px;right:20px;z-index:10;width:42px;height:42px;border-radius:12px;background:var(--surf);border:1px solid var(--bdr2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:19px;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+.auth-theme-btn:hover{transform:scale(1.1);border-color:var(--acc)}
+.auth-card{position:relative;z-index:2;width:100%;max-width:460px;margin:20px;background:var(--card-bg);border:1.5px solid var(--bdr-vis);border-radius:24px;padding:40px 38px;backdrop-filter:blur(32px);animation:fadeUp .5s cubic-bezier(.22,.68,0,1.15);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.08);transition:background .35s,border-color .35s,box-shadow .35s}
+.auth-logo-row{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.auth-brand h1{font-family:'Syne',system-ui,sans-serif;font-size:1.5rem;font-weight:800;color:var(--txt);letter-spacing:-.03em;transition:color .35s}
+.auth-brand p{font-size:.76rem;color:var(--dim);margin-top:3px;transition:color .35s}
+.auth-heading{font-family:'Syne',system-ui,sans-serif;font-size:1.1rem;font-weight:700;color:var(--txt);margin-bottom:5px;transition:color .35s}
+.auth-sub{font-size:.82rem;color:var(--dim);line-height:1.55;margin-bottom:2px;transition:color .35s}
+
+/* Fields */
+.field{margin-top:14px}
+.field label{display:block;font-size:.72rem;font-weight:600;color:var(--dim);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;transition:color .35s}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:44px}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--dim);padding:4px;display:flex;align-items:center;transition:color .2s}
+.eye-btn:hover{color:var(--acc)}
+.eye-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+.field input,.field select{
+  width:100%;padding:12px 15px;background:var(--input-bg);
+  border:1.5px solid var(--bdr2);border-radius:12px;
+  color:var(--txt);font-size:.9rem;font-family:'DM Sans',system-ui,sans-serif;
+  outline:none;transition:border-color .2s,box-shadow .2s,background .35s,color .35s;
+  -webkit-appearance:none;appearance:none;
+}
+.field input:focus,.field select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(129,140,248,.13)}
+.field input::placeholder{color:var(--dim)}
+.field select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8ec8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+
+.form-row{display:flex;align-items:center;margin-top:12px}
+.remember{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--dim);cursor:pointer;user-select:none;transition:color .35s}
+.remember input{width:15px;height:15px;accent-color:var(--acc);cursor:pointer}
+
+.auth-btn{width:100%;margin-top:18px;padding:13px;background:linear-gradient(135deg,#818cf8,#6366f1,#4f46e5);border:none;border-radius:13px;color:#fff;font-size:.92rem;font-weight:600;font-family:'DM Sans',system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 22px rgba(99,102,241,.4)}
+.auth-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 28px rgba(99,102,241,.5)}
+.auth-btn:active{transform:translateY(0)}
+.auth-btn.secondary{background:var(--surf2);color:var(--acc);border:1.5px solid var(--bdr2);box-shadow:none}
+.auth-btn.secondary:hover{background:var(--accg);border-color:var(--acc)}
+
+.auth-err{font-size:.79rem;color:#fca5a5;background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.22);border-radius:10px;padding:9px 13px;margin-top:12px;display:none;animation:fadeIn .2s ease}
+[data-theme="light"] .auth-err{color:#b91c1c;background:rgba(220,38,38,.07);border-color:rgba(220,38,38,.2)}
+
+.auth-info{font-size:.79rem;color:var(--txt2);background:var(--accg);border:1px solid var(--bdr2);border-radius:10px;padding:11px 14px;margin-top:12px;line-height:1.6;display:none}
+.auth-info.show{display:block;animation:slideDown .25s ease}
+.auth-info strong{color:var(--acc);font-weight:600}
+
+.auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+.auth-divider span{font-size:.73rem;color:var(--dim)}
+.auth-switch{text-align:center;font-size:.82rem;color:var(--dim);transition:color .35s}
+.auth-switch a{color:var(--acc);cursor:pointer;font-weight:600}
+.auth-switch a:hover{text-decoration:underline;text-underline-offset:2px}
+.auth-links{display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:8px}
+.auth-link-btn{background:none;border:none;cursor:pointer;font-size:.8rem;color:var(--acc);font-family:'DM Sans',system-ui,sans-serif;padding:0;transition:opacity .2s}
+.auth-link-btn:hover{opacity:.7;text-decoration:underline;text-underline-offset:2px}
+
+/* Policy box */
+.policy-box{background:var(--accg);border:1.5px solid var(--bdr2);border-radius:13px;padding:16px;margin-top:16px;animation:slideDown .25s ease}
+.policy-box h4{font-family:'Syne',system-ui,sans-serif;font-size:.85rem;font-weight:700;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.policy-box p{font-size:.78rem;color:var(--txt2);line-height:1.65;margin-bottom:8px}
+.policy-box p:last-child{margin:0}
+.policy-box strong{color:var(--txt);font-weight:600}
+
+/* ══ CHAT ══ */
+#chat-screen{display:none;height:100vh;flex-direction:row;animation:fadeIn .3s ease}
+
+/* Sidebar */
+.sidebar{width:272px;min-width:272px;background:var(--sb);border-right:2px solid var(--bdr-vis);display:flex;flex-direction:column;transition:width .3s ease,min-width .3s ease,opacity .25s ease,border-color .3s;overflow:hidden}
+.sidebar.collapsed{width:0;min-width:0;opacity:0;border-right-color:transparent}
+.sb-top{padding:18px 14px 13px;flex-shrink:0}
+.sb-brand{display:flex;align-items:center;gap:11px;margin-bottom:15px}
+.sb-brand-text span{font-family:'Syne',system-ui,sans-serif;font-size:1rem;font-weight:800;color:var(--txt);display:block;letter-spacing:-.01em;transition:color .35s}
+.sb-brand-text small{font-size:.62rem;color:var(--dim);transition:color .35s}
+.new-btn{width:100%;padding:9px 13px;background:var(--accg);border:1.5px solid rgba(99,102,241,.25);border-radius:11px;color:var(--acc);font-size:.82rem;font-weight:600;font-family:'DM Sans',system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .18s;white-space:nowrap}
+.new-btn:hover{background:rgba(99,102,241,.15);border-color:var(--acc)}
+.new-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0}
+.sb-section{font-size:.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;padding:12px 16px 5px;transition:color .35s}
+.sb-list{flex:1;overflow-y:auto;padding:0 7px 8px}
+.sb-list::-webkit-scrollbar{width:3px}
+.sb-list::-webkit-scrollbar-thumb{background:var(--mut);border-radius:3px}
+.sb-item{padding:9px 10px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:9px;margin-bottom:2px;border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.sb-item:hover{background:var(--surf)}
+.sb-item.active{background:var(--surf);border-color:var(--bdr-vis)}
+.sb-ico{font-size:13px;flex-shrink:0;width:18px;text-align:center}
+.sb-info{flex:1;overflow:hidden;min-width:0}
+.sb-ttl{font-size:.8rem;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .35s}
+.sb-ts{font-size:.65rem;color:var(--dim);margin-top:2px;transition:color .35s}
+.sb-del{opacity:0;background:none;border:none;cursor:pointer;font-size:11px;color:var(--dim);padding:3px 6px;border-radius:6px;flex-shrink:0;transition:all .15s}
+.sb-item:hover .sb-del{opacity:1}
+.sb-del:hover{color:var(--red);background:rgba(248,113,113,.1)}
+.sb-empty{padding:32px 16px;text-align:center;font-size:.78rem;color:var(--dim);line-height:1.6;transition:color .35s}
+.sb-empty-icon{font-size:26px;margin-bottom:8px}
+.sb-foot{padding:12px 13px;border-top:2px solid var(--bdr-vis);flex-shrink:0;display:flex;align-items:center;gap:10px;transition:border-color .35s}
+.sb-av{width:34px;height:34px;min-width:34px;border-radius:10px;background:linear-gradient(135deg,var(--acc2),var(--acc3));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:'Syne',system-ui,sans-serif;flex-shrink:0}
+.sb-uinfo{flex:1;min-width:0}
+.sb-uname{font-size:.83rem;font-weight:600;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .35s}
+.sb-urole{font-size:.66rem;color:var(--dim);transition:color .35s}
+.sb-out{background:none;border:none;cursor:pointer;color:var(--dim);padding:6px;border-radius:8px;display:flex;flex-shrink:0;transition:all .15s}
+.sb-out:hover{color:var(--red);background:rgba(248,113,113,.08)}
+.sb-out svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Main */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{padding:12px 18px;background:var(--topbar);border-bottom:2px solid var(--bdr-vis);display:flex;align-items:center;gap:12px;flex-shrink:0;transition:background .35s,border-color .35s}
+.tb-toggle{background:none;border:none;cursor:pointer;color:var(--dim);padding:7px;border-radius:9px;display:flex;transition:all .15s}
+.tb-toggle:hover{background:var(--surf2);color:var(--txt)}
+.tb-toggle svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2}
+.tb-title{font-family:'Syne',system-ui,sans-serif;font-size:.9rem;font-weight:700;color:var(--txt);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .35s}
+.online-pill{display:flex;align-items:center;gap:6px;font-size:.71rem;color:var(--grn);background:rgba(52,211,153,.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(52,211,153,.2);flex-shrink:0}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:pulse 2.5s ease infinite}
+.theme-btn{width:36px;height:36px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--acc);transform:scale(1.08)}
+.theme-icon{display:inline-block;animation:spinIn .3s ease}
+
+/* Messages */
+.messages{flex:1;overflow-y:auto;padding:26px 20px;display:flex;flex-direction:column;background:var(--bg);transition:background .35s}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:var(--mut);border-radius:4px}
+.messages::-webkit-scrollbar-track{background:transparent}
+
+.empty-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 20px;animation:fadeIn .45s ease}
+.empty-wrap h2{font-family:'Syne',system-ui,sans-serif;font-size:1.55rem;font-weight:800;color:var(--txt);margin:18px 0 10px;letter-spacing:-.025em;transition:color .35s}
+.empty-wrap p{font-size:.87rem;color:var(--dim);max-width:360px;line-height:1.65;margin-bottom:26px;transition:color .35s}
+.chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:520px}
+.chip{padding:8px 15px;background:var(--chip-bg);border:1.5px solid var(--bdr2);border-radius:20px;font-size:.79rem;color:var(--txt2);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{background:var(--accg);border-color:var(--acc);color:var(--acc);transform:translateY(-1px)}
+
+.msg-wrap{display:flex;flex-direction:column;max-width:820px;width:100%;margin:0 auto}
+.mrow{display:flex;gap:13px;align-items:flex-start;margin-bottom:22px;animation:msgIn .3s cubic-bezier(.22,.68,0,1.1)}
+.mrow.urow{flex-direction:row-reverse}
+.av{width:34px;height:34px;min-width:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;margin-top:2px;font-family:'Syne',system-ui,sans-serif}
+.av.usr-av{background:var(--surf2);color:var(--dim);font-size:13px;border:1.5px solid var(--bdr-vis)}
+.mbody{max-width:calc(100% - 47px);display:flex;flex-direction:column}
+.msender{font-size:.71rem;color:var(--dim);margin-bottom:5px;font-weight:600;letter-spacing:.03em;transition:color .35s}
+.urow .msender{text-align:right}
+.bbl{padding:13px 17px;border-radius:16px;line-height:1.75;font-size:.9rem}
+.bot-bbl{background:var(--msg-bot);border:1.5px solid var(--bdr-vis);border-top-left-radius:4px;color:var(--txt);box-shadow:0 1px 5px rgba(0,0,0,.06);transition:background .35s,border-color .35s,color .35s}
+.usr-bbl{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-top-right-radius:4px;box-shadow:0 2px 14px rgba(99,102,241,.3)}
+.mtime{font-size:.65rem;color:var(--dim);margin-top:5px;transition:color .35s}
+.urow .mtime{text-align:right}
+
+/* Markdown */
+.bot-bbl p{margin:0 0 10px}.bot-bbl p:last-child{margin:0}
+.bot-bbl strong{font-weight:600;color:var(--txt)}
+.bot-bbl em{font-style:italic;color:var(--txt2)}
+.bot-bbl ul,.bot-bbl ol{padding-left:22px;margin:8px 0}
+.bot-bbl li{margin-bottom:5px}
+.bot-bbl h1,.bot-bbl h2,.bot-bbl h3{font-family:'Syne',system-ui,sans-serif;color:var(--txt);font-weight:700;margin:15px 0 6px;letter-spacing:-.01em;transition:color .35s}
+.bot-bbl h1{font-size:1.12rem}.bot-bbl h2{font-size:1rem}.bot-bbl h3{font-size:.94rem}
+.bot-bbl blockquote{border-left:3px solid var(--acc);padding:9px 15px;background:var(--accg);border-radius:0 10px 10px 0;margin:11px 0;color:var(--txt2);font-style:italic}
+.bot-bbl hr{border:none;border-top:1.5px solid var(--bdr-vis);margin:13px 0}
+.bot-bbl a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.bot-bbl code{background:var(--code-bg);border:1px solid var(--bdr2);padding:2px 7px;border-radius:5px;font-family:'Fira Code','Consolas',monospace;font-size:.8rem;color:#7c3aed}
+[data-theme="dark"] .bot-bbl code{color:#c4b5fd}
+
+/* Code blocks with copy button */
+.code-block-wrap{position:relative;margin:12px 0}
+.code-block-wrap pre{background:var(--code-bg);border:1.5px solid var(--bdr-vis);border-radius:12px;padding:14px 14px 14px 16px;overflow-x:auto;padding-top:38px}
+.code-block-wrap pre code{background:none;border:none;padding:0;font-family:'Fira Code','Consolas',monospace;font-size:.82rem;line-height:1.65;color:#2563eb}
+[data-theme="dark"] .code-block-wrap pre code{color:#93c5fd}
+.copy-btn{
+  position:absolute;top:8px;right:8px;
+  background:var(--surf2);border:1.5px solid var(--bdr2);
+  color:var(--dim);border-radius:7px;padding:4px 10px;
+  font-size:.72rem;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;gap:5px;
+  transition:all .18s;white-space:nowrap;
+}
+.copy-btn:hover{background:var(--accg);border-color:var(--acc);color:var(--acc)}
+.copy-btn.copied{background:rgba(5,150,105,.1);border-color:var(--grn);color:var(--grn)}
+.copy-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.code-lang{position:absolute;top:10px;left:14px;font-size:.67rem;font-weight:600;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+
+/* Tables */
+.bot-bbl table{width:100%;border-collapse:collapse;margin:13px 0;font-size:.82rem;border-radius:12px;overflow:hidden;border:1.5px solid var(--bdr-vis)}
+.bot-bbl thead{background:var(--table-head)}
+.bot-bbl th{color:var(--acc);padding:10px 14px;text-align:left;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid var(--bdr-vis)}
+.bot-bbl td{padding:9px 14px;border-bottom:1px solid var(--bdr);color:var(--txt2);transition:color .35s}
+.bot-bbl tr:last-child td{border-bottom:none}
+.bot-bbl tr:hover td{background:var(--accg);transition:background .15s}
+
+/* Typing */
+.typing-dots{display:flex;gap:5px;align-items:center;padding:3px 2px}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));animation:bounce 1.3s ease infinite}
+.typing-dots span:nth-child(2){animation-delay:.18s}
+.typing-dots span:nth-child(3){animation-delay:.36s}
+
+/* Input */
+.input-area{padding:13px 20px 15px;background:var(--topbar);border-top:2px solid var(--bdr-vis);flex-shrink:0;transition:background .35s,border-color .35s}
+.input-box{display:flex;align-items:flex-end;gap:10px;max-width:820px;margin:0 auto;background:var(--input-bg);border:1.5px solid var(--bdr2);border-radius:15px;padding:10px 12px;transition:border-color .2s,box-shadow .2s,background .35s}
+.input-box:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px rgba(129,140,248,.1)}
+#msgin{flex:1;background:none;border:none;outline:none;color:var(--txt);font-size:.9rem;font-family:'DM Sans',system-ui,sans-serif;resize:none;max-height:140px;min-height:24px;line-height:1.55;transition:color .35s}
+#msgin::placeholder{color:var(--dim)}
+.send-btn{width:38px;height:38px;min-width:38px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s,transform .15s;box-shadow:0 2px 12px rgba(99,102,241,.35)}
+.send-btn:hover{opacity:.88;transform:scale(1.06)}
+.send-btn:disabled{background:var(--surf2);box-shadow:none;cursor:not-allowed;transform:none;opacity:1}
+.send-btn svg{width:16px;height:16px}
+.send-btn:not(:disabled) svg{fill:#fff}
+.send-btn:disabled svg{fill:var(--dim)}
+.hint{text-align:center;font-size:.67rem;color:var(--mut);margin-top:8px;max-width:820px;margin-left:auto;margin-right:auto;transition:color .35s}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;animation:fadeIn .2s ease}
+.modal{background:var(--surf);border:1.5px solid var(--bdr-vis);border-radius:18px;padding:26px 30px;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fadeUp .25s ease;transition:background .35s,border-color .35s}
+.modal h3{font-family:'Syne',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:10px;transition:color .35s}
+.modal p{font-size:.84rem;color:var(--dim);line-height:1.6;margin-bottom:20px;transition:color .35s}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end}
+.modal-btn{padding:9px 20px;border-radius:10px;font-size:.84rem;font-weight:600;font-family:'DM Sans',system-ui,sans-serif;cursor:pointer;border:none;transition:all .18s}
+.modal-btn.cancel{background:var(--surf2);color:var(--dim);border:1.5px solid var(--bdr2)}
+.modal-btn.cancel:hover{color:var(--txt)}
+.modal-btn.danger{background:linear-gradient(135deg,#f87171,#ef4444);color:#fff;box-shadow:0 2px 10px rgba(239,68,68,.3)}
+.modal-btn.danger:hover{opacity:.88;transform:translateY(-1px)}
+.modal-btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 2px 10px rgba(99,102,241,.3)}
+.modal-btn.primary:hover{opacity:.88;transform:translateY(-1px)}
+
+/* Success page */
+.success-box{text-align:center;padding:10px 0}
+.success-icon{font-size:48px;margin-bottom:14px}
+.success-box h3{font-family:'Syne',system-ui,sans-serif;font-size:1.2rem;font-weight:800;color:var(--txt);margin-bottom:8px;transition:color .35s}
+.success-box p{font-size:.84rem;color:var(--dim);line-height:1.6;transition:color .35s}
+</style>
+</head>
+<body>
+
+<!-- ══════ HIDDEN FORM: triggers browser password save ══════ -->
+<form id="pw-save-form" style="display:none" method="post" action="javascript:void(0)">
+  <input type="text" name="username" id="save-user" autocomplete="username"/>
+  <input type="password" name="password" id="save-pass" autocomplete="current-password"/>
+</form>
+
+<!-- ══════ LOGIN ══════ -->
+<div id="login-screen" class="auth-screen">
+  <div class="auth-bg"></div><div class="auth-grid"></div>
+  <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb1">☀️</span></button>
+  <div class="auth-card">
+    <div class="auth-logo-row">
+      <div class="z-logo lg">Z</div>
+      <div class="auth-brand"><h1>Zippy AI</h1><p>Your intelligent chat assistant</p></div>
+    </div>
+    <div class="auth-heading">Welcome back</div>
+    <div class="auth-sub">Sign in to continue your conversations.</div>
+    <form id="lform" autocomplete="on" onsubmit="doLogin(event)">
+      <div class="field"><label>Username</label>
+        <input type="text" id="lu" name="username" autocomplete="username" placeholder="Enter your username"/>
+      </div>
+      <div class="field"><label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="lp" name="password" autocomplete="current-password" placeholder="••••••••"/>
+          <button type="button" class="eye-btn" onclick="toggleEye('lp',this)">
+            <svg id="eye-lp" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="auth-links">
+        <label class="remember"><input type="checkbox" id="rem" checked/> Keep me signed in</label>
+        <button type="button" class="auth-link-btn" onclick="showForgot()">Forgot password?</button>
+      </div>
+      <div class="auth-err" id="lerr">❌ Incorrect username or password</div>
+      <button type="submit" class="auth-btn">Sign In
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+    <div class="auth-divider"><span>or</span></div>
+    <div class="auth-switch">New here? <a onclick="showReg()">Create a free account</a></div>
+  </div>
+</div>
+
+<!-- ══════ REGISTER ══════ -->
+<div id="reg-screen" class="auth-screen" style="display:none">
+  <div class="auth-bg"></div><div class="auth-grid"></div>
+  <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb2">☀️</span></button>
+  <div class="auth-card" style="max-width:500px;overflow-y:auto;max-height:96vh">
+    <div class="auth-logo-row">
+      <div class="z-logo lg">Z</div>
+      <div class="auth-brand"><h1>Zippy AI</h1><p>Create your free account</p></div>
+    </div>
+    <div class="auth-heading">Get started</div>
+    <div class="auth-sub">Create an account and start chatting with Zippy.</div>
+    <form id="rform" autocomplete="on" onsubmit="doReg(event)">
+      <div class="field"><label>Username</label>
+        <input type="text" id="ru" name="username" autocomplete="username" placeholder="Choose a username"/>
+      </div>
+      <div class="field"><label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="rp" name="new-password" autocomplete="new-password" placeholder="At least 4 characters"/>
+          <button type="button" class="eye-btn" onclick="toggleEye('rp',this)">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="field"><label>Confirm Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="rp2" name="confirm-password" autocomplete="new-password" placeholder="Repeat your password"/>
+          <button type="button" class="eye-btn" onclick="toggleEye('rp2',this)">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Security questions for password recovery -->
+      <div style="margin-top:18px;padding-top:16px;border-top:1.5px solid var(--bdr2)">
+        <div style="font-size:.78rem;font-weight:600;color:var(--acc);margin-bottom:4px;display:flex;align-items:center;gap:6px">🔐 Password Recovery Questions</div>
+        <div style="font-size:.76rem;color:var(--dim);margin-bottom:12px;line-height:1.55">These are used to verify your identity if you forget your password. Only stored on your device.</div>
+        <div class="field"><label>Security Question 1</label>
+          <select id="rq1">
+            <option value="">Select a question...</option>
+            <option>What was the name of your first pet?</option>
+            <option>What city were you born in?</option>
+            <option>What is your mother's maiden name?</option>
+            <option>What was the name of your first school?</option>
+            <option>What is your favourite childhood movie?</option>
+          </select>
+          <input type="text" id="ra1" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
+        </div>
+        <div class="field"><label>Security Question 2</label>
+          <select id="rq2">
+            <option value="">Select a question...</option>
+            <option>What street did you grow up on?</option>
+            <option>What was your childhood nickname?</option>
+            <option>What is the name of your oldest sibling?</option>
+            <option>What was the make of your first car?</option>
+            <option>What is your favourite sports team?</option>
+          </select>
+          <input type="text" id="ra2" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
+        </div>
+      </div>
+
+      <div class="auth-err" id="rerr"></div>
+      <button type="submit" class="auth-btn">Create Account
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+
+    <!-- Policy notice -->
+    <div class="policy-box" style="margin-top:16px">
+      <h4>📋 Privacy & Data Policy</h4>
+      <p><strong>What stays on your device:</strong> Your username, password, security question answers, and all chat history are stored only in your browser's local storage. They never leave your device.</p>
+      <p><strong>What goes to our servers:</strong> Only the messages you send and the AI's replies — nothing else.</p>
+      <p><strong>⚠️ Important:</strong> Please write down or save your username, password, and security answers somewhere safe. If you clear your browser data, your account cannot be recovered.</p>
+    </div>
+
+    <div style="font-size:.76rem;color:var(--dim);text-align:center;margin-top:14px;line-height:1.6;padding:10px 4px;background:var(--accg);border-radius:10px;border:1px solid var(--bdr2)">
+      💡 <strong style="color:var(--txt)">Tip:</strong> After signing in, let your browser save your password when it asks — so you never have to type it again.
+    </div>
+
+    <div class="auth-divider"><span>or</span></div>
+    <div class="auth-switch">Already have an account? <a onclick="showLogin()">Sign in</a></div>
+  </div>
+</div>
+
+<!-- ══════ FORGOT PASSWORD ══════ -->
+<div id="forgot-screen" class="auth-screen" style="display:none">
+  <div class="auth-bg"></div><div class="auth-grid"></div>
+  <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb3">☀️</span></button>
+  <div class="auth-card">
+    <div class="auth-logo-row">
+      <div class="z-logo lg">Z</div>
+      <div class="auth-brand"><h1>Zippy AI</h1><p>Password Recovery</p></div>
+    </div>
+    <div id="forgot-step1">
+      <div class="auth-heading">Find your account</div>
+      <div class="auth-sub">Enter your username to find your security questions.</div>
+      <div class="field"><label>Username</label>
+        <input type="text" id="fu" placeholder="Enter your username" autocomplete="username"/>
+      </div>
+      <div class="auth-err" id="ferr1"></div>
+      <button class="auth-btn" onclick="forgotStep1()">Continue
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div id="forgot-step2" style="display:none">
+      <div class="auth-heading">Answer your security questions</div>
+      <div class="auth-sub">Answer correctly to reset your password.</div>
+      <div class="field"><label id="fq1-label">Question 1</label>
+        <input type="text" id="fa1" placeholder="Your answer" autocomplete="off"/>
+      </div>
+      <div class="field"><label id="fq2-label">Question 2</label>
+        <input type="text" id="fa2" placeholder="Your answer" autocomplete="off"/>
+      </div>
+      <div class="auth-err" id="ferr2"></div>
+      <button class="auth-btn" onclick="forgotStep2()">Verify Answers
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div id="forgot-step3" style="display:none">
+      <div class="auth-heading">Set new password</div>
+      <div class="auth-sub">Choose a strong new password.</div>
+      <form id="reset-form" autocomplete="on" onsubmit="forgotStep3(event)">
+        <input type="text" id="reset-user-hidden" name="username" autocomplete="username" style="display:none"/>
+        <div class="field"><label>New Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="np1" name="password" autocomplete="new-password" placeholder="New password (min 4 chars)"/>
+            <button type="button" class="eye-btn" onclick="toggleEye('np1',this)">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field"><label>Confirm New Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="np2" name="confirm-password" autocomplete="new-password" placeholder="Repeat new password"/>
+            <button type="button" class="eye-btn" onclick="toggleEye('np2',this)">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="auth-err" id="ferr3"></div>
+        <button type="submit" class="auth-btn">Reset Password ✓</button>
+      </form>
+    </div>
+
+    <div id="forgot-step4" style="display:none">
+      <div class="success-box">
+        <div class="success-icon">✅</div>
+        <h3>Password Reset!</h3>
+        <p>Your password has been updated. Let your browser save it when it asks so you don't forget it again.</p>
+        <button class="auth-btn" style="margin-top:20px" onclick="showLogin()">Back to Sign In</button>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;text-align:center">
+      <button class="auth-link-btn" onclick="showLogin()">← Back to sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CHAT ══════ -->
+<div id="chat-screen">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <div class="z-logo sm">Z</div>
+        <div class="sb-brand-text"><span>Zippy AI</span><small>by Arul Vethathiri</small></div>
+      </div>
+      <button class="new-btn" onclick="newChat()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Chat
+      </button>
+    </div>
+    <div class="sb-section">Conversations</div>
+    <div class="sb-list" id="sblist"></div>
+    <div class="sb-foot">
+      <div class="sb-av" id="sbav">U</div>
+      <div class="sb-uinfo">
+        <div class="sb-uname" id="sbuname">User</div>
+        <div class="sb-urole">Zippy AI</div>
+      </div>
+      <button class="sb-out" onclick="doLogout()" title="Sign out">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-main">
+    <div class="topbar">
+      <button class="tb-toggle" onclick="toggleSb()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="tb-title" id="chattitle">New Chat</span>
+      <div class="online-pill"><div class="online-dot"></div>Online</div>
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark"><span class="theme-icon" id="themeicon">☀️</span></button>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="msg-wrap" id="msgwrap">
+        <div class="empty-wrap" id="emptywrap">
+          <div class="z-logo hero">Z</div>
+          <h2>How can I help you?</h2>
+          <p>Ask me anything — code, writing, math, ideas, or just a conversation.</p>
+          <div class="chips">
+            <div class="chip" onclick="chip('Compare Python vs JavaScript in a table')">📊 Compare languages</div>
+            <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
+            <div class="chip" onclick="chip('Explain machine learning simply')">🤖 Machine learning</div>
+            <div class="chip" onclick="chip('Give me 5 creative startup ideas')">💡 Startup ideas</div>
+            <div class="chip" onclick="chip('What are the best productivity tips?')">⚡ Productivity tips</div>
+            <div class="chip" onclick="chip('How does quantum computing work?')">⚛️ Quantum computing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-box">
+        <textarea id="msgin" rows="1" placeholder="Message Zippy..."></textarea>
+        <button class="send-btn" id="sendbtn" onclick="sendMsg()">
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="hint">Enter to send · Shift+Enter for new line · Zippy may make mistakes</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BACKEND = "https://zippy-backend-coz2.onrender.com";
+const OLD_DAYS = 30;
+let curUser = "", curId = null, apiHist = [], dispMsgs = [], sbOpen = true;
+let forgotUser = "";
+
+/* ── Theme ── */
+function syncIcons(){
+  const t = getTheme(), icon = t === "dark" ? "🌙" : "☀️";
+  ["atb1","atb2","atb3","themeicon"].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = icon; });
+}
+function getTheme(){ return document.documentElement.getAttribute("data-theme") || "light"; }
+function setTheme(t){ document.documentElement.setAttribute("data-theme",t); localStorage.setItem("zp_theme",t); syncIcons(); }
+function toggleTheme(){ setTheme(getTheme() === "dark" ? "light" : "dark"); }
+(function(){ setTheme(localStorage.getItem("zp_theme") || "light"); })();
+
+/* ── Eye toggle ── */
+function toggleEye(inputId, btn){
+  const inp = document.getElementById(inputId);
+  const show = inp.type === "password";
+  inp.type = show ? "text" : "password";
+  btn.querySelector("svg").innerHTML = show
+    ? `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+    : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+
+/* ── Storage ── */
+const getUsers = () => JSON.parse(localStorage.getItem("zp_u") || "{}");
+const saveUsers = u => localStorage.setItem("zp_u", JSON.stringify(u));
+const getChats = u => JSON.parse(localStorage.getItem("zp_c_" + u) || "[]");
+const saveChats = (u, c) => localStorage.setItem("zp_c_" + u, JSON.stringify(c));
+
+/* ── Old chat cleanup ── */
+function checkOldChats(user){
+  const chats = getChats(user), now = Date.now(), cutoff = OLD_DAYS * 864e5;
+  const old = chats.filter(c => (now - c.ts) > cutoff);
+  if(!old.length) return;
+  showModal("🗑️ Clean up old chats?",
+    `You have ${old.length} conversation${old.length > 1 ? "s" : ""} older than ${OLD_DAYS} days. Delete them to free up space?`,
+    "Delete Old Chats", "danger",
+    () => { saveChats(user, chats.filter(c => (now - c.ts) <= cutoff)); loadSb(); }
+  );
+}
+
+/* ── Modal ── */
+function showModal(title, msg, confirmLabel, confirmType, onConfirm){
+  const ov = document.createElement("div");
+  ov.className = "modal-overlay";
+  ov.innerHTML = `<div class="modal"><h3>${title}</h3><p>${msg}</p><div class="modal-btns"><button class="modal-btn cancel" id="mcx">Cancel</button><button class="modal-btn ${confirmType}" id="mok">${confirmLabel}</button></div></div>`;
+  document.body.appendChild(ov);
+  ov.querySelector("#mcx").onclick = () => ov.remove();
+  ov.querySelector("#mok").onclick = () => { ov.remove(); onConfirm(); };
+}
+
+/* ── Auth screens ── */
+function showReg(){ hide("login-screen"); show("reg-screen"); }
+function showLogin(){ hide("reg-screen"); hide("forgot-screen"); show("login-screen"); }
+function showForgot(){ hide("login-screen"); show("forgot-screen"); resetForgot(); }
+function show(id){ document.getElementById(id).style.display = "flex"; }
+function hide(id){ document.getElementById(id).style.display = "none"; }
+
+/* ── Register ── */
+function doReg(e){
+  e.preventDefault();
+  const u = v("ru"), p = v("rp"), p2 = v("rp2");
+  const q1 = v("rq1"), a1 = v("ra1").toLowerCase().trim();
+  const q2 = v("rq2"), a2 = v("ra2").toLowerCase().trim();
+  const err = document.getElementById("rerr");
+  if(!u || !p){ showErr("rerr","❌ Username and password are required"); return; }
+  if(p.length < 4){ showErr("rerr","❌ Password must be at least 4 characters"); return; }
+  if(p !== p2){ showErr("rerr","❌ Passwords don't match"); return; }
+  if(!q1 || !a1 || !q2 || !a2){ showErr("rerr","❌ Please answer both security questions"); return; }
+  const users = getUsers();
+  if(users[u]){ showErr("rerr","❌ Username already taken"); return; }
+  users[u] = { pw: p, q1, a1, q2, a2 };
+  saveUsers(users);
+  err.style.display = "none";
+  /* trigger browser password save */
+  triggerBrowserSave(u, p);
+  showLogin();
+  document.getElementById("lu").value = u;
+  document.getElementById("lp").focus();
+}
+
+/* ── Login ── */
+function doLogin(e){
+  e.preventDefault();
+  const u = v("lu"), p = v("lp");
+  const rem = document.getElementById("rem").checked;
+  const users = getUsers();
+  const ud = users[u];
+  const pw = ud ? (typeof ud === "string" ? ud : ud.pw) : null;
+  if(!pw || pw !== p){ document.getElementById("lerr").style.display = "block"; return; }
+  document.getElementById("lerr").style.display = "none";
+  /* always keep signed in unless user explicitly unchecks */
+  localStorage.setItem("zp_s", u);
+  /* trigger browser password save prompt */
+  triggerBrowserSave(u, p);
+  curUser = u; enterChat();
+}
+
+/* Makes the browser offer to save password */
+function triggerBrowserSave(u, p){
+  const su = document.getElementById("save-user");
+  const sp = document.getElementById("save-pass");
+  if(su && sp){
+    su.value = u; sp.value = p;
+    /* submit the hidden form — browser sees this as a real login and offers to save */
+    document.getElementById("pw-save-form").dispatchEvent(new Event("submit", {bubbles:true, cancelable:true}));
+  }
+}
+
+/* ── Forgot password ── */
+function resetForgot(){
+  ["forgot-step2","forgot-step3","forgot-step4"].forEach(id => document.getElementById(id).style.display = "none");
+  document.getElementById("forgot-step1").style.display = "block";
+  ["ferr1","ferr2","ferr3"].forEach(id => { document.getElementById(id).style.display = "none"; });
+  document.getElementById("fu").value = "";
+  forgotUser = "";
+}
+function forgotStep1(){
+  const u = v("fu");
+  if(!u){ showErr("ferr1","❌ Please enter your username"); return; }
+  const users = getUsers();
+  const ud = users[u];
+  if(!ud || typeof ud === "string" || !ud.q1){ showErr("ferr1","❌ Username not found or no recovery questions set"); return; }
+  forgotUser = u;
+  document.getElementById("fq1-label").textContent = ud.q1;
+  document.getElementById("fq2-label").textContent = ud.q2;
+  document.getElementById("ferr1").style.display = "none";
+  document.getElementById("forgot-step1").style.display = "none";
+  document.getElementById("forgot-step2").style.display = "block";
+}
+function forgotStep2(){
+  const a1 = v("fa1").toLowerCase().trim();
+  const a2 = v("fa2").toLowerCase().trim();
+  const users = getUsers(), ud = users[forgotUser];
+  if(!a1 || !a2){ showErr("ferr2","❌ Please answer both questions"); return; }
+  if(a1 !== ud.a1 || a2 !== ud.a2){ showErr("ferr2","❌ Answers don't match. Please try again."); return; }
+  document.getElementById("ferr2").style.display = "none";
+  document.getElementById("reset-user-hidden").value = forgotUser;
+  document.getElementById("forgot-step2").style.display = "none";
+  document.getElementById("forgot-step3").style.display = "block";
+}
+function forgotStep3(e){
+  e.preventDefault();
+  const p1 = v("np1"), p2 = v("np2");
+  if(p1.length < 4){ showErr("ferr3","❌ Password must be at least 4 characters"); return; }
+  if(p1 !== p2){ showErr("ferr3","❌ Passwords don't match"); return; }
+  const users = getUsers();
+  users[forgotUser].pw = p1;
+  saveUsers(users);
+  triggerBrowserSave(forgotUser, p1);
+  document.getElementById("ferr3").style.display = "none";
+  document.getElementById("forgot-step3").style.display = "none";
+  document.getElementById("forgot-step4").style.display = "block";
+}
+
+/* ── Helpers ── */
+function v(id){ return document.getElementById(id).value.trim(); }
+function showErr(id, msg){ const el = document.getElementById(id); el.textContent = msg; el.style.display = "block"; }
+
+/* ── Logout ── */
+function doLogout(){
+  localStorage.removeItem("zp_s");
+  curUser = ""; curId = null; apiHist = []; dispMsgs = [];
+  hide("chat-screen"); show("login-screen");
+  document.getElementById("lp").value = "";
+  resetEmpty();
+}
+
+/* ── Enter chat ── */
+function enterChat(){
+  hide("login-screen"); hide("reg-screen"); hide("forgot-screen");
+  document.getElementById("chat-screen").style.display = "flex";
+  const ini = curUser.substring(0, 2).toUpperCase();
+  document.getElementById("sbav").textContent = ini;
+  document.getElementById("sbuname").textContent = curUser;
+  loadSb(); newChat(); checkOldChats(curUser);
+}
+
+/* ── Auto login ── */
+window.addEventListener("load", () => {
+  const s = localStorage.getItem("zp_s");
+  if(s){ const u = getUsers(); if(u[s]){ curUser = s; enterChat(); return; } }
+  /* pre-check "keep me signed in" */
+  document.getElementById("rem").checked = true;
+});
+
+/* ── Sidebar ── */
+function toggleSb(){ sbOpen = !sbOpen; document.getElementById("sidebar").classList.toggle("collapsed", !sbOpen); }
+function loadSb(){
+  const chats = getChats(curUser), el = document.getElementById("sblist");
+  el.innerHTML = "";
+  if(!chats.length){ el.innerHTML = `<div class="sb-empty"><div class="sb-empty-icon">💬</div>No conversations yet.<br>Start a new chat!</div>`; return; }
+  [...chats].reverse().forEach(c => {
+    const d = new Date(c.ts), now = new Date();
+    const isToday = d.toDateString() === now.toDateString();
+    const ts = isToday ? d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : d.toLocaleDateString([], {month:'short',day:'numeric'});
+    const div = document.createElement("div");
+    div.className = "sb-item" + (c.id === curId ? " active" : "");
+    div.innerHTML = `<span class="sb-ico">💬</span><div class="sb-info"><div class="sb-ttl">${escHtml(c.title)}</div><div class="sb-ts">${ts}</div></div><button class="sb-del" onclick="delChat(event,'${c.id}')" title="Delete">✕</button>`;
+    div.addEventListener("click", () => loadChat(c.id));
+    el.appendChild(div);
+  });
+}
+function delChat(e, id){ e.stopPropagation(); const chats = getChats(curUser).filter(c => c.id !== id); saveChats(curUser, chats); if(curId === id) newChat(); else loadSb(); }
+function newChat(){ curId = "c" + Date.now(); apiHist = []; dispMsgs = []; document.getElementById("chattitle").textContent = "New Chat"; resetEmpty(); loadSb(); document.getElementById("msgin").focus(); }
+function resetEmpty(){
+  document.getElementById("msgwrap").innerHTML = `
+    <div class="empty-wrap" id="emptywrap">
+      <div class="z-logo hero">Z</div>
+      <h2>How can I help you?</h2>
+      <p>Ask me anything — code, writing, math, ideas, or just a conversation.</p>
+      <div class="chips">
+        <div class="chip" onclick="chip('Compare Python vs JavaScript in a table')">📊 Compare languages</div>
+        <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
+        <div class="chip" onclick="chip('Explain machine learning simply')">🤖 Machine learning</div>
+        <div class="chip" onclick="chip('Give me 5 creative startup ideas')">💡 Startup ideas</div>
+        <div class="chip" onclick="chip('What are the best productivity tips?')">⚡ Productivity tips</div>
+        <div class="chip" onclick="chip('How does quantum computing work?')">⚛️ Quantum computing</div>
+      </div>
+    </div>`;
+}
+function loadChat(id){
+  const c = getChats(curUser).find(x => x.id === id); if(!c) return;
+  curId = id; apiHist = c.apiHist || []; dispMsgs = c.dispMsgs || [];
+  document.getElementById("chattitle").textContent = c.title;
+  document.getElementById("msgwrap").innerHTML = "";
+  dispMsgs.forEach(m => { if(m.role === "user") renderUser(m.content, m.time, false); else renderBot(m.content, m.time, false); });
+  document.getElementById("messages").scrollTop = 9999;
+  loadSb();
+}
+function saveCurrent(title){
+  let chats = getChats(curUser);
+  const ex = chats.find(c => c.id === curId);
+  if(ex){ ex.dispMsgs = dispMsgs; ex.apiHist = apiHist; if(title) ex.title = title; }
+  else chats.push({ id:curId, title:title||"New Chat", ts:Date.now(), dispMsgs, apiHist });
+  saveChats(curUser, chats); loadSb();
+}
+
+/* ── Messages ── */
+function escHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function getTime(){ return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+function scrollBottom(){ const m = document.getElementById("messages"); m.scrollTop = m.scrollHeight; }
+function removeEmpty(){ const e = document.getElementById("emptywrap"); if(e) e.remove(); }
+
+/* Custom renderer — wraps code blocks with copy button */
+const renderer = new marked.Renderer();
+renderer.code = function(code, lang){
+  const id = "cb_" + Math.random().toString(36).slice(2);
+  const langLabel = lang ? `<span class="code-lang">${escHtml(lang)}</span>` : "";
+  const escaped = escHtml(typeof code === "object" ? code.text : code);
+  return `<div class="code-block-wrap">${langLabel}<button class="copy-btn" id="${id}" onclick="copyCode(this,'${id}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button><pre><code>${escaped}</code></pre></div>`;
+};
+marked.setOptions({ renderer });
+
+function copyCode(btn, id){
+  const pre = btn.closest(".code-block-wrap").querySelector("code");
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.classList.add("copied");
+    btn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
+    setTimeout(() => { btn.classList.remove("copied"); btn.innerHTML = `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy`; }, 2000);
+  });
+}
+
+function renderUser(text, time, animate = true){
+  removeEmpty();
+  const ini = curUser.substring(0, 2).toUpperCase();
+  const row = document.createElement("div");
+  row.className = "mrow urow"; if(!animate) row.style.animation = "none";
+  row.innerHTML = `<div class="av usr-av">${ini}</div><div class="mbody"><div class="msender">${escHtml(curUser)}</div><div class="bbl usr-bbl">${escHtml(text)}</div><div class="mtime">${time || getTime()}</div></div>`;
+  document.getElementById("msgwrap").appendChild(row); scrollBottom();
+}
+function renderBot(md, time, animate = true){
+  const row = document.createElement("div");
+  row.className = "mrow"; if(!animate) row.style.animation = "none";
+  const html = typeof marked !== "undefined" ? marked.parse(typeof md === "string" ? md : String(md)) : escHtml(md);
+  row.innerHTML = `<div class="z-logo msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl">${html}</div><div class="mtime">${time || getTime()}</div></div>`;
+  document.getElementById("msgwrap").appendChild(row); scrollBottom();
+}
+function addTyping(){
+  const row = document.createElement("div"); row.className = "mrow"; row.id = "typingrow";
+  row.innerHTML = `<div class="z-logo msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl"><div class="typing-dots"><span></span><span></span><span></span></div></div></div>`;
+  document.getElementById("msgwrap").appendChild(row); scrollBottom();
+}
+function removeTyping(){ const t = document.getElementById("typingrow"); if(t) t.remove(); }
+function chip(text){ document.getElementById("msgin").value = text; sendMsg(); }
+
+async function sendMsg(){
+  const inp = document.getElementById("msgin"), btn = document.getElementById("sendbtn");
+  const text = inp.value.trim(); if(!text) return;
+  inp.value = ""; inp.style.height = "auto"; btn.disabled = true;
+  const t = getTime();
+  renderUser(text, t);
+  dispMsgs.push({role:"user",content:text,time:t});
+  apiHist.push({role:"user",content:text});
+  if(apiHist.length > 40) apiHist = apiHist.slice(-40);
+  addTyping();
+  const isFirst = dispMsgs.filter(m => m.role === "user").length === 1;
+  const title = text.length > 48 ? text.substring(0, 48) + "…" : text;
+  if(isFirst) document.getElementById("chattitle").textContent = title;
+  try{
+    const res = await fetch(`${BACKEND}/chat`, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text,history:apiHist.slice(0,-1)})});
+    const data = await res.json();
+    removeTyping();
+    const rt = getTime();
+    renderBot(data.reply, rt);
+    dispMsgs.push({role:"bot",content:data.reply,time:rt});
+    apiHist.push({role:"assistant",content:data.reply});
+    saveCurrent(isFirst ? title : null);
+  } catch {
+    removeTyping();
+    const rt = getTime();
+    const err = "⚠️ Could not connect to Zippy. Please check your internet and try again.";
+    renderBot(err, rt);
+    dispMsgs.push({role:"bot",content:err,time:rt});
+  }
+  btn.disabled = false; inp.focus();
+}
+
+const ta = document.getElementById("msgin");
+ta.addEventListener("input", function(){ this.style.height = "auto"; this.style.height = Math.min(this.scrollHeight, 140) + "px"; });
+ta.addEventListener("keydown", function(e){ if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendMsg(); } });
+</script>
+</body>
+</html>
