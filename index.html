@@ -151,6 +151,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .theme-btn:hover{border-color:var(--acc);transform:scale(1.08)}
 .theme-icon{display:inline-block;animation:spinIn .3s ease}
 
+/* Voice Settings Button */
+.voice-btn{width:36px;height:36px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;flex-shrink:0;margin-left:4px}
+.voice-btn:hover{border-color:var(--acc);transform:scale(1.08)}
+
 /* MESSAGES */
 .messages{flex:1;overflow-y:auto;padding:26px 20px;display:flex;flex-direction:column;background:var(--bg);transition:background .35s}
 .messages::-webkit-scrollbar{width:4px}
@@ -307,6 +311,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .del-confirm-btn{flex:1;padding:11px;border-radius:12px;font-size:.86rem;font-weight:600;font-family:'DM Sans',system-ui,sans-serif;cursor:pointer;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.35);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px}
 .del-confirm-btn:hover{opacity:.9;transform:translateY(-1px)}
 .del-confirm-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
+
+/* VOICE SETTINGS MODAL */
+.voice-modal{max-width:420px}
+.voice-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1.5px solid var(--bdr2);margin-bottom:8px;cursor:pointer;transition:all .18s}
+.voice-option:hover{background:var(--surf2);border-color:var(--acc)}
+.voice-option.selected{background:var(--accg);border-color:var(--acc)}
+.voice-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--bdr2);flex-shrink:0;position:relative;transition:all .18s}
+.voice-option.selected .voice-radio{border-color:var(--acc)}
+.voice-option.selected .voice-radio::after{content:'';position:absolute;inset:3px;background:var(--acc);border-radius:50%}
+.voice-info{flex:1}
+.voice-name{font-size:.85rem;font-weight:600;color:var(--txt);margin-bottom:2px}
+.voice-desc{font-size:.72rem;color:var(--dim)}
+.voice-test{background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:8px;padding:6px 10px;font-size:.72rem;color:var(--dim);cursor:pointer;transition:all .18s;flex-shrink:0}
+.voice-test:hover{background:var(--accg);border-color:var(--acc);color:var(--acc)}
+.voice-controls{margin-top:16px;padding-top:16px;border-top:1.5px solid var(--bdr2)}
+.voice-control{margin-bottom:14px}
+.voice-control label{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:600;color:var(--txt);margin-bottom:6px}
+.voice-control input[type="range"]{width:100%;height:6px;border-radius:3px;background:var(--surf2);outline:none;-webkit-appearance:none;appearance:none}
+.voice-control input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer}
+.voice-control input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer;border:none}
 
 /* TOAST */
 .zp-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1.5px solid var(--bdr-vis);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;min-width:240px;max-width:88vw}
@@ -501,6 +525,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       <button class="tb-toggle" onclick="toggleSb()"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <span class="tb-title" id="chattitle">New Chat</span>
       <div class="online-pill"><div class="online-dot"></div><span class="pill-text">Online</span></div>
+      <button class="voice-btn" onclick="showVoiceSettings()" title="Voice settings">🎤</button>
       <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon" id="themeicon">☀️</span></button>
     </div>
 
@@ -563,12 +588,31 @@ let sbOpen=window.innerWidth>=1024;
 let lastUserMsg="",ocrText="";
 let activeSpeechBtn=null,isRecording=false,recognition=null;
 
+// Voice settings
+let voiceSettings = {
+  selectedVoice: null,
+  rate: 1.0,
+  pitch: 1.0
+};
+
+// Load voice settings
+function loadVoiceSettings() {
+  const saved = localStorage.getItem('zp_voice_settings');
+  if (saved) {
+    voiceSettings = JSON.parse(saved);
+  }
+}
+
+function saveVoiceSettings() {
+  localStorage.setItem('zp_voice_settings', JSON.stringify(voiceSettings));
+}
+
 /* THEME */
 function syncIcons(){const t=getTheme(),i=t==="dark"?"🌙":"☀️";["atb1","atb2","atb3","themeicon"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=i;});}
 function getTheme(){return document.documentElement.getAttribute("data-theme")||"light";}
 function setTheme(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("zp_theme",t);syncIcons();}
 function toggleTheme(){setTheme(getTheme()==="dark"?"light":"dark");}
-(function(){setTheme(localStorage.getItem("zp_theme")||"light");})();
+(function(){setTheme(localStorage.getItem("zp_theme")||"light");loadVoiceSettings();})();
 if(window.speechSynthesis)window.speechSynthesis.getVoices();
 
 /* EYE */
@@ -750,6 +794,108 @@ function showDeleteWarning(chatTitle,onConfirm){
   ov.addEventListener("click",e=>{if(e.target===ov)ov.remove();});
 }
 
+/* VOICE SETTINGS MODAL */
+function showVoiceSettings() {
+  const voices = window.speechSynthesis.getVoices();
+  
+  const ov = document.createElement("div");
+  ov.className = "modal-overlay";
+  
+  let voiceOptionsHTML = '';
+  const groupedVoices = {
+    'Female': voices.filter(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('karen') || v.name.toLowerCase().includes('moira') || v.name.toLowerCase().includes('tessa')),
+    'Male': voices.filter(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('daniel') || v.name.toLowerCase().includes('alex') || v.name.toLowerCase().includes('thomas')),
+    'Other': voices.filter(v => v.lang.startsWith('en') && !v.name.toLowerCase().includes('female') && !v.name.toLowerCase().includes('male') && !v.name.toLowerCase().includes('samantha') && !v.name.toLowerCase().includes('karen') && !v.name.toLowerCase().includes('daniel') && !v.name.toLowerCase().includes('alex'))
+  };
+  
+  for (const [category, catVoices] of Object.entries(groupedVoices)) {
+    if (catVoices.length > 0) {
+      voiceOptionsHTML += `<div style="font-size:.75rem;color:var(--dim);margin:12px 0 8px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">${category} Voices</div>`;
+      catVoices.slice(0, 3).forEach((voice, idx) => {
+        const isSelected = voiceSettings.selectedVoice === voice.name;
+        voiceOptionsHTML += `
+          <div class="voice-option ${isSelected ? 'selected' : ''}" onclick="selectVoice('${voice.name.replace(/'/g, "\\'")}')">
+            <div class="voice-radio"></div>
+            <div class="voice-info">
+              <div class="voice-name">${escHtml(voice.name)}</div>
+              <div class="voice-desc">${escHtml(voice.lang)}</div>
+            </div>
+            <button class="voice-test" onclick="event.stopPropagation(); testVoice('${voice.name.replace(/'/g, "\\'")}')">Test</button>
+          </div>`;
+      });
+    }
+  }
+  
+  ov.innerHTML = `<div class="modal voice-modal">
+    <h3>🎤 Voice Settings</h3>
+    <p style="margin-bottom:16px">Choose your preferred voice for read-aloud</p>
+    
+    <div style="max-height:300px;overflow-y:auto;margin-bottom:0">
+      ${voiceOptionsHTML}
+    </div>
+    
+    <div class="voice-controls">
+      <div class="voice-control">
+        <label>Speed <span id="rateVal">${voiceSettings.rate}x</span></label>
+        <input type="range" id="voiceRate" min="0.5" max="2" step="0.1" value="${voiceSettings.rate}" oninput="updateRate(this.value)">
+      </div>
+      <div class="voice-control">
+        <label>Pitch <span id="pitchVal">${voiceSettings.pitch}x</span></label>
+        <input type="range" id="voicePitch" min="0.5" max="2" step="0.1" value="${voiceSettings.pitch}" oninput="updatePitch(this.value)">
+      </div>
+    </div>
+    
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="modal-btn cancel" onclick="closeVoiceModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveVoiceModal()">Save Settings</button>
+    </div>
+  </div>`;
+  
+  document.body.appendChild(ov);
+  window.currentVoiceModal = ov;
+}
+
+function selectVoice(voiceName) {
+  voiceSettings.selectedVoice = voiceName;
+  document.querySelectorAll('.voice-option').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+  event.currentTarget.classList.add('selected');
+}
+
+function testVoice(voiceName) {
+  stopSpeech();
+  const utt = new SpeechSynthesisUtterance("Hello! This is how I sound.");
+  const voices = window.speechSynthesis.getVoices();
+  const voice = voices.find(v => v.name === voiceName);
+  if (voice) utt.voice = voice;
+  utt.rate = voiceSettings.rate;
+  utt.pitch = voiceSettings.pitch;
+  window.speechSynthesis.speak(utt);
+}
+
+function updateRate(val) {
+  voiceSettings.rate = parseFloat(val);
+  document.getElementById('rateVal').textContent = val + 'x';
+}
+
+function updatePitch(val) {
+  voiceSettings.pitch = parseFloat(val);
+  document.getElementById('pitchVal').textContent = val + 'x';
+}
+
+function closeVoiceModal() {
+  if (window.currentVoiceModal) {
+    window.currentVoiceModal.remove();
+    window.currentVoiceModal = null;
+  }
+}
+
+function saveVoiceModal() {
+  saveVoiceSettings();
+  closeVoiceModal();
+}
+
 /* CHAT LIST */
 function loadSb(){
   const chats=getChats(curUser),el=document.getElementById("sblist");
@@ -897,11 +1043,23 @@ function toggleRead(btn){
   stopSpeech();
   const text=btn.dataset.txt||"";if(!text)return;
   const utt=new SpeechSynthesisUtterance(text);
-  utt.rate=1;utt.pitch=1;
+  utt.rate=voiceSettings.rate;
+  utt.pitch=voiceSettings.pitch;
+  
   const voices=window.speechSynthesis.getVoices();
-  const pick=voices.find(v=>v.lang.startsWith("en-")&&v.name.toLowerCase().includes("google"))
-            ||voices.find(v=>v.lang.startsWith("en"));
-  if(pick)utt.voice=pick;
+  let selectedVoice = null;
+  
+  if (voiceSettings.selectedVoice) {
+    selectedVoice = voices.find(v => v.name === voiceSettings.selectedVoice);
+  }
+  
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v=>v.lang.startsWith("en-")&&v.name.toLowerCase().includes("google"))
+                  ||voices.find(v=>v.lang.startsWith("en"));
+  }
+  
+  if(selectedVoice)utt.voice=selectedVoice;
+  
   utt.onend=stopSpeech;utt.onerror=stopSpeech;
   btn.classList.add("reading");
   btn.innerHTML=`<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Stop`;
@@ -992,52 +1150,141 @@ const NSFW=["nude","naked","nsfw","porn","sexual","explicit","gore","blood","hen
 function detectImgGen(msg){for(const re of IMG_TRIGGERS){const m=msg.match(re);if(m)return m[1].trim();}return null;}
 function isNSFW(p){const l=p.toLowerCase();return NSFW.some(w=>l.includes(w));}
 
-function renderImgGen(prompt){
+async function enhanceImagePrompt(userPrompt) {
+  try {
+    const enhanceMsg = `Enhance this image generation prompt to be more detailed and vivid. Keep it under 100 words. Only return the enhanced prompt, nothing else.\n\nOriginal: ${userPrompt}\n\nEnhanced:`;
+    const res = await fetch(`${BACKEND}/chat`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message: enhanceMsg, history: []})
+    });
+    const data = await res.json();
+    return data.reply?.trim() || userPrompt;
+  } catch {
+    return userPrompt;
+  }
+}
+
+async function renderImgGen(originalPrompt){
   removeEmpty();
   const mid="ig"+Date.now();
   const row=document.createElement("div");row.className="mrow";
   row.innerHTML=`<div class="z-logo msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl">
-    <p>🎨 Generating: <strong>${escHtml(prompt)}</strong></p>
-    <div class="img-loading" id="igl_${mid}"><div class="img-spinner"></div>Creating your image, please wait...</div>
+    <p>🎨 Generating image...</p>
+    <div class="img-loading" id="igl_${mid}"><div class="img-spinner"></div>Enhancing your prompt and creating image...</div>
     <div id="igw_${mid}" style="display:none"></div>
   </div><div class="mtime">${getTime()}</div></div>`;
   document.getElementById("msgwrap").appendChild(row);scrollBottom();
-  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
-  const img=new Image();
-  img.onload=()=>{
-    const w=document.getElementById("igw_"+mid),l=document.getElementById("igl_"+mid);
-    if(w&&l){
-      w.innerHTML=`<img class="gen-img" src="${url}" alt="${escHtml(prompt)}" onclick="window.open(this.src,'_blank')"/>
-        <div style="font-size:.72rem;color:var(--dim);margin-top:6px">🖱️ Click image to open full size</div>`;
-      l.style.display="none";w.style.display="block";scrollBottom();
+  
+  // Enhance prompt
+  const enhancedPrompt = await enhanceImagePrompt(originalPrompt);
+  
+  // Update loading message
+  const loadingEl = document.getElementById("igl_"+mid);
+  if (loadingEl) {
+    loadingEl.innerHTML = `<div class="img-spinner"></div>Enhanced prompt: "${escHtml(enhancedPrompt.substring(0, 80))}..." - Creating image...`;
+  }
+  
+  // Try multiple image generation APIs
+  const apis = [
+    `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random()*99999)}`,
+    `https://pollinations.ai/p/${encodeURIComponent(enhancedPrompt)}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random()*99999)}`
+  ];
+  
+  let imageLoaded = false;
+  
+  for (let apiUrl of apis) {
+    if (imageLoaded) break;
+    
+    try {
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        
+        const timeout = setTimeout(() => {
+          reject(new Error("Timeout"));
+        }, 15000);
+        
+        img.onload = () => {
+          clearTimeout(timeout);
+          const w = document.getElementById("igw_"+mid);
+          const l = document.getElementById("igl_"+mid);
+          if (w && l) {
+            w.innerHTML = `<img class="gen-img" src="${apiUrl}" alt="${escHtml(enhancedPrompt)}" onclick="window.open(this.src,'_blank')"/>
+              <div style="font-size:.72rem;color:var(--dim);margin-top:6px">
+                <strong>Original:</strong> ${escHtml(originalPrompt)}<br>
+                <strong>Enhanced:</strong> ${escHtml(enhancedPrompt)}<br>
+                🖱️ Click image to open full size
+              </div>`;
+            l.style.display = "none";
+            w.style.display = "block";
+            scrollBottom();
+            imageLoaded = true;
+          }
+          resolve();
+        };
+        
+        img.onerror = () => {
+          clearTimeout(timeout);
+          reject(new Error("Failed to load"));
+        };
+        
+        img.src = apiUrl;
+      });
+    } catch (err) {
+      console.log("API failed:", apiUrl, err);
+      continue;
     }
-  };
-  img.onerror=()=>{const l=document.getElementById("igl_"+mid);if(l)l.innerHTML="⚠️ Image generation failed. Try a different prompt.";};
-  img.src=url;
+  }
+  
+  if (!imageLoaded) {
+    const l = document.getElementById("igl_"+mid);
+    if (l) {
+      l.innerHTML = "⚠️ Image generation is temporarily unavailable. The service may be experiencing high load. Please try again in a moment or try a different prompt.";
+    }
+  }
 }
 
 /* WEB SEARCH */
-const SEARCH_TRIGGERS=["latest","current news","today","right now","recently","breaking","who won","what happened","this week","this month","trending","live score","price of","stock price","who is the current","what is the current","weather in","news about"];
+const SEARCH_TRIGGERS=["latest","current news","today","right now","recently","breaking","who won","what happened","this week","this month","trending","live score","price of","stock price","who is the current","what is the current","weather in","news about","what's happening","recent"];
 function needsSearch(msg){const l=msg.toLowerCase();return SEARCH_TRIGGERS.some(t=>l.includes(t));}
 
 async function doWebSearch(query){
-  // Wikipedia
+  // Try Wikipedia first
   try{
     const clean=query.replace(/latest|current|today|news|right now|recently|what is|who is|tell me|about/gi,"").trim().split(" ").slice(0,5).join(" ");
-    const r=await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(clean)}`,{signal:AbortSignal.timeout(4000)});
-    if(r.ok){const d=await r.json();if(d.extract&&d.extract.length>60)return`[Web context: ${d.extract.substring(0,450)}]`;}
-  }catch(e){}
-  // DuckDuckGo via corsproxy
-  try{
-    const r=await fetch(`https://corsproxy.io/?${encodeURIComponent("https://api.duckduckgo.com/?q="+encodeURIComponent(query)+"&format=json&no_html=1&skip_disambig=1")}`,{signal:AbortSignal.timeout(5000)});
+    const r=await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(clean)}`,{signal:AbortSignal.timeout(5000)});
     if(r.ok){
-      const d=await r.json();const parts=[];
-      if(d.Answer)parts.push(d.Answer);
-      if(d.AbstractText)parts.push(d.AbstractText.substring(0,300));
-      d.RelatedTopics?.slice(0,2).forEach(t=>{if(t.Text)parts.push(t.Text);});
-      if(parts.length)return`[Web search results: ${parts.join(" | ")}]`;
+      const d=await r.json();
+      if(d.extract&&d.extract.length>60) {
+        return {
+          source: "Wikipedia",
+          content: d.extract.substring(0, 800),
+          url: d.content_urls?.desktop?.page || ""
+        };
+      }
     }
-  }catch(e){}
+  }catch(e){console.log("Wikipedia search failed:", e);}
+  
+  // Try DuckDuckGo
+  try{
+    const r=await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`,{signal:AbortSignal.timeout(6000)});
+    if(r.ok){
+      const d=await r.json();
+      const parts=[];
+      if(d.Answer)parts.push(d.Answer);
+      if(d.AbstractText)parts.push(d.AbstractText.substring(0,500));
+      d.RelatedTopics?.slice(0,3).forEach(t=>{if(t.Text)parts.push(t.Text.substring(0,200));});
+      if(parts.length) {
+        return {
+          source: "DuckDuckGo",
+          content: parts.join(" | "),
+          url: d.AbstractURL || ""
+        };
+      }
+    }
+  }catch(e){console.log("DuckDuckGo search failed:", e);}
+  
   return null;
 }
 
@@ -1079,10 +1326,10 @@ async function sendMsg(){
       dispMsgs.push({role:"bot",content:msg,time:rt,lu:text});
       apiHist.push({role:"assistant",content:msg});
     }else{
-      renderImgGen(imgPrompt);
-      const botMsg=`Generated image of: ${imgPrompt}`;
+      await renderImgGen(imgPrompt);
+      const botMsg=`Generated enhanced image based on: ${imgPrompt}`;
       dispMsgs.push({role:"bot",content:botMsg,time:getTime(),lu:text});
-      apiHist.push({role:"assistant",content:`I generated an image of: ${imgPrompt}`});
+      apiHist.push({role:"assistant",content:botMsg});
     }
     const isFirst=dispMsgs.filter(m=>m.role==="user").length===1;
     if(isFirst){
@@ -1107,24 +1354,40 @@ async function sendMsg(){
   }
 
   // Web search if needed
-  let searchCtx="";
+  let searchData = null;
   if(needsSearch(text)){
     showSearchInd();
-    try{searchCtx=await doWebSearch(text)||"";}catch(e){}
+    try{
+      searchData = await doWebSearch(text);
+    }catch(e){
+      console.log("Search error:", e);
+    }
     removeSearchInd();
   }
 
-  const enriched=searchCtx?`${searchCtx}\n\nUser question: ${finalMsg}`:finalMsg;
-  apiHist[apiHist.length-1].content=enriched;
+  // Prepare message with search context
+  let enrichedMsg = finalMsg;
+  if (searchData && searchData.content) {
+    enrichedMsg = `[WEB SEARCH RESULTS from ${searchData.source}:\n${searchData.content}\n${searchData.url ? 'Source: ' + searchData.url : ''}]\n\nIMPORTANT: Use the above search results to answer the user's question with current, up-to-date information. Cite the source when providing facts from the search results.\n\nUser question: ${finalMsg}`;
+  }
+
+  apiHist[apiHist.length-1].content=enrichedMsg;
 
   addTyping();
   try{
-    const res=await fetch(`${BACKEND}/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:enriched,history:apiHist.slice(0,-1)})});
+    const res=await fetch(`${BACKEND}/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:enrichedMsg,history:apiHist.slice(0,-1)})});
     const data=await res.json();
     removeTyping();
     const rt=getTime();
-    renderBot(data.reply,rt,true,text);
-    dispMsgs.push({role:"bot",content:data.reply,time:rt,lu:text});
+    
+    let reply = data.reply;
+    // Add source citation if we used search
+    if (searchData && searchData.source && !reply.includes(searchData.source)) {
+      reply += `\n\n*Source: ${searchData.source}${searchData.url ? ' - ' + searchData.url : ''}*`;
+    }
+    
+    renderBot(reply,rt,true,text);
+    dispMsgs.push({role:"bot",content:reply,time:rt,lu:text});
     apiHist.push({role:"assistant",content:data.reply});
     if(isFirst){
       generateTitle(text,data.reply).then(title=>{
@@ -1133,12 +1396,13 @@ async function sendMsg(){
       });
       saveCurrent("Generating title…");
     }else saveCurrent(null);
-  }catch{
+  }catch(err){
+    console.error("Chat error:", err);
     removeTyping();removeSearchInd();
     const rt=getTime();
-    const err="Oops! Couldn't connect to Zippy, please wait a moment and try again! 🙏";
-    renderBot(err,rt,true,text);
-    dispMsgs.push({role:"bot",content:err,time:rt,lu:text});
+    const errMsg="Oops! Couldn't connect to Zippy. The backend service might be starting up (this can take 30-60 seconds on first request). Please wait a moment and try again! 🙏";
+    renderBot(errMsg,rt,true,text);
+    dispMsgs.push({role:"bot",content:errMsg,time:rt,lu:text});
     if(isFirst)document.getElementById("chattitle").textContent=text.substring(0,48);
   }
   btn.disabled=false;inp.focus();
