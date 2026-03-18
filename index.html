@@ -47,7 +47,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .z-logo.hero{width:76px;height:76px;min-width:76px;font-size:40px;border-radius:22px;box-shadow:0 10px 40px rgba(99,102,241,.42),inset 0 1px 0 rgba(255,255,255,.22)}
 .z-logo.msg{width:34px;height:34px;min-width:34px;font-size:17px;border-radius:10px;box-shadow:0 2px 12px rgba(99,102,241,.3)}
 
-/* AUTH - keeping your existing auth styles */
+/* AUTH */
 .auth-screen{display:flex;align-items:center;justify-content:center;min-height:100dvh;min-height:100vh;position:relative;overflow:hidden}
 .auth-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.15) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.1) 0%,transparent 50%),radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.12) 0%,transparent 50%);background-size:200% 200%;animation:gradMove 14s ease infinite}
 [data-theme="dark"] .auth-bg{background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.2) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.14) 0%,transparent 50%),radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.16) 0%,transparent 50%);background-size:200% 200%;animation:gradMove 14s ease infinite}
@@ -305,7 +305,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .send-btn:disabled svg{fill:var(--dim)}
 .hint{text-align:center;font-size:.67rem;color:var(--mut);margin-top:7px}
 
-/* PROFESSIONAL DELETE MODAL */
+/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;animation:fadeIn .2s ease;padding:20px}
 .delete-modal{background:var(--surf);border-radius:16px;width:100%;max-width:440px;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,.25);animation:fadeUp .3s ease}
 .del-header{padding:24px 24px 20px;border-bottom:1.5px solid var(--bdr-vis)}
@@ -331,6 +331,17 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .toast-ico{font-size:16px;flex-shrink:0}
 .toast-body strong{display:block;font-size:.8rem;font-weight:600;color:var(--txt);margin-bottom:2px}
 .toast-body span{font-size:.74rem;color:var(--dim)}
+
+/* CAMERA MODAL */
+.camera-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.camera-modal.show{display:flex}
+.camera-container{max-width:90%;max-height:80%;display:flex;flex-direction:column;gap:20px}
+.camera-video{max-width:100%;max-height:60vh;border-radius:12px;border:2px solid var(--acc)}
+.camera-controls{display:flex;gap:12px;justify-content:center}
+.camera-btn{padding:12px 24px;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.camera-capture{background:var(--acc);color:#fff;border:none}
+.camera-capture:hover{opacity:.9}
+.camera-cancel{background:var(--surf2);color:var(--txt);border:1.5px solid var(--bdr2)}
 
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -359,12 +370,23 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   <input type="password" name="password" id="save-pass" autocomplete="current-password"/>
 </form>
 
-<!-- Professional Toast -->
+<!-- Toast -->
 <div class="zp-toast" id="zpToast">
   <span class="toast-ico">🗂️</span>
   <div class="toast-body">
     <strong>Conversation history hidden</strong>
     <span>All chats remain saved on your device</span>
+  </div>
+</div>
+
+<!-- Camera Modal -->
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-container">
+    <video id="cameraVideo" class="camera-video" autoplay></video>
+    <div class="camera-controls">
+      <button class="camera-btn camera-capture" onclick="capturePhoto()">📸 Capture</button>
+      <button class="camera-btn camera-cancel" onclick="closeCamera()">✕ Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -447,7 +469,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   </div>
 </div>
 
-<!-- FORGOT PASSWORD (keeping your existing code) -->
+<!-- FORGOT PASSWORD -->
 <div id="forgot-screen" class="auth-screen" style="display:none">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb3">☀️</span></button>
@@ -546,18 +568,23 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <!-- Image preview bar -->
         <div class="img-prev-bar" id="imgPrevBar">
           <img class="prev-thumb" id="prevThumb" src="" alt=""/>
-          <div class="prev-info"><div class="prev-name" id="prevName">image.jpg</div><div class="prev-status" id="prevStatus">Analyzing...</div></div>
+          <div class="prev-info"><div class="prev-name" id="prevName">image.jpg</div><div class="prev-status" id="prevStatus">Ready for analysis</div></div>
           <button class="prev-clear" onclick="clearImage()">✕</button>
         </div>
 
         <div class="input-box">
           <!-- Attach image -->
-          <label class="iico-btn" title="Upload image for analysis">
+          <label class="iico-btn" title="Upload image">
             <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImageUpload(this)"/>
             <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
           </label>
 
-          <textarea id="msgin" rows="1" placeholder="Message Zippy... (or 'generate image of...')"></textarea>
+          <!-- Camera -->
+          <button class="iico-btn" onclick="openCamera()" title="Take photo">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+
+          <textarea id="msgin" rows="1" placeholder="Message Zippy... (Ctrl+V to paste image)"></textarea>
 
           <!-- Mic -->
           <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">
@@ -568,7 +595,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
             <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="hint">Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 image · 🎨 "generate image of..."</div>
+        <div class="hint">Enter ↵ send · Shift+Enter new line · 🎤 voice · 📷 camera · 📎 image · Ctrl+V paste</div>
       </div>
     </div>
   </div>
@@ -621,6 +648,16 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="setting-label" style="margin-bottom:4px">Detailed Responses</div>
+            <div style="font-size:.72rem;color:var(--dim)">More comprehensive AI answers</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="detailedMode" checked onchange="saveSettings()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="setting-section">
@@ -635,14 +672,63 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="setting-label" style="margin-bottom:4px">High Quality Images</div>
+            <div style="font-size:.72rem;color:var(--dim)">Generate larger, higher quality images</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="highQualityImages" checked onchange="saveSettings()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <h3>📱 Interface</h3>
+        <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="setting-label" style="margin-bottom:4px">Compact Mode</div>
+            <div style="font-size:.72rem;color:var(--dim)">Smaller text and tighter spacing</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="compactMode" onchange="toggleCompactMode()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="setting-label" style="margin-bottom:4px">Sound Effects</div>
+            <div style="font-size:.72rem;color:var(--dim)">Play sounds for notifications</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="soundEffects" checked onchange="saveSettings()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <h3>💾 Data Management</h3>
+        <div class="setting-item">
+          <button class="voice-test-btn" onclick="exportChats()" style="background:var(--accg);color:var(--acc)">
+            📥 Export All Chats
+          </button>
+        </div>
+        <div class="setting-item">
+          <button class="voice-test-btn" onclick="clearAllData()" style="background:rgba(220,38,38,.1);color:var(--red);border-color:rgba(220,38,38,.3)">
+            🗑️ Clear All Data
+          </button>
+        </div>
       </div>
 
       <div class="setting-section">
         <h3>ℹ️ About</h3>
         <div style="font-size:.78rem;color:var(--txt2);line-height:1.65">
-          <p><strong>Zippy AI</strong></p>
+          <p><strong>Zippy AI v2.0</strong></p>
           <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 Student · 2026</p>
-          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Your intelligent chat assistant with image generation, web search, and voice capabilities.</p>
+          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Your intelligent chat assistant with image generation, web search, camera support, and voice capabilities.</p>
+          <p style="margin-top:12px;font-size:.7rem;color:var(--dim)">✨ New: Camera capture, paste images, enhanced voices, and more!</p>
         </div>
       </div>
     </div>
@@ -656,6 +742,7 @@ let curUser="",curId=null,apiHist=[],dispMsgs=[],forgotUser="";
 let sbOpen=window.innerWidth>=1024;
 let lastUserMsg="",uploadedImageData="";
 let activeSpeechBtn=null,isRecording=false,recognition=null;
+let cameraStream=null;
 
 // Settings
 let settings = {
@@ -664,7 +751,11 @@ let settings = {
   pitch: 1.0,
   autoSearch: true,
   showSources: true,
-  enhancePrompts: true
+  enhancePrompts: true,
+  highQualityImages: true,
+  detailedMode: true,
+  compactMode: false,
+  soundEffects: true
 };
 
 // System prompt with creator info
@@ -673,7 +764,8 @@ const SYSTEM_CONTEXT = `You are Zippy AI, an intelligent assistant created by Ar
 - Do NOT reveal any other personal information about Arul beyond what is stated above.
 - When asked about your creator, mention only: name, class (11), year (2026), and that he's a student.
 - Be helpful, informative, and conversational.
-- When you need current information, you can search the web - this capability will be provided to you automatically.`;
+- When you need current information, you can search the web - this capability will be provided to you automatically.
+- When analyzing images, be descriptive and detailed about what you see.`;
 
 // Load settings
 function loadSettings() {
@@ -700,12 +792,28 @@ function loadSettings() {
   if (document.getElementById('enhancePrompts')) {
     document.getElementById('enhancePrompts').checked = settings.enhancePrompts;
   }
+  if (document.getElementById('highQualityImages')) {
+    document.getElementById('highQualityImages').checked = settings.highQualityImages;
+  }
+  if (document.getElementById('detailedMode')) {
+    document.getElementById('detailedMode').checked = settings.detailedMode;
+  }
+  if (document.getElementById('compactMode')) {
+    document.getElementById('compactMode').checked = settings.compactMode;
+    if (settings.compactMode) document.body.classList.add('compact');
+  }
+  if (document.getElementById('soundEffects')) {
+    document.getElementById('soundEffects').checked = settings.soundEffects;
+  }
 }
 
 function saveSettings() {
   settings.autoSearch = document.getElementById('autoSearch').checked;
   settings.showSources = document.getElementById('showSources').checked;
   settings.enhancePrompts = document.getElementById('enhancePrompts').checked;
+  settings.highQualityImages = document.getElementById('highQualityImages')?.checked ?? true;
+  settings.detailedMode = document.getElementById('detailedMode')?.checked ?? true;
+  settings.soundEffects = document.getElementById('soundEffects')?.checked ?? true;
   localStorage.setItem('zp_settings', JSON.stringify(settings));
 }
 
@@ -727,6 +835,34 @@ function updatePitch(val) {
   saveSettings();
 }
 
+function toggleCompactMode() {
+  settings.compactMode = document.getElementById('compactMode').checked;
+  document.body.classList.toggle('compact', settings.compactMode);
+  saveSettings();
+}
+
+function exportChats() {
+  const chats = getChats(curUser);
+  const data = JSON.stringify(chats, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `zippy-chats-${curUser}-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearAllData() {
+  if (!confirm('⚠️ This will permanently delete ALL your conversations and data. This cannot be undone. Are you sure?')) return;
+  if (!confirm('Last chance! Really delete everything?')) return;
+  
+  localStorage.removeItem('zp_c_' + curUser);
+  newChat();
+  loadSb();
+  alert('✅ All data cleared successfully.');
+}
+
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
   const select = document.getElementById('voiceSelect');
@@ -734,75 +870,66 @@ function loadVoices() {
   
   select.innerHTML = '';
   
-  // Filter for quality English voices, prioritize male voices
-  const enVoices = voices.filter(v => v.lang.startsWith('en'));
+  // Categorize voices by language and gender
+  const categorized = {
+    'en-US': {male: [], female: [], other: []},
+    'en-GB': {male: [], female: [], other: []},
+    'en-AU': {male: [], female: [], other: []},
+    'en-IN': {male: [], female: [], other: []},
+    'other': {male: [], female: [], other: []}
+  };
   
-  // Categorize voices
-  const maleVoices = enVoices.filter(v => 
-    v.name.toLowerCase().includes('male') || 
-    v.name.toLowerCase().includes('daniel') ||
-    v.name.toLowerCase().includes('alex') ||
-    v.name.toLowerCase().includes('thomas') ||
-    v.name.toLowerCase().includes('james')
-  );
+  voices.forEach(v => {
+    const lang = v.lang.startsWith('en-US') ? 'en-US' :
+                 v.lang.startsWith('en-GB') ? 'en-GB' :
+                 v.lang.startsWith('en-AU') ? 'en-AU' :
+                 v.lang.startsWith('en-IN') ? 'en-IN' :
+                 v.lang.startsWith('en') ? 'en-US' : 'other';
+    
+    const name = v.name.toLowerCase();
+    const gender = name.includes('male') && !name.includes('female') ? 'male' :
+                   name.includes('female') ? 'female' : 'other';
+    
+    if (categorized[lang]) {
+      categorized[lang][gender].push(v);
+    }
+  });
   
-  const femaleVoices = enVoices.filter(v => 
-    v.name.toLowerCase().includes('female') ||
-    v.name.toLowerCase().includes('samantha') ||
-    v.name.toLowerCase().includes('karen') ||
-    v.name.toLowerCase().includes('moira') ||
-    v.name.toLowerCase().includes('victoria')
-  );
-  
-  const otherVoices = enVoices.filter(v => 
-    !maleVoices.includes(v) && !femaleVoices.includes(v)
-  );
-  
-  // Add male voices first (default category)
-  if (maleVoices.length > 0) {
+  // Add voices by category
+  const addGroup = (label, voices) => {
+    if (voices.length === 0) return;
     const optgroup = document.createElement('optgroup');
-    optgroup.label = '👨 Male Voices';
-    maleVoices.forEach(v => {
+    optgroup.label = label;
+    voices.forEach(v => {
       const opt = document.createElement('option');
       opt.value = v.name;
-      opt.textContent = `${v.name} (${v.lang})`;
+      opt.textContent = `${v.name}`;
       optgroup.appendChild(opt);
     });
     select.appendChild(optgroup);
-  }
+  };
   
-  // Add female voices
-  if (femaleVoices.length > 0) {
-    const optgroup = document.createElement('optgroup');
-    optgroup.label = '👩 Female Voices';
-    femaleVoices.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-      opt.textContent = `${v.name} (${v.lang})`;
-      optgroup.appendChild(opt);
-    });
-    select.appendChild(optgroup);
-  }
+  addGroup('🇺🇸 US Male', categorized['en-US'].male);
+  addGroup('🇺🇸 US Female', categorized['en-US'].female);
+  addGroup('🇬🇧 UK Male', categorized['en-GB'].male);
+  addGroup('🇬🇧 UK Female', categorized['en-GB'].female);
+  addGroup('🇦🇺 Australian Male', categorized['en-AU'].male);
+  addGroup('🇦🇺 Australian Female', categorized['en-AU'].female);
+  addGroup('🇮🇳 Indian Male', categorized['en-IN'].male);
+  addGroup('🇮🇳 Indian Female', categorized['en-IN'].female);
+  addGroup('🎙️ Other US', categorized['en-US'].other);
+  addGroup('🎙️ Other Voices', categorized['other'].male.concat(categorized['other'].female, categorized['other'].other));
   
-  // Add other voices
-  if (otherVoices.length > 0) {
-    const optgroup = document.createElement('optgroup');
-    optgroup.label = '🎙️ Other Voices';
-    otherVoices.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-      opt.textContent = `${v.name} (${v.lang})`;
-      optgroup.appendChild(opt);
-    });
-    select.appendChild(optgroup);
-  }
-  
-  // Set default to first male voice or saved voice
+  // Set default
   if (settings.voice) {
     select.value = settings.voice;
-  } else if (maleVoices.length > 0) {
-    select.value = maleVoices[0].name;
-    settings.voice = maleVoices[0].name;
+  } else if (categorized['en-IN'].male.length > 0) {
+    select.value = categorized['en-IN'].male[0].name;
+    settings.voice = categorized['en-IN'].male[0].name;
+    saveSettings();
+  } else if (categorized['en-US'].male.length > 0) {
+    select.value = categorized['en-US'].male[0].name;
+    settings.voice = categorized['en-US'].male[0].name;
     saveSettings();
   }
 }
@@ -854,7 +981,7 @@ const saveUsers=u=>localStorage.setItem("zp_u",JSON.stringify(u));
 const getChats=u=>JSON.parse(localStorage.getItem("zp_c_"+u)||"[]");
 const saveChats=(u,c)=>localStorage.setItem("zp_c_"+u,JSON.stringify(c));
 
-/* AUTH - keeping all your existing auth functions */
+/* AUTH */
 function showReg(){hide("login-screen");show("reg-screen");}
 function showLogin(){hide("reg-screen");hide("forgot-screen");show("login-screen");}
 function showForgot(){hide("login-screen");show("forgot-screen");resetForgot();}
@@ -1113,18 +1240,17 @@ function removeEmpty(){const e=document.getElementById("emptywrap");if(e)e.remov
 // Strip emojis and special symbols for voice
 function stripSymbols(text) {
   return text
-    .replace(/[\u{1F300}-\u{1F9FF}]/gu, '') // Remove emojis
-    .replace(/[🎨🔍💡📊🐍🤖⚙️🎤📎✕✓❌⚠️💬🗑️]/g, '') // Remove common symbols
-    .replace(/\*/g, '') // Remove asterisks
-    .replace(/[#_~`]/g, '') // Remove markdown symbols
-    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
+    .replace(/[🎨🔍💡📊🐍🤖⚙️🎤📎📷✕✓❌⚠️💬🗑️]/g, '')
+    .replace(/\*/g, '')
+    .replace(/[#_~`]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
 /* MARKED RENDERER */
 const renderer=new marked.Renderer();
 renderer.code=function(code,lang){
-  const id="cb_"+Math.random().toString(36).slice(2);
   const rawText=typeof code==="object"?(code.text||""):String(code||"");
   const langStr=(typeof code==="object"&&code.lang)?code.lang:(lang||"");
   const langLabel=langStr?`<span class="code-lang-badge">${escHtml(langStr)}</span>`:`<span class="code-lang-badge">code</span>`;
@@ -1154,12 +1280,10 @@ function renderBot(md,time,animate=true,userMsg="",sources=null){
   const row=document.createElement("div");
   row.className="mrow";if(!animate)row.style.animation="none";
   
-  // Strip symbols for voice reading
   const plainForVoice=stripSymbols(String(md).replace(/<[^>]+>/g,"").replace(/[#*`_~\[\]]/g,""));
   
   let html=typeof marked!=="undefined"?marked.parse(typeof md==="string"?md:String(md)):escHtml(md);
   
-  // Add source citations if enabled and sources exist
   if(settings.showSources && sources && sources.length > 0) {
     sources.forEach((src, idx) => {
       const srcId = 'src_' + Date.now() + '_' + idx;
@@ -1230,10 +1354,11 @@ function toggleRead(btn){
   let selectedVoice = voices.find(v => v.name === settings.voice);
   
   if (!selectedVoice) {
-    // Fallback to first male voice if available
+    selectedVoice = voices.find(v => v.lang.startsWith("en-IN"));
+  }
+  if (!selectedVoice) {
     selectedVoice = voices.find(v => v.lang.startsWith("en") && v.name.toLowerCase().includes("male"));
   }
-  
   if (!selectedVoice) {
     selectedVoice = voices.find(v=>v.lang.startsWith("en"));
   }
@@ -1247,7 +1372,7 @@ function toggleRead(btn){
   window.speechSynthesis.speak(utt);
 }
 
-/* VOICE INPUT - Modified to NOT auto-send */
+/* VOICE INPUT */
 function toggleMic(){
   if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
     alert("Voice input requires Chrome or Edge browser.");return;
@@ -1263,11 +1388,10 @@ function toggleMic(){
     inp.value=t;inp.style.height="auto";inp.style.height=Math.min(inp.scrollHeight,140)+"px";
   };
   recognition.onend=()=>{
-    isRecording=false;btn.classList.remove("mic-active");inp.placeholder="Message Zippy... (or 'generate image of...')";
-    // Do NOT auto-send - just stop listening
+    isRecording=false;btn.classList.remove("mic-active");inp.placeholder="Message Zippy... (Ctrl+V to paste image)";
   };
   recognition.onerror=(err)=>{
-    isRecording=false;btn.classList.remove("mic-active");inp.placeholder="Message Zippy... (or 'generate image of...')";
+    isRecording=false;btn.classList.remove("mic-active");inp.placeholder="Message Zippy... (Ctrl+V to paste image)";
     if(err.error!=="aborted")alert("Mic error: "+err.error+". Ensure microphone permission is granted.");
   };
   recognition.start();
@@ -1283,24 +1407,77 @@ function retryMsg(userMsg){
   document.getElementById("msgin").value=userMsg;sendMsg();
 }
 
-/* IMAGE UPLOAD - Now sends image to AI for analysis */
+/* CAMERA */
+async function openCamera() {
+  try {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }
+    });
+    
+    video.srcObject = cameraStream;
+    modal.classList.add('show');
+  } catch (err) {
+    alert('Camera access denied or not available: ' + err.message);
+  }
+}
+
+function closeCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+  document.getElementById('cameraModal').classList.remove('show');
+}
+
+function capturePhoto() {
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0);
+  
+  uploadedImageData = canvas.toDataURL('image/jpeg', 0.9);
+  
+  const bar = document.getElementById('imgPrevBar');
+  const thumb = document.getElementById('prevThumb');
+  const name = document.getElementById('prevName');
+  const status = document.getElementById('prevStatus');
+  
+  thumb.src = uploadedImageData;
+  name.textContent = 'camera-capture.jpg';
+  status.textContent = '✅ Photo captured - ready for analysis';
+  bar.classList.add('show');
+  
+  closeCamera();
+  document.getElementById('msgin').focus();
+}
+
+/* IMAGE UPLOAD & PASTE */
 async function handleImageUpload(input){
   const file=input.files[0];if(!file)return;
+  processImageFile(file);
+  input.value="";
+}
+
+function processImageFile(file) {
   const bar=document.getElementById("imgPrevBar");
   const thumb=document.getElementById("prevThumb");
   const name=document.getElementById("prevName");
   const status=document.getElementById("prevStatus");
   
   const reader=new FileReader();
-  reader.onload=async(e)=>{
+  reader.onload=(e)=>{
     uploadedImageData = e.target.result;
     thumb.src=uploadedImageData;
     name.textContent=file.name;
-    status.textContent="✅ Image ready - AI will analyze it with your message";
+    status.textContent="✅ Image ready for analysis";
     bar.classList.add("show");
   };
   reader.readAsDataURL(file);
-  input.value="";
 }
 
 function clearImage(){
@@ -1309,7 +1486,23 @@ function clearImage(){
   document.getElementById("prevThumb").src="";
 }
 
-/* IMAGE GENERATION */
+// Paste image support
+document.addEventListener('paste', (e) => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image') !== -1) {
+      const file = items[i].getAsFile();
+      if (file) {
+        processImageFile(file);
+        e.preventDefault();
+      }
+    }
+  }
+});
+
+/* IMAGE GENERATION - Using Pollinations AI (completely free) */
 const IMG_TRIGGERS=[/\bgenerate image of\b(.+)/i,/\bcreate image of\b(.+)/i,/\bmake an image of\b(.+)/i,/\bdraw me\b(.+)/i,/\bimage of\b(.+)/i,/^\/imagine\s+(.+)/i];
 const NSFW=["nude","naked","nsfw","porn","sexual","explicit","gore","blood","hentai","xxx","drug","weapon","bomb","violence"];
 function detectImgGen(msg){for(const re of IMG_TRIGGERS){const m=msg.match(re);if(m)return m[1].trim();}return null;}
@@ -1353,34 +1546,57 @@ async function renderImgGen(originalPrompt){
     }
   }
   
-  // Use backend to generate image (avoids CORS)
-  try {
-    const res = await fetch(`${BACKEND}/generate-image`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({prompt: finalPrompt})
-    });
-    
-    const data = await res.json();
-    
-    const w = document.getElementById("igw_"+mid);
-    const l = document.getElementById("igl_"+mid);
-    
-    if (data.imageUrl && w && l) {
-      w.innerHTML = `<img class="gen-img" src="${data.imageUrl}" alt="${escHtml(finalPrompt)}"/>
+  // Use Pollinations AI - completely free, no API key needed
+  const size = settings.highQualityImages ? '1024x1024' : '512x512';
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&nologo=true`;
+  
+  const w = document.getElementById("igw_"+mid);
+  const l = document.getElementById("igl_"+mid);
+  
+  if (w && l) {
+    // Create image element and wait for it to load
+    const img = new Image();
+    img.onload = () => {
+      w.innerHTML = `<img class="gen-img" src="${imageUrl}" alt="${escHtml(finalPrompt)}"/>
         <div style="font-size:.72rem;color:var(--dim);margin-top:8px;line-height:1.6">
           ${settings.enhancePrompts && originalPrompt !== finalPrompt ? `<strong>Original:</strong> ${escHtml(originalPrompt)}<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}<br>` : ''}
+          <strong>Size:</strong> ${size}
         </div>`;
       l.style.display = "none";
       w.style.display = "block";
       scrollBottom();
+    };
+    img.onerror = () => {
+      if (l) l.innerHTML = "⚠️ Image generation failed. Please try again.";
+    };
+    img.src = imageUrl;
+  }
+}
+
+/* IMAGE ANALYSIS - Using backend endpoint */
+async function analyzeImageWithAI(imageData, userQuestion) {
+  try {
+    const response = await fetch(`${BACKEND}/analyze-image`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        image: imageData,
+        question: userQuestion
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success && result.response) {
+      return result.response;
+    } else if (result.response) {
+      return result.response;
     } else {
-      if (l) l.innerHTML = "⚠️ Image generation temporarily unavailable. Please try again.";
+      return "I can see you've uploaded an image, but I'm having trouble analyzing it right now. The image analysis service may be starting up (takes 20-30 seconds on first use). Please try again in a moment!";
     }
   } catch (err) {
-    console.error("Image generation error:", err);
-    const l = document.getElementById("igl_"+mid);
-    if (l) l.innerHTML = "⚠️ Could not generate image. Service may be starting up (takes 30-60s). Please try again.";
+    console.error("Image analysis error:", err);
+    return `I can see you've uploaded an image, but I'm having trouble analyzing it right now. The image analysis service may be starting up (takes 20-30 seconds on first use). Please try again in a moment, or describe what you see in the image and I'll help you based on that description.`;
   }
 }
 
@@ -1450,13 +1666,20 @@ async function generateTitle(firstMsg,botReply){
 /* SEND MESSAGE */
 async function sendMsg(){
   const inp=document.getElementById("msgin"),btn=document.getElementById("sendbtn");
-  let text=inp.value.trim();if(!text)return;
+  let text=inp.value.trim();if(!text&&!uploadedImageData)return;
   inp.value="";inp.style.height="auto";btn.disabled=true;stopSpeech();
-  const t=getTime();lastUserMsg=text;
+  const t=getTime();
+  
+  // If no text but image, default question
+  if(!text && uploadedImageData) {
+    text = "What's in this image?";
+  }
+  
+  lastUserMsg=text;
 
   // Image generation check
   const imgPrompt=detectImgGen(text);
-  if(imgPrompt){
+  if(imgPrompt && !uploadedImageData){
     renderUser(text,t);
     dispMsgs.push({role:"user",content:text,time:t});
     apiHist.push({role:"user",content:text});
@@ -1480,45 +1703,44 @@ async function sendMsg(){
     btn.disabled=false;inp.focus();clearImage();return;
   }
 
-  // Build message (with image if uploaded)
+  // Build message
   let finalMsg=text;
   let messageForAI=text;
+  let hasImage=!!uploadedImageData;
   
-  if(uploadedImageData){
-    messageForAI=`[User uploaded an image and asks: ${text}]\n\nPlease analyze the image and answer the user's question. Describe what you see in the image.`;
+  if(hasImage){
     finalMsg=`${text} [with image]`;
-    clearImage();
   }
 
   renderUser(finalMsg,t);
   dispMsgs.push({role:"user",content:finalMsg,time:t});
   
-  // Prepare API message with system context
-  let apiMessage = {
-    role: "user",
-    content: messageForAI
-  };
-  
-  // Add image if present
-  if (uploadedImageData) {
-    apiMessage.content = [
-      {type: "text", text: messageForAI},
-      {type: "image_url", image_url: {url: uploadedImageData}}
-    ];
-  }
-  
-  apiHist.push(apiMessage);
-  if(apiHist.length>40)apiHist=apiHist.slice(-40);
-
   const isFirst=dispMsgs.filter(m=>m.role==="user").length===1;
   if(isFirst){
     document.getElementById("chattitle").innerHTML=`<span class="title-generating"><span class="title-dot"></span><span class="title-dot"></span><span class="title-dot"></span></span>`;
   }
 
+  // Image analysis
+  if(hasImage){
+    const analysisInd=document.createElement("div");
+    analysisInd.className="search-ind";
+    analysisInd.id="analysisind";
+    analysisInd.innerHTML=`<div class="search-spin"></div><span>🔍 Analyzing image...</span>`;
+    document.getElementById("msgwrap").appendChild(analysisInd);
+    scrollBottom();
+    
+    const imageAnalysis = await analyzeImageWithAI(uploadedImageData, text);
+    messageForAI = imageAnalysis;
+    
+    const ind = document.getElementById("analysisind");
+    if(ind) ind.remove();
+    clearImage();
+  }
+
   // Web search if needed
   let searchData = null;
   let sources = [];
-  if(needsSearch(text)){
+  if(needsSearch(text) && !hasImage){
     showSearchInd();
     try{
       searchData = await doWebSearch(text);
@@ -1531,20 +1753,17 @@ async function sendMsg(){
     removeSearchInd();
   }
 
-  // Prepare message with context
+  // Prepare contextual message
   let contextualMsg = messageForAI;
   if (searchData && searchData.content) {
     contextualMsg = `${SYSTEM_CONTEXT}\n\n[WEB SEARCH RESULTS from ${searchData.source}:\n${searchData.content}\n${searchData.url ? 'Source: ' + searchData.url : ''}]\n\nIMPORTANT: Use the above search results to provide current, accurate information. Mention that you found this information from ${searchData.source}.\n\nUser question: ${messageForAI}`;
   } else {
     contextualMsg = `${SYSTEM_CONTEXT}\n\nUser: ${messageForAI}`;
   }
-
-  // Update last message in apiHist
-  if (uploadedImageData) {
-    apiHist[apiHist.length-1].content[0].text = contextualMsg;
-  } else {
-    apiHist[apiHist.length-1].content = contextualMsg;
-  }
+  
+  // Add to API history
+  apiHist.push({role:"user",content:contextualMsg});
+  if(apiHist.length>40)apiHist=apiHist.slice(-40);
 
   addTyping();
   try{
