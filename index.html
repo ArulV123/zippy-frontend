@@ -1546,33 +1546,45 @@ async function renderImgGen(originalPrompt){
     }
   }
   
-  // Use Pollinations AI - completely free, no API key needed
-  const size = settings.highQualityImages ? '1024x1024' : '512x512';
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&nologo=true`;
-  
   const w = document.getElementById("igw_"+mid);
   const l = document.getElementById("igl_"+mid);
   
-  if (w && l) {
-    // Create image element and wait for it to load
-    const img = new Image();
-    img.onload = () => {
-      w.innerHTML = `<img class="gen-img" src="${imageUrl}" alt="${escHtml(finalPrompt)}"/>
-        <div style="font-size:.72rem;color:var(--dim);margin-top:8px;line-height:1.6">
-          ${settings.enhancePrompts && originalPrompt !== finalPrompt ? `<strong>Original:</strong> ${escHtml(originalPrompt)}<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}<br>` : ''}
-          <strong>Size:</strong> ${size}
-        </div>`;
-      l.style.display = "none";
-      w.style.display = "block";
-      scrollBottom();
-    };
-    img.onerror = () => {
-      if (l) l.innerHTML = "⚠️ Image generation failed. Please try again.";
-    };
-    img.src = imageUrl;
+  // FIXED: Now using backend with automatic retries
+  try {
+    const response = await fetch(`${BACKEND}/generate-image`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt: finalPrompt})
+    });
+    
+    const result = await response.json();
+    
+    if (result.success && result.imageUrl) {
+      // Success! Display the image
+      if (w && l) {
+        const size = settings.highQualityImages ? '1024x1024' : '512x512';
+        w.innerHTML = `<img class="gen-img" src="${result.imageUrl}" alt="${escHtml(finalPrompt)}"/>
+          <div style="font-size:.72rem;color:var(--dim);margin-top:8px;line-height:1.6">
+            ${settings.enhancePrompts && originalPrompt !== finalPrompt ? `<strong>Original:</strong> ${escHtml(originalPrompt)}<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}<br>` : ''}
+            <strong>Service:</strong> ${result.service || 'AI'} | <strong>Size:</strong> ${size}
+          </div>`;
+        l.style.display = "none";
+        w.style.display = "block";
+        scrollBottom();
+      }
+    } else {
+      // Failed - show error
+      if (l) {
+        l.innerHTML = `⚠️ ${result.error || 'Image generation failed. Please try again.'}`;
+      }
+    }
+  } catch (err) {
+    console.error("Image generation error:", err);
+    if (l) {
+      l.innerHTML = "⚠️ Image generation failed. Please check your connection and try again.";
+    }
   }
 }
-
 /* IMAGE ANALYSIS - Using backend endpoint */
 async function analyzeImageWithAI(imageData, userQuestion) {
   try {
