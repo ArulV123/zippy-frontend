@@ -202,7 +202,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .mtime{font-size:.65rem;color:var(--dim);margin-top:5px}
 .urow .mtime{text-align:right}
 
-/* IMAGE GENERATION BOX - IMPROVED */
+/* IMAGE GENERATION BOX */
 .img-gen-card{background:var(--surf);border:1.5px solid var(--bdr-vis);border-radius:16px;padding:16px;margin-top:12px;max-width:100%;overflow:hidden}
 .img-gen-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1.5px solid var(--bdr)}
 .img-gen-icon{font-size:24px;animation:spin 2s linear infinite}
@@ -210,9 +210,9 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .img-gen-title h4{font-family:'Syne',system-ui,sans-serif;font-size:.9rem;font-weight:700;color:var(--txt)}
 .img-gen-title p{font-size:.72rem;color:var(--dim);margin-top:2px}
 .img-gen-body{position:relative;min-height:180px}
-.img-loading-skeleton{width:100%;height:400px;background:linear-gradient(90deg,var(--surf2) 0%,var(--accg) 50%,var(--surf2) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.img-loading-skeleton{width:100%;height:360px;background:linear-gradient(90deg,var(--surf2) 0%,var(--accg) 50%,var(--surf2) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .img-loading-skeleton::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border:3px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
-.gen-img{width:100%;height:auto;max-height:500px;object-fit:contain;border-radius:12px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.gen-img{width:100%;height:auto;max-height:450px;object-fit:contain;border-radius:12px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.1)}
 .img-gen-footer{margin-top:12px;padding-top:12px;border-top:1.5px solid var(--bdr);font-size:.72rem;color:var(--txt2);line-height:1.6}
 .img-retry-box{background:rgba(220,38,38,.08);border:1.5px solid rgba(220,38,38,.2);border-radius:10px;padding:12px;margin-top:10px}
 .img-retry-box p{font-size:.78rem;color:var(--red);margin-bottom:8px}
@@ -742,7 +742,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
           <p><strong>Zippy AI v2.0</strong></p>
           <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 Student · 2026</p>
           <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Your intelligent chat assistant with image generation, web search, camera support, and voice capabilities.</p>
-          <p style="margin-top:12px;font-size:.7rem;color:var(--dim)">✨ New: Improved image generation with multiple retries!</p>
+          <p style="margin-top:12px;font-size:.7rem;color:var(--dim)">✨ New: Improved image generation with advanced retry mechanism!</p>
         </div>
       </div>
     </div>
@@ -752,7 +752,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 <script>
 const BACKEND="https://zippy-backend-coz2.onrender.com";
 const OLD_DAYS=30;
-const MAX_IMAGE_RETRIES=3;
+const MAX_IMAGE_RETRIES=5;
 let curUser="",curId=null,apiHist=[],dispMsgs=[],forgotUser="";
 let sbOpen=window.innerWidth>=1024;
 let lastUserMsg="",uploadedImageData="";
@@ -1517,11 +1517,68 @@ document.addEventListener('paste', (e) => {
   }
 });
 
-/* IMAGE GENERATION - IMPROVED WITH RETRIES */
+/* ========== IMAGE GENERATION - IMPROVED WITH RETRY MECHANISM ========== */
 const IMG_TRIGGERS=[/\bgenerate image of\b(.+)/i,/\bcreate image of\b(.+)/i,/\bmake an image of\b(.+)/i,/\bdraw me\b(.+)/i,/\bimage of\b(.+)/i,/^\/imagine\s+(.+)/i];
 const NSFW=["nude","naked","nsfw","porn","sexual","explicit","gore","blood","hentai","xxx","drug","weapon","bomb","violence"];
 function detectImgGen(msg){for(const re of IMG_TRIGGERS){const m=msg.match(re);if(m)return m[1].trim();}return null;}
 function isNSFW(p){const l=p.toLowerCase();return NSFW.some(w=>l.includes(w));}
+
+// Preload image helper from first file
+function preloadImage(src, timeout = 8000) {
+  return new Promise((resolve, reject) => {
+    try {
+      const img = new Image();
+      let settled = false;
+      const onDone = (ok) => { 
+        if (settled) return; 
+        settled = true; 
+        cleanup(); 
+        if (ok) resolve(true); 
+        else reject(new Error('Image load failed')); 
+      };
+      const cleanup = () => { 
+        img.onload = img.onerror = null; 
+        if (timer) clearTimeout(timer); 
+      };
+      img.crossOrigin = 'anonymous';
+      img.onload = () => onDone(true);
+      img.onerror = () => onDone(false);
+      const timer = setTimeout(() => onDone(false), timeout);
+      img.src = src;
+    } catch(e) { 
+      reject(e); 
+    }
+  });
+}
+
+// Fetch image with retry from first file
+async function fetchImageDataUrlWithRetries(promptText, maxAttempts = MAX_IMAGE_RETRIES) {
+  let attempt = 0;
+  let lastErr = null;
+  
+  while (attempt < maxAttempts) {
+    attempt++;
+    try {
+      const size = settings.highQualityImages ? '768x768' : '640x640';
+      const seed = Date.now() + attempt;
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptText)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&seed=${seed}&nologo=true&enhance=true`;
+      
+      // Try to load and validate
+      const loaded = await preloadImage(imageUrl, 12000);
+      if (loaded) {
+        return imageUrl;
+      }
+      throw new Error('Image failed to load after fetch');
+    } catch (err) {
+      lastErr = err;
+      console.warn(`Image fetch attempt ${attempt} failed:`, err);
+      // Exponential backoff
+      await new Promise(r => setTimeout(r, 500 + attempt * 600 + Math.random() * 400));
+    }
+  }
+  
+  throw lastErr || new Error('Image fetch failed after retries');
+}
 
 async function enhanceImagePrompt(userPrompt) {
   if (!settings.enhancePrompts) return userPrompt;
@@ -1579,11 +1636,11 @@ async function renderImgGen(originalPrompt){
     }
   }
   
-  // Try loading image with retries
-  await loadImageWithRetries(mid, finalPrompt, originalPrompt, 1);
+  // Generate image with retry mechanism
+  await generateImageWithRetries(mid, finalPrompt, originalPrompt);
 }
 
-async function loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt) {
+async function generateImageWithRetries(mid, finalPrompt, originalPrompt) {
   const skeleton = document.getElementById("img-skeleton-"+mid);
   const container = document.getElementById("img-container-"+mid);
   const retryBox = document.getElementById("img-retry-"+mid);
@@ -1592,30 +1649,15 @@ async function loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt) {
   
   if (!skeleton || !container) return;
   
-  // Update status
-  if (statusEl) {
-    statusEl.textContent = `Attempt ${attempt}/${MAX_IMAGE_RETRIES}...`;
-  }
-  
-  // Generate image URL
-  const size = settings.highQualityImages ? '1024x1024' : '768x768';
-  const seed = Date.now() + attempt; // Different seed for each attempt
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&seed=${seed}&nologo=true&enhance=true`;
-  
-  // Try to load the image
-  const img = new Image();
-  let imageLoaded = false;
-  let loadTimeout;
-  
-  const cleanup = () => {
-    clearTimeout(loadTimeout);
-    img.onload = null;
-    img.onerror = null;
-  };
-  
-  const showSuccess = () => {
-    cleanup();
-    imageLoaded = true;
+  try {
+    if (statusEl) {
+      statusEl.textContent = `Generating (up to ${MAX_IMAGE_RETRIES} attempts)...`;
+    }
+    
+    // Use the retry mechanism
+    const imageUrl = await fetchImageDataUrlWithRetries(finalPrompt, MAX_IMAGE_RETRIES);
+    
+    // Success!
     skeleton.style.display = "none";
     retryBox.style.display = "none";
     container.innerHTML = `<img class="gen-img" src="${imageUrl}" alt="${escHtml(finalPrompt)}"/>`;
@@ -1627,7 +1669,7 @@ async function loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt) {
       if (settings.enhancePrompts && originalPrompt !== finalPrompt) {
         footerHTML += `<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}`;
       }
-      footerHTML += `<br><strong>Size:</strong> ${size} · <strong>Attempt:</strong> ${attempt}/${MAX_IMAGE_RETRIES}`;
+      footerHTML += `<br><strong>Quality:</strong> ${settings.highQualityImages ? 'High (768x768)' : 'Standard (640x640)'}`;
       footer.innerHTML = footerHTML;
     }
     
@@ -1636,62 +1678,33 @@ async function loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt) {
     }
     
     scrollBottom();
-  };
-  
-  const showError = async () => {
-    cleanup();
+  } catch (err) {
+    console.error("Image generation failed after all retries:", err);
     
-    if (attempt < MAX_IMAGE_RETRIES) {
-      // Try again
-      if (statusEl) {
-        statusEl.textContent = `Retrying (${attempt + 1}/${MAX_IMAGE_RETRIES})...`;
-      }
-      setTimeout(() => {
-        loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt + 1);
-      }, 1000);
-    } else {
-      // All attempts failed
-      skeleton.style.display = "none";
-      container.style.display = "none";
-      retryBox.innerHTML = `
-        <div class="img-retry-box">
-          <p>⚠️ Image generation failed after ${MAX_IMAGE_RETRIES} attempts. This can happen when the service is busy.</p>
-          <button class="img-retry-btn" onclick="manualRetryImage('${mid}', '${escHtml(finalPrompt).replace(/'/g, "\\'")}', '${escHtml(originalPrompt).replace(/'/g, "\\'")}')">
-            🔄 Try Again
-          </button>
-        </div>
-      `;
-      retryBox.style.display = "block";
-      
-      if (statusEl) {
-        statusEl.textContent = "❌ Generation failed";
-      }
-      
-      scrollBottom();
+    // All attempts failed
+    skeleton.style.display = "none";
+    container.style.display = "none";
+    retryBox.innerHTML = `
+      <div class="img-retry-box">
+        <p>⚠️ Image generation failed after ${MAX_IMAGE_RETRIES} attempts. The service might be busy or experiencing issues.</p>
+        <button class="img-retry-btn" onclick="manualRetryImage('${mid}', '${escHtml(finalPrompt).replace(/'/g, "\\'")}', '${escHtml(originalPrompt).replace(/'/g, "\\'")}')">
+          🔄 Try Again
+        </button>
+        <div class="img-attempt-counter">Please wait a moment before retrying</div>
+      </div>
+    `;
+    retryBox.style.display = "block";
+    
+    if (statusEl) {
+      statusEl.textContent = "❌ Generation failed";
     }
-  };
-  
-  // Set up timeout (15 seconds per attempt)
-  loadTimeout = setTimeout(() => {
-    if (!imageLoaded) {
-      console.log(`Image load timeout for attempt ${attempt}`);
-      showError();
-    }
-  }, 15000);
-  
-  // Set up image handlers
-  img.onload = showSuccess;
-  img.onerror = () => {
-    console.log(`Image load error for attempt ${attempt}`);
-    showError();
-  };
-  
-  // Start loading
-  img.src = imageUrl;
+    
+    scrollBottom();
+  }
 }
 
 // Manual retry function
-window.manualRetryImage = function(mid, finalPrompt, originalPrompt) {
+window.manualRetryImage = async function(mid, finalPrompt, originalPrompt) {
   const retryBox = document.getElementById("img-retry-"+mid);
   const skeleton = document.getElementById("img-skeleton-"+mid);
   const statusEl = document.getElementById("img-status-"+mid);
@@ -1700,7 +1713,7 @@ window.manualRetryImage = function(mid, finalPrompt, originalPrompt) {
   if (skeleton) skeleton.style.display = "flex";
   if (statusEl) statusEl.textContent = "Retrying...";
   
-  loadImageWithRetries(mid, finalPrompt, originalPrompt, 1);
+  await generateImageWithRetries(mid, finalPrompt, originalPrompt);
 };
 
 /* IMAGE ANALYSIS - Using backend endpoint */
