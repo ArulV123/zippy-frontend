@@ -37,6 +37,7 @@
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
 
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100dvh;height:100vh;overflow:hidden;font-size:15px;transition:background .35s,color .35s}
 
@@ -201,6 +202,24 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .mtime{font-size:.65rem;color:var(--dim);margin-top:5px}
 .urow .mtime{text-align:right}
 
+/* IMAGE GENERATION BOX - IMPROVED */
+.img-gen-card{background:var(--surf);border:1.5px solid var(--bdr-vis);border-radius:16px;padding:16px;margin-top:12px;max-width:100%;overflow:hidden}
+.img-gen-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1.5px solid var(--bdr)}
+.img-gen-icon{font-size:24px;animation:spin 2s linear infinite}
+.img-gen-title{flex:1}
+.img-gen-title h4{font-family:'Syne',system-ui,sans-serif;font-size:.9rem;font-weight:700;color:var(--txt)}
+.img-gen-title p{font-size:.72rem;color:var(--dim);margin-top:2px}
+.img-gen-body{position:relative;min-height:180px}
+.img-loading-skeleton{width:100%;height:400px;background:linear-gradient(90deg,var(--surf2) 0%,var(--accg) 50%,var(--surf2) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.img-loading-skeleton::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border:3px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
+.gen-img{width:100%;height:auto;max-height:500px;object-fit:contain;border-radius:12px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.img-gen-footer{margin-top:12px;padding-top:12px;border-top:1.5px solid var(--bdr);font-size:.72rem;color:var(--txt2);line-height:1.6}
+.img-retry-box{background:rgba(220,38,38,.08);border:1.5px solid rgba(220,38,38,.2);border-radius:10px;padding:12px;margin-top:10px}
+.img-retry-box p{font-size:.78rem;color:var(--red);margin-bottom:8px}
+.img-retry-btn{background:var(--red);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+.img-retry-btn:hover{opacity:.9}
+.img-attempt-counter{font-size:.7rem;color:var(--dim);margin-top:8px;text-align:center}
+
 /* SOURCE CITATION */
 .source-cite{display:inline-flex;align-items:center;gap:4px;background:var(--accg);border:1px solid var(--bdr2);border-radius:6px;padding:2px 8px;margin:0 3px;font-size:.75rem;color:var(--acc);cursor:pointer;transition:all .18s;vertical-align:middle}
 .source-cite:hover{background:rgba(99,102,241,.15);border-color:var(--acc)}
@@ -226,11 +245,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .title-dot{width:4px;height:4px;border-radius:50%;background:var(--acc);animation:dotFlash 1.2s infinite}
 .title-dot:nth-child(2){animation-delay:.2s}
 .title-dot:nth-child(3){animation-delay:.4s}
-
-/* IMAGE IN CHAT */
-.gen-img{max-width:100%;max-height:400px;border-radius:12px;border:1.5px solid var(--bdr-vis);display:block;margin-top:10px}
-.img-loading{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--dim);padding:10px 0}
-.img-spinner{width:16px;height:16px;border:2px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
 
 /* IMAGE PREVIEW BAR */
 .img-prev-bar{display:none;align-items:center;gap:10px;padding:8px 14px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:12px;margin-bottom:8px}
@@ -728,7 +742,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
           <p><strong>Zippy AI v2.0</strong></p>
           <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 Student · 2026</p>
           <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Your intelligent chat assistant with image generation, web search, camera support, and voice capabilities.</p>
-          <p style="margin-top:12px;font-size:.7rem;color:var(--dim)">✨ New: Camera capture, paste images, enhanced voices, and more!</p>
+          <p style="margin-top:12px;font-size:.7rem;color:var(--dim)">✨ New: Improved image generation with multiple retries!</p>
         </div>
       </div>
     </div>
@@ -738,6 +752,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 <script>
 const BACKEND="https://zippy-backend-coz2.onrender.com";
 const OLD_DAYS=30;
+const MAX_IMAGE_RETRIES=3;
 let curUser="",curId=null,apiHist=[],dispMsgs=[],forgotUser="";
 let sbOpen=window.innerWidth>=1024;
 let lastUserMsg="",uploadedImageData="";
@@ -1502,7 +1517,7 @@ document.addEventListener('paste', (e) => {
   }
 });
 
-/* IMAGE GENERATION - Using Pollinations AI (completely free) */
+/* IMAGE GENERATION - IMPROVED WITH RETRIES */
 const IMG_TRIGGERS=[/\bgenerate image of\b(.+)/i,/\bcreate image of\b(.+)/i,/\bmake an image of\b(.+)/i,/\bdraw me\b(.+)/i,/\bimage of\b(.+)/i,/^\/imagine\s+(.+)/i];
 const NSFW=["nude","naked","nsfw","porn","sexual","explicit","gore","blood","hentai","xxx","drug","weapon","bomb","violence"];
 function detectImgGen(msg){for(const re of IMG_TRIGGERS){const m=msg.match(re);if(m)return m[1].trim();}return null;}
@@ -1529,49 +1544,164 @@ async function renderImgGen(originalPrompt){
   removeEmpty();
   const mid="ig"+Date.now();
   const row=document.createElement("div");row.className="mrow";
+  
+  // Create the image generation card
   row.innerHTML=`<div class="z-logo msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl">
-    <p>🎨 Generating image...</p>
-    <div class="img-loading" id="igl_${mid}"><div class="img-spinner"></div>${settings.enhancePrompts ? 'Enhancing your prompt...' : 'Creating image...'}</div>
-    <div id="igw_${mid}" style="display:none"></div>
+    <div class="img-gen-card">
+      <div class="img-gen-header">
+        <div class="img-gen-icon">🎨</div>
+        <div class="img-gen-title">
+          <h4>Generating Image</h4>
+          <p id="img-status-${mid}">${settings.enhancePrompts ? 'Enhancing your prompt...' : 'Creating your image...'}</p>
+        </div>
+      </div>
+      <div class="img-gen-body">
+        <div class="img-loading-skeleton" id="img-skeleton-${mid}"></div>
+        <div id="img-container-${mid}" style="display:none"></div>
+        <div id="img-retry-${mid}" style="display:none"></div>
+      </div>
+      <div class="img-gen-footer" id="img-footer-${mid}">
+        <strong>Prompt:</strong> ${escHtml(originalPrompt)}
+      </div>
+    </div>
   </div><div class="mtime">${getTime()}</div></div>`;
-  document.getElementById("msgwrap").appendChild(row);scrollBottom();
+  
+  document.getElementById("msgwrap").appendChild(row);
+  scrollBottom();
   
   // Enhance prompt if enabled
   let finalPrompt = originalPrompt;
   if (settings.enhancePrompts) {
     finalPrompt = await enhanceImagePrompt(originalPrompt);
-    const loadingEl = document.getElementById("igl_"+mid);
-    if (loadingEl) {
-      loadingEl.innerHTML = `<div class="img-spinner"></div>Creating image...`;
+    const statusEl = document.getElementById("img-status-"+mid);
+    if (statusEl) {
+      statusEl.textContent = "Creating your image...";
     }
   }
   
-  // Use Pollinations AI - completely free, no API key needed
-  const size = settings.highQualityImages ? '1024x1024' : '512x512';
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&nologo=true`;
-  
-  const w = document.getElementById("igw_"+mid);
-  const l = document.getElementById("igl_"+mid);
-  
-  if (w && l) {
-    // Create image element and wait for it to load
-    const img = new Image();
-    img.onload = () => {
-      w.innerHTML = `<img class="gen-img" src="${imageUrl}" alt="${escHtml(finalPrompt)}"/>
-        <div style="font-size:.72rem;color:var(--dim);margin-top:8px;line-height:1.6">
-          ${settings.enhancePrompts && originalPrompt !== finalPrompt ? `<strong>Original:</strong> ${escHtml(originalPrompt)}<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}<br>` : ''}
-          <strong>Size:</strong> ${size}
-        </div>`;
-      l.style.display = "none";
-      w.style.display = "block";
-      scrollBottom();
-    };
-    img.onerror = () => {
-      if (l) l.innerHTML = "⚠️ Image generation failed. Please try again.";
-    };
-    img.src = imageUrl;
-  }
+  // Try loading image with retries
+  await loadImageWithRetries(mid, finalPrompt, originalPrompt, 1);
 }
+
+async function loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt) {
+  const skeleton = document.getElementById("img-skeleton-"+mid);
+  const container = document.getElementById("img-container-"+mid);
+  const retryBox = document.getElementById("img-retry-"+mid);
+  const footer = document.getElementById("img-footer-"+mid);
+  const statusEl = document.getElementById("img-status-"+mid);
+  
+  if (!skeleton || !container) return;
+  
+  // Update status
+  if (statusEl) {
+    statusEl.textContent = `Attempt ${attempt}/${MAX_IMAGE_RETRIES}...`;
+  }
+  
+  // Generate image URL
+  const size = settings.highQualityImages ? '1024x1024' : '768x768';
+  const seed = Date.now() + attempt; // Different seed for each attempt
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}&seed=${seed}&nologo=true&enhance=true`;
+  
+  // Try to load the image
+  const img = new Image();
+  let imageLoaded = false;
+  let loadTimeout;
+  
+  const cleanup = () => {
+    clearTimeout(loadTimeout);
+    img.onload = null;
+    img.onerror = null;
+  };
+  
+  const showSuccess = () => {
+    cleanup();
+    imageLoaded = true;
+    skeleton.style.display = "none";
+    retryBox.style.display = "none";
+    container.innerHTML = `<img class="gen-img" src="${imageUrl}" alt="${escHtml(finalPrompt)}"/>`;
+    container.style.display = "block";
+    
+    // Update footer
+    if (footer) {
+      let footerHTML = `<strong>Prompt:</strong> ${escHtml(originalPrompt)}`;
+      if (settings.enhancePrompts && originalPrompt !== finalPrompt) {
+        footerHTML += `<br><strong>Enhanced:</strong> ${escHtml(finalPrompt)}`;
+      }
+      footerHTML += `<br><strong>Size:</strong> ${size} · <strong>Attempt:</strong> ${attempt}/${MAX_IMAGE_RETRIES}`;
+      footer.innerHTML = footerHTML;
+    }
+    
+    if (statusEl) {
+      statusEl.textContent = "✅ Image generated successfully!";
+    }
+    
+    scrollBottom();
+  };
+  
+  const showError = async () => {
+    cleanup();
+    
+    if (attempt < MAX_IMAGE_RETRIES) {
+      // Try again
+      if (statusEl) {
+        statusEl.textContent = `Retrying (${attempt + 1}/${MAX_IMAGE_RETRIES})...`;
+      }
+      setTimeout(() => {
+        loadImageWithRetries(mid, finalPrompt, originalPrompt, attempt + 1);
+      }, 1000);
+    } else {
+      // All attempts failed
+      skeleton.style.display = "none";
+      container.style.display = "none";
+      retryBox.innerHTML = `
+        <div class="img-retry-box">
+          <p>⚠️ Image generation failed after ${MAX_IMAGE_RETRIES} attempts. This can happen when the service is busy.</p>
+          <button class="img-retry-btn" onclick="manualRetryImage('${mid}', '${escHtml(finalPrompt).replace(/'/g, "\\'")}', '${escHtml(originalPrompt).replace(/'/g, "\\'")}')">
+            🔄 Try Again
+          </button>
+        </div>
+      `;
+      retryBox.style.display = "block";
+      
+      if (statusEl) {
+        statusEl.textContent = "❌ Generation failed";
+      }
+      
+      scrollBottom();
+    }
+  };
+  
+  // Set up timeout (15 seconds per attempt)
+  loadTimeout = setTimeout(() => {
+    if (!imageLoaded) {
+      console.log(`Image load timeout for attempt ${attempt}`);
+      showError();
+    }
+  }, 15000);
+  
+  // Set up image handlers
+  img.onload = showSuccess;
+  img.onerror = () => {
+    console.log(`Image load error for attempt ${attempt}`);
+    showError();
+  };
+  
+  // Start loading
+  img.src = imageUrl;
+}
+
+// Manual retry function
+window.manualRetryImage = function(mid, finalPrompt, originalPrompt) {
+  const retryBox = document.getElementById("img-retry-"+mid);
+  const skeleton = document.getElementById("img-skeleton-"+mid);
+  const statusEl = document.getElementById("img-status-"+mid);
+  
+  if (retryBox) retryBox.style.display = "none";
+  if (skeleton) skeleton.style.display = "flex";
+  if (statusEl) statusEl.textContent = "Retrying...";
+  
+  loadImageWithRetries(mid, finalPrompt, originalPrompt, 1);
+};
 
 /* IMAGE ANALYSIS - Using backend endpoint */
 async function analyzeImageWithAI(imageData, userQuestion) {
