@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Zippy AI</title>
+<title>Zippy AI Enhanced</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 [data-theme="light"]{
@@ -17,6 +19,7 @@
   --card-bg:rgba(255,255,255,0.95);--chip-bg:#eef0ff;--code-bg:#f4f5ff;
   --table-head:rgba(99,102,241,0.08);--input-bg:#ffffff;--topbar:#e4e7ff;--msg-bot:#ffffff;
   --think-bg:rgba(99,102,241,0.05);--think-bdr:rgba(99,102,241,0.2);
+  --file-bg:#f8f9ff;--file-bdr:#e0e3ff;
 }
 [data-theme="dark"]{
   --bg:#0e0e1a;--sb:#13131f;--surf:#1c1c2e;--surf2:#22223a;
@@ -27,6 +30,7 @@
   --card-bg:rgba(20,20,34,0.92);--chip-bg:#1c1c2e;--code-bg:#0b0b18;
   --table-head:rgba(99,102,241,0.18);--input-bg:#1c1c2e;--topbar:#13131f;--msg-bot:#1c1c2e;
   --think-bg:rgba(129,140,248,0.07);--think-bdr:rgba(129,140,248,0.2);
+  --file-bg:#1a1a2c;--file-bdr:#2a2a4c;
 }
 
 /* ── ANIMATIONS ── */
@@ -41,7 +45,6 @@
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
-/* Thinking spinner pulse */
 @keyframes thinkOrbit{0%{transform:rotate(0deg) translateX(10px) rotate(0deg)}100%{transform:rotate(360deg) translateX(10px) rotate(-360deg)}}
 @keyframes thinkPulseRing{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.6}}
 @keyframes thinkDot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
@@ -204,15 +207,22 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .msender{font-size:.71rem;color:var(--dim);margin-bottom:5px;font-weight:600;letter-spacing:.03em}
 .urow .msender{text-align:right}
 .bbl{padding:13px 17px;border-radius:16px;line-height:1.75;font-size:.9rem}
-.bot-bbl{background:var(--msg-bot);border:1.5px solid var(--bdr-vis);border-top-left-radius:4px;color:var(--txt);box-shadow:0 1px 5px rgba(0,0,0,.06);transition:background .35s,border-color .35s,color .35s;
-  /* ─ Mobile overflow fix ─ */
-  overflow:hidden;min-width:0;word-break:break-word;
-}
+.bot-bbl{background:var(--msg-bot);border:1.5px solid var(--bdr-vis);border-top-left-radius:4px;color:var(--txt);box-shadow:0 1px 5px rgba(0,0,0,.06);transition:background .35s,border-color .35s,color .35s;overflow:hidden;min-width:0;word-break:break-word}
 .usr-bbl{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-top-right-radius:4px;box-shadow:0 2px 14px rgba(99,102,241,.3)}
 .mtime{font-size:.65rem;color:var(--dim);margin-top:5px}
 .urow .mtime{text-align:right}
 
-/* ── THINKING SPINNER (while waiting) ── */
+/* ── FILE ATTACHMENT DISPLAY ── */
+.file-attachment{background:var(--file-bg);border:1.5px solid var(--file-bdr);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;max-width:100%}
+.file-icon{width:44px;height:44px;min-width:44px;background:var(--accg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:.85rem;font-weight:600;color:var(--txt);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-meta{font-size:.72rem;color:var(--dim)}
+.file-image{max-width:100%;border-radius:10px;margin-top:8px;display:block}
+.analyzing-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:4px 10px;font-size:.72rem;font-weight:600;color:var(--acc);margin-top:6px}
+.analyzing-spinner{width:12px;height:12px;border:2px solid var(--acc);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
+
+/* ── THINKING SPINNER ── */
 .think-wait-row{display:flex;gap:13px;align-items:flex-start;margin-bottom:22px;animation:msgIn .3s ease}
 .think-wait-body{display:flex;flex-direction:column;gap:6px}
 .think-wait-label{font-size:.71rem;color:var(--dim);font-weight:600;letter-spacing:.03em}
@@ -227,7 +237,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .think-wait-dots span:nth-child(2){animation-delay:.2s}
 .think-wait-dots span:nth-child(3){animation-delay:.4s}
 
-/* ── THINKING BLOCK (collapsed in message) ── */
+/* ── THINKING BLOCK ── */
 .think-block{background:var(--think-bg);border:1.5px solid var(--think-bdr);border-radius:10px;margin-bottom:10px;overflow:hidden;font-size:.78rem}
 .think-block summary{display:flex;align-items:center;gap:8px;padding:9px 13px;cursor:pointer;list-style:none;color:var(--txt2);font-weight:600;user-select:none;transition:background .15s}
 .think-block summary::-webkit-details-marker{display:none}
@@ -274,27 +284,19 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .bot-bbl code{background:var(--code-bg);border:1px solid var(--bdr2);padding:2px 7px;border-radius:5px;font-family:'Fira Code','Consolas',monospace;font-size:.8rem;color:#7c3aed;word-break:break-all}
 [data-theme="dark"] .bot-bbl code{color:#c4b5fd}
 
-/* ── CODE BLOCKS — mobile overflow fix ── */
-.code-block-wrap{position:relative;margin:12px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--bdr-vis);box-shadow:0 4px 20px rgba(0,0,0,.08);
-  /* prevent overflow beyond bubble */
-  max-width:100%;
-}
+/* ── CODE BLOCKS ── */
+.code-block-wrap{position:relative;margin:12px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--bdr-vis);box-shadow:0 4px 20px rgba(0,0,0,.08);max-width:100%}
 .code-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 8px;background:var(--surf2);border-bottom:1.5px solid var(--bdr-vis)}
 .code-lang-badge{font-size:.68rem;font-weight:700;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;background:var(--accg);padding:3px 9px;border-radius:20px;border:1px solid var(--bdr2)}
 .copy-btn{background:var(--input-bg);border:1.5px solid var(--bdr2);color:var(--dim);border-radius:8px;padding:5px 12px;font-size:.72rem;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .18s;white-space:nowrap}
 .copy-btn:hover{background:var(--accg);border-color:var(--acc);color:var(--acc)}
 .copy-btn.copied{background:rgba(5,150,105,.1);border-color:var(--grn);color:var(--grn)}
 .copy-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
-.code-block-wrap pre{background:var(--code-bg);padding:14px 16px;overflow-x:auto;margin:0;
-  /* scroll the code, not the page */
-  -webkit-overflow-scrolling:touch;
-}
-.code-block-wrap pre code{background:none;border:none;padding:0;font-family:'Fira Code','Consolas',monospace;font-size:.82rem;line-height:1.7;color:#2563eb;display:block;
-  white-space:pre;word-break:normal;
-}
+.code-block-wrap pre{background:var(--code-bg);padding:14px 16px;overflow-x:auto;margin:0;-webkit-overflow-scrolling:touch}
+.code-block-wrap pre code{background:none;border:none;padding:0;font-family:'Fira Code','Consolas',monospace;font-size:.82rem;line-height:1.7;color:#2563eb;display:block;white-space:pre;word-break:normal}
 [data-theme="dark"] .code-block-wrap pre code{color:#93c5fd}
 
-/* ── TABLES — mobile overflow fix ── */
+/* ── TABLES ── */
 .table-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;border-radius:12px;border:1.5px solid var(--bdr-vis);margin:13px 0}
 .bot-bbl table{width:100%;border-collapse:collapse;font-size:.82rem;margin:0}
 .bot-bbl thead{background:var(--table-head)}
@@ -314,9 +316,10 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .input-inner{max-width:820px;margin:0 auto}
 .input-box{display:flex;align-items:flex-end;gap:8px;background:var(--input-bg);border:1.5px solid var(--bdr2);border-radius:16px;padding:8px 10px;transition:border-color .2s,box-shadow .2s,background .35s}
 .input-box:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px rgba(129,140,248,.1)}
-.iico-btn{width:34px;height:34px;background:none;border:none;cursor:pointer;color:var(--dim);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;padding:0}
+.iico-btn{width:34px;height:34px;background:none;border:none;cursor:pointer;color:var(--dim);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;padding:0;position:relative}
 .iico-btn:hover{background:var(--surf2);color:var(--acc)}
 .iico-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8}
+.iico-btn input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
 #msgin{flex:1;background:none;border:none;outline:none;color:var(--txt);font-size:.9rem;font-family:'DM Sans',system-ui,sans-serif;resize:none;max-height:140px;min-height:26px;line-height:1.55;transition:color .35s;padding:4px 2px}
 #msgin::placeholder{color:var(--dim)}
 .mic-btn{width:36px;height:36px;min-width:36px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
@@ -371,7 +374,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   .input-area{padding:8px 12px max(10px,env(safe-area-inset-bottom))}
   .settings-panel{width:100%;max-width:360px}
   .del-actions{flex-direction:column}
-  /* Tighten bubble max-width on mobile so code/tables don't overflow screen */
   .mbody{max-width:calc(100vw - 90px)}
   .bbl{font-size:.85rem}
   .code-block-wrap pre code{font-size:.75rem}
@@ -536,7 +538,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 <div id="chat-screen">
   <div class="sidebar" id="sidebar">
     <div class="sb-top">
-      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>by Arul Vethathiri</small></div></div>
+      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>Enhanced Edition</small></div></div>
       <button class="new-btn" onclick="newChat()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Chat</button>
     </div>
     <div class="sb-section">Conversations</div>
@@ -562,14 +564,14 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="empty-wrap" id="emptywrap">
           <div class="z-logo hero">Z</div>
           <h2>How can I help you?</h2>
-          <p>Chat · Search the web · Voice input &amp; read aloud — all free.</p>
+          <p>Chat · Search the web · Voice input · Analyze files & images — all free.</p>
           <div class="chips">
-            <div class="chip" onclick="chip('Compare Python vs JavaScript in a table')">📊 Compare languages</div>
+            <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Compare languages</div>
             <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
             <div class="chip" onclick="chip('What are the latest AI news today?')">🔍 Latest AI news</div>
             <div class="chip" onclick="chip('Explain machine learning simply')">🤖 Machine learning</div>
             <div class="chip" onclick="chip('Give me 5 creative startup ideas')">💡 Startup ideas</div>
-            <div class="chip" onclick="chip('What is the current Bitcoin price?')">₿ Crypto price</div>
+            <div class="chip" onclick="chip('Difference between REST and GraphQL')">🔄 REST vs GraphQL</div>
           </div>
         </div>
       </div>
@@ -578,6 +580,10 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
     <div class="input-area">
       <div class="input-inner">
         <div class="input-box">
+          <button class="iico-btn" title="Attach file">
+            <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            <input type="file" id="fileInput" accept="image/*,.pdf,.txt,.doc,.docx,.json,.csv" onchange="handleFileUpload(event)"/>
+          </button>
           <textarea id="msgin" rows="1" placeholder="Message Zippy..."></textarea>
           <!-- Mic -->
           <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">
@@ -588,7 +594,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
             <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="hint">Enter ↵ send · Shift+Enter new line · 🎤 voice input</div>
+        <div class="hint">Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach files</div>
       </div>
     </div>
   </div>
@@ -684,9 +690,9 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
       <div class="setting-section">
         <h3>ℹ️ About</h3>
         <div style="font-size:.78rem;color:var(--txt2);line-height:1.65">
-          <p><strong>Zippy AI v2.1</strong></p>
+          <p><strong>Zippy AI Enhanced v3.0</strong></p>
           <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 Student · 2026</p>
-          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Smart chat with real-time web search, thinking transparency, and voice I/O.</p>
+          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Smart chat with real-time web search, file analysis, image recognition, thinking transparency, and voice I/O.</p>
         </div>
       </div>
     </div>
@@ -700,6 +706,8 @@ let curUser="", curId=null, apiHist=[], dispMsgs=[], forgotUser="";
 let sbOpen = window.innerWidth >= 1024;
 let lastUserMsg = "";
 let activeSpeechBtn = null, isRecording = false, recognition = null;
+let tfModel = null; // TensorFlow model for image analysis
+let currentAttachedFile = null; // Currently attached file
 
 // Settings
 let settings = {
@@ -707,6 +715,100 @@ let settings = {
   autoSearch: true, showSources: true, showThinking: true,
   compactMode: false,
 };
+
+/* ── TENSORFLOW MOBILENET INITIALIZATION ── */
+async function initTensorFlow() {
+  if (tfModel) return;
+  try {
+    console.log('Loading TensorFlow MobileNet model...');
+    tfModel = await mobilenet.load();
+    console.log('MobileNet model loaded successfully!');
+  } catch (error) {
+    console.error('Failed to load TensorFlow model:', error);
+  }
+}
+
+/* ── FILE UPLOAD HANDLER ── */
+async function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  currentAttachedFile = {
+    file: file,
+    name: file.name,
+    type: file.type,
+    size: file.size,
+    dataUrl: null,
+    analysis: null
+  };
+
+  // Read file as data URL
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    currentAttachedFile.dataUrl = e.target.result;
+
+    // If it's an image, analyze it
+    if (file.type.startsWith('image/')) {
+      await analyzeImage(currentAttachedFile);
+    } else if (file.type === 'text/plain' || file.type === 'application/json') {
+      // Read text content
+      const textReader = new FileReader();
+      textReader.onload = (te) => {
+        currentAttachedFile.textContent = te.target.result;
+      };
+      textReader.readAsText(file);
+    }
+
+    // Show file preview in input area or message
+    displayFilePreview(currentAttachedFile);
+  };
+  reader.readAsDataURL(file);
+
+  // Clear the file input
+  event.target.value = '';
+}
+
+/* ── IMAGE ANALYSIS WITH TENSORFLOW ── */
+async function analyzeImage(fileObj) {
+  if (!tfModel) {
+    await initTensorFlow();
+  }
+
+  if (!tfModel) {
+    fileObj.analysis = "Image analysis model not available";
+    return;
+  }
+
+  try {
+    // Create image element
+    const img = new Image();
+    img.src = fileObj.dataUrl;
+
+    await new Promise((resolve) => {
+      img.onload = resolve;
+    });
+
+    // Classify image
+    const predictions = await tfModel.classify(img);
+    
+    // Format predictions
+    fileObj.analysis = predictions.map((p, i) => 
+      `${i + 1}. ${p.className} (${(p.probability * 100).toFixed(1)}%)`
+    ).join('\n');
+
+  } catch (error) {
+    console.error('Image analysis error:', error);
+    fileObj.analysis = "Error analyzing image";
+  }
+}
+
+/* ── DISPLAY FILE PREVIEW ── */
+function displayFilePreview(fileObj) {
+  // This shows a small preview - the full display happens when message is sent
+  const hint = document.querySelector('.hint');
+  hint.innerHTML = `📎 <strong>${escHtml(fileObj.name)}</strong> attached · Press Enter to send`;
+  hint.style.color = 'var(--acc)';
+}
 
 /* ── SETTINGS ── */
 function loadSettings() {
@@ -754,27 +856,184 @@ function clearAllData() {
 /* ── VOICE / VOICES ── */
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
-  const select  = document.getElementById('voiceSelect');
+  const select = document.getElementById('voiceSelect');
   if (!select || !voices.length) return;
+  
   select.innerHTML = '';
-  const grouped = {};
+  
+  // Categorize voices by gender and accent
+  const maleVoices = {
+    indian: [],
+    us: [],
+    uk: [],
+    other: []
+  };
+  
+  const femaleVoices = {
+    indian: [],
+    us: [],
+    uk: [],
+    other: []
+  };
+  
   voices.forEach(v => {
-    const grp = v.lang.startsWith('en-IN') ? '🇮🇳 Indian' : v.lang.startsWith('en-US') ? '🇺🇸 US' : v.lang.startsWith('en-GB') ? '🇬🇧 UK' : v.lang.startsWith('en') ? '🎙️ Other English' : null;
-    if (!grp) return;
-    (grouped[grp] = grouped[grp] || []).push(v);
+    const name = v.name.toLowerCase();
+    const lang = v.lang.toLowerCase();
+    
+    // Determine gender (basic heuristics)
+    const isFemale = name.includes('female') || name.includes('woman') || 
+                     name.includes('samantha') || name.includes('victoria') || 
+                     name.includes('karen') || name.includes('moira') ||
+                     name.includes('fiona') || name.includes('kate');
+    
+    // Determine accent
+    let accent = 'other';
+    if (lang.includes('en-in')) accent = 'indian';
+    else if (lang.includes('en-us')) accent = 'us';
+    else if (lang.includes('en-gb')) accent = 'uk';
+    else if (!lang.startsWith('en')) return; // Skip non-English
+    
+    if (isFemale) {
+      femaleVoices[accent].push(v);
+    } else {
+      maleVoices[accent].push(v);
+    }
   });
-  Object.entries(grouped).forEach(([label, vs]) => {
-    const og = document.createElement('optgroup'); og.label = label;
-    vs.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; og.appendChild(o); });
-    select.appendChild(og);
-  });
+  
+  // Add male voices
+  if (maleVoices.indian.length + maleVoices.us.length + maleVoices.uk.length + maleVoices.other.length > 0) {
+    const maleGroup = document.createElement('optgroup');
+    maleGroup.label = '👨 Male Voices';
+    
+    if (maleVoices.indian.length) {
+      const og = document.createElement('optgroup');
+      og.label = '  🇮🇳 Indian';
+      maleVoices.indian.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (maleVoices.us.length) {
+      const og = document.createElement('optgroup');
+      og.label = '  🇺🇸 US';
+      maleVoices.us.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (maleVoices.uk.length) {
+      const og = document.createElement('optgroup');
+      og.label = '  🇬🇧 UK';
+      maleVoices.uk.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (maleVoices.other.length) {
+      const og = document.createElement('optgroup');
+      og.label = '  🎙️ Other';
+      maleVoices.other.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+  }
+  
+  // Add female voices
+  if (femaleVoices.indian.length + femaleVoices.us.length + femaleVoices.uk.length + femaleVoices.other.length > 0) {
+    if (femaleVoices.indian.length) {
+      const og = document.createElement('optgroup');
+      og.label = '👩 Female - 🇮🇳 Indian';
+      femaleVoices.indian.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (femaleVoices.us.length) {
+      const og = document.createElement('optgroup');
+      og.label = '👩 Female - 🇺🇸 US';
+      femaleVoices.us.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (femaleVoices.uk.length) {
+      const og = document.createElement('optgroup');
+      og.label = '👩 Female - 🇬🇧 UK';
+      femaleVoices.uk.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+    
+    if (femaleVoices.other.length) {
+      const og = document.createElement('optgroup');
+      og.label = '👩 Female - 🎙️ Other';
+      femaleVoices.other.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        og.appendChild(o);
+      });
+      select.appendChild(og);
+    }
+  }
+  
+  // Set default to a good male voice if not set
+  if (!settings.voice) {
+    // Try to find a natural-sounding male voice
+    const defaultVoice = 
+      maleVoices.us.find(v => v.name.includes('Daniel')) ||
+      maleVoices.us.find(v => v.name.includes('Fred')) ||
+      maleVoices.uk.find(v => v.name.includes('Daniel')) ||
+      maleVoices.indian[0] ||
+      maleVoices.us[0] ||
+      maleVoices.uk[0] ||
+      maleVoices.other[0];
+    
+    if (defaultVoice) {
+      settings.voice = defaultVoice.name;
+      saveVoiceSettings();
+    }
+  }
+  
   if (settings.voice) select.value = settings.voice;
 }
-if (window.speechSynthesis) { window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
+
+if (window.speechSynthesis) { 
+  window.speechSynthesis.onvoiceschanged = loadVoices; 
+  loadVoices(); 
+}
 
 function testVoice() {
   stopSpeech();
-  const utt = new SpeechSynthesisUtterance("Hello! I'm Zippy AI, made by Arul Vethathiri.");
+  const utt = new SpeechSynthesisUtterance("Hello! I'm Zippy AI Enhanced, made by Arul Vethathiri. I can now analyze images and files for you!");
   const v = window.speechSynthesis.getVoices().find(x => x.name === settings.voice);
   if (v) utt.voice = v;
   utt.rate = settings.speed; utt.pitch = settings.pitch;
@@ -788,7 +1047,7 @@ function syncIcons() { const i = getTheme() === 'dark' ? '🌙' : '☀️'; ['at
 function getTheme()  { return document.documentElement.getAttribute('data-theme') || 'light'; }
 function setTheme(t) { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('zp_theme', t); syncIcons(); }
 function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
-(function(){ setTheme(localStorage.getItem('zp_theme') || 'light'); loadSettings(); })();
+(function(){ setTheme(localStorage.getItem('zp_theme') || 'light'); loadSettings(); initTensorFlow(); })();
 
 /* ── EYE TOGGLE ── */
 function toggleEye(id, btn) {
@@ -885,7 +1144,7 @@ function forgotStep3(e) {
 
 function doLogout() {
   stopSpeech(); localStorage.removeItem('zp_s');
-  curUser=''; curId=null; apiHist=[]; dispMsgs=[];
+  curUser=''; curId=null; apiHist=[]; dispMsgs=[]; currentAttachedFile = null;
   hide('chat-screen'); show('login-screen');
   document.getElementById('lp').value = ''; resetEmpty();
 }
@@ -978,9 +1237,12 @@ function delChat(e, id, title) {
 }
 
 function newChat() {
-  stopSpeech(); curId = 'c' + Date.now(); apiHist = []; dispMsgs = []; lastUserMsg = '';
+  stopSpeech(); curId = 'c' + Date.now(); apiHist = []; dispMsgs = []; lastUserMsg = ''; currentAttachedFile = null;
   document.getElementById('chattitle').textContent = 'New Chat';
   resetEmpty(); loadSb(); document.getElementById('msgin').focus();
+  // Reset hint
+  document.querySelector('.hint').innerHTML = 'Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach files';
+  document.querySelector('.hint').style.color = '';
 }
 
 function resetEmpty() {
@@ -988,25 +1250,25 @@ function resetEmpty() {
     <div class="empty-wrap" id="emptywrap">
       <div class="z-logo hero">Z</div>
       <h2>How can I help you?</h2>
-      <p>Chat · Search the web · Voice input &amp; read aloud — all free.</p>
+      <p>Chat · Search the web · Voice input · Analyze files & images — all free.</p>
       <div class="chips">
-        <div class="chip" onclick="chip('Compare Python vs JavaScript in a table')">📊 Compare languages</div>
+        <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Compare languages</div>
         <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
         <div class="chip" onclick="chip('What are the latest AI news today?')">🔍 Latest AI news</div>
         <div class="chip" onclick="chip('Explain machine learning simply')">🤖 Machine learning</div>
         <div class="chip" onclick="chip('Give me 5 creative startup ideas')">💡 Startup ideas</div>
-        <div class="chip" onclick="chip('What is the current Bitcoin price?')">₿ Crypto price</div>
+        <div class="chip" onclick="chip('Difference between REST and GraphQL')">🔄 REST vs GraphQL</div>
       </div>
     </div>`;
 }
 
 function loadChat(id) {
   const c = getChats(curUser).find(x => x.id === id); if (!c) return;
-  stopSpeech(); curId = id; apiHist = c.apiHist || []; dispMsgs = c.dispMsgs || [];
+  stopSpeech(); curId = id; apiHist = c.apiHist || []; dispMsgs = c.dispMsgs || []; currentAttachedFile = null;
   document.getElementById('chattitle').textContent = c.title;
   document.getElementById('msgwrap').innerHTML = '';
   dispMsgs.forEach(m => {
-    if (m.role === 'user') renderUser(m.content, m.time, false);
+    if (m.role === 'user') renderUser(m.content, m.time, false, m.file);
     else renderBot(m.content, m.time, false, m.lu || '', m.thinking, m.sources);
   });
   document.getElementById('messages').scrollTop = 9999; loadSb();
@@ -1033,6 +1295,22 @@ function stripSymbols(text) {
     .replace(/\s+/g, ' ').trim();
 }
 
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function getFileIcon(type) {
+  if (type.startsWith('image/')) return '🖼️';
+  if (type === 'application/pdf') return '📄';
+  if (type === 'text/plain') return '📝';
+  if (type.includes('json')) return '📋';
+  if (type.includes('csv')) return '📊';
+  if (type.includes('word') || type.includes('document')) return '📃';
+  return '📎';
+}
+
 /* ── MARKED RENDERER ── */
 const renderer = new marked.Renderer();
 renderer.code = function(code, lang) {
@@ -1041,7 +1319,6 @@ renderer.code = function(code, lang) {
   const badge = lang2 ? `<span class="code-lang-badge">${escHtml(lang2)}</span>` : `<span class="code-lang-badge">code</span>`;
   return `<div class="code-block-wrap"><div class="code-header">${badge}<button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><pre><code>${escHtml(raw)}</code></pre></div>`;
 };
-// Wrap tables in scroll div
 renderer.table = function(header, body) {
   return `<div class="table-scroll-wrap"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
 };
@@ -1056,12 +1333,34 @@ function copyCode(btn) {
 }
 
 /* ── RENDER ── */
-function renderUser(text, time, animate=true) {
+function renderUser(text, time, animate=true, fileObj=null) {
   removeEmpty();
   const ini = curUser.substring(0, 2).toUpperCase();
   const row = document.createElement('div');
   row.className = 'mrow urow'; if (!animate) row.style.animation = 'none';
-  row.innerHTML = `<div class="av usr-av">${ini}</div><div class="mbody"><div class="msender">${escHtml(curUser)}</div><div class="bbl usr-bbl">${escHtml(text)}</div><div class="mtime">${time || getTime()}</div></div>`;
+  
+  let fileHtml = '';
+  if (fileObj) {
+    const icon = getFileIcon(fileObj.type);
+    const size = formatFileSize(fileObj.size);
+    let imageHtml = '';
+    
+    if (fileObj.type.startsWith('image/') && fileObj.dataUrl) {
+      imageHtml = `<img src="${fileObj.dataUrl}" class="file-image" alt="${escHtml(fileObj.name)}"/>`;
+    }
+    
+    fileHtml = `
+      <div class="file-attachment">
+        <div class="file-icon">${icon}</div>
+        <div class="file-info">
+          <div class="file-name">${escHtml(fileObj.name)}</div>
+          <div class="file-meta">${size}</div>
+          ${imageHtml}
+        </div>
+      </div>`;
+  }
+  
+  row.innerHTML = `<div class="av usr-av">${ini}</div><div class="mbody"><div class="msender">${escHtml(curUser)}</div>${fileHtml}<div class="bbl usr-bbl">${escHtml(text)}</div><div class="mtime">${time || getTime()}</div></div>`;
   document.getElementById('msgwrap').appendChild(row); scrollBottom();
 }
 
@@ -1129,7 +1428,7 @@ function renderBot(md, time, animate=true, userMsg='', thinking='', sources=[]) 
   document.getElementById('msgwrap').appendChild(row); scrollBottom();
 }
 
-/* ── THINKING SPINNER (while waiting for response) ── */
+/* ── THINKING SPINNER ── */
 function addThinkWait() {
   removeThinkWait();
   const row = document.createElement('div'); row.className = 'think-wait-row'; row.id = 'thinkwaitrow';
@@ -1214,13 +1513,34 @@ async function generateTitle(firstMsg, botReply) {
 /* ── SEND MESSAGE ── */
 async function sendMsg() {
   const inp = document.getElementById('msgin'), btn = document.getElementById('sendbtn');
-  const text = inp.value.trim(); if (!text) return;
+  let text = inp.value.trim();
+  
+  // Check if we have attached file
+  const fileObj = currentAttachedFile;
+  
+  if (!text && !fileObj) return;
+  
+  // Default message if only file attached
+  if (!text && fileObj) {
+    if (fileObj.type.startsWith('image/')) {
+      text = "What's in this image?";
+    } else {
+      text = "Analyze this file";
+    }
+  }
+  
   inp.value = ''; inp.style.height = 'auto'; btn.disabled = true; stopSpeech();
   lastUserMsg = text;
   const t = getTime();
 
-  renderUser(text, t);
-  dispMsgs.push({role:'user', content:text, time:t});
+  // Render user message with file if attached
+  renderUser(text, t, true, fileObj);
+  dispMsgs.push({role:'user', content:text, time:t, file: fileObj ? {
+    name: fileObj.name,
+    type: fileObj.type,
+    size: fileObj.size,
+    dataUrl: fileObj.dataUrl
+  } : null});
 
   const isFirst = dispMsgs.filter(m => m.role === 'user').length === 1;
   if (isFirst) {
@@ -1231,12 +1551,38 @@ async function sendMsg() {
   addThinkWait();
 
   try {
-    const res  = await fetch(`${BACKEND}/chat`, {
+    // Prepare message with file context
+    let enhancedMessage = text;
+    
+    if (fileObj) {
+      if (fileObj.type.startsWith('image/')) {
+        if (fileObj.analysis) {
+          enhancedMessage = `[Image attached: ${fileObj.name}]\n\nImage Analysis (AI Vision):\n${fileObj.analysis}\n\nUser question: ${text}`;
+        } else {
+          enhancedMessage = `[Image attached: ${fileObj.name}]\n\nUser question: ${text}`;
+        }
+      } else if (fileObj.textContent) {
+        enhancedMessage = `[File attached: ${fileObj.name}]\n\nFile content:\n${fileObj.textContent.substring(0, 4000)}\n\nUser question: ${text}`;
+      } else {
+        enhancedMessage = `[File attached: ${fileObj.name} (${fileObj.type})]\n\nUser question: ${text}`;
+      }
+    }
+    
+    // Check if the query is a comparison
+    const isComparison = /\b(compare|difference|vs|versus|between)\b/i.test(text);
+    
+    // Add instruction for comparisons
+    if (isComparison) {
+      enhancedMessage += "\n\n[IMPORTANT: Please format your comparison response as a table with clear columns showing the differences between the items being compared.]";
+    }
+    
+    const res = await fetch(`${BACKEND}/chat`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        message: text,
+        message: enhancedMessage,
         history: apiHist.slice(-20),
+        requestMoreNews: true // Request more comprehensive news results
       })
     });
     const data = await res.json();
@@ -1247,7 +1593,7 @@ async function sendMsg() {
     const thinking= data.thinking || '';
     const sources = data.sources  || [];
 
-    apiHist.push({role:'user',      content: text});
+    apiHist.push({role:'user',      content: enhancedMessage});
     apiHist.push({role:'assistant', content: reply});
     if (apiHist.length > 40) apiHist = apiHist.slice(-40);
 
@@ -1263,6 +1609,12 @@ async function sendMsg() {
     } else {
       saveCurrent(null);
     }
+    
+    // Clear attached file
+    currentAttachedFile = null;
+    document.querySelector('.hint').innerHTML = 'Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach files';
+    document.querySelector('.hint').style.color = '';
+    
   } catch (err) {
     console.error('Chat error:', err);
     removeThinkWait();
@@ -1271,6 +1623,11 @@ async function sendMsg() {
     renderBot(msg, rt, true, text, '', []);
     dispMsgs.push({role:'bot', content:msg, time:rt, lu:text, thinking:'', sources:[]});
     if (isFirst) document.getElementById('chattitle').textContent = text.substring(0,48);
+    
+    // Clear attached file even on error
+    currentAttachedFile = null;
+    document.querySelector('.hint').innerHTML = 'Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach files';
+    document.querySelector('.hint').style.color = '';
   }
 
   btn.disabled = false; inp.focus();
