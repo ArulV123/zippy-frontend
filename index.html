@@ -30,7 +30,6 @@
   --think-bg:rgba(129,140,248,0.07);--think-bdr:rgba(129,140,248,0.2);
   --file-bg:#1a1a2c;--file-bdr:#2a2a4c;
 }
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -43,7 +42,6 @@
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
 @keyframes thinkDot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
-@keyframes visionPulse{0%,100%{opacity:.7}50%{opacity:1}}
 
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100dvh;height:100vh;overflow:hidden;font-size:15px;transition:background .35s,color .35s}
 
@@ -169,7 +167,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .voice-test-btn{width:100%;margin-top:8px;padding:8px;background:var(--accg);border:1.5px solid var(--bdr2);border-radius:8px;color:var(--acc);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s}
 .voice-test-btn:hover{background:rgba(99,102,241,.15);border-color:var(--acc)}
 input[type="range"]{width:100%;height:6px;border-radius:3px;background:var(--surf2);outline:none;-webkit-appearance:none;appearance:none}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer}
 input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer;border:none}
 .toggle-switch{position:relative;display:inline-block;width:48px;height:26px}
 .toggle-switch input{opacity:0;width:0;height:0}
@@ -213,22 +211,19 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .preview-img{width:100%;height:100%;object-fit:cover;border-radius:6px}
 .preview-remove{position:absolute;top:2px;right:2px;width:20px;height:20px;background:var(--red);color:#fff;border:none;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:opacity .2s;z-index:1}
 .preview-remove:hover{opacity:.85}
-.analyzing-overlay{position:absolute;inset:0;background:rgba(99,102,241,.92);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
-.analyzing-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
-.analyzing-text{font-size:.6rem;font-weight:700;color:#fff;text-align:center;line-height:1.2}
+/* Vision ready badge on thumbnail */
+.vision-ready-badge{position:absolute;bottom:3px;left:3px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-radius:5px;font-size:.56rem;font-weight:700;padding:2px 5px;letter-spacing:.02em}
 
-/* ── SOURCES – FIXED ── */
+/* ── SOURCES ── */
 .sources-block{margin-top:14px;display:flex;flex-direction:column;gap:7px}
-.sources-label{font-size:.69rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;display:flex;align-items:center;gap:5px}
-.sources-grid{display:flex;flex-direction:column;gap:6px}
-.src-card{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:11px;padding:9px 13px;text-decoration:none;color:var(--txt);transition:all .18s;overflow:hidden;min-width:0}
+.sources-label{font-size:.69rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;display:flex;align-items:center;gap:5px}
+.src-card{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:11px;padding:9px 13px;text-decoration:none;color:var(--txt);transition:all .18s;overflow:hidden}
 .src-card:hover{border-color:var(--acc);background:var(--accg);transform:translateX(2px)}
 .src-favicon-wrap{width:28px;height:28px;min-width:28px;border-radius:7px;background:var(--accg);border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .src-favicon{width:16px;height:16px;object-fit:contain;display:block}
-.src-favicon-fallback{font-size:13px;line-height:1}
 .src-text{flex:1;min-width:0;overflow:hidden}
 .src-site-name{font-size:.78rem;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.src-title-line{font-size:.7rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:1px}
+.src-domain{font-size:.7rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:1px}
 .src-arrow{flex-shrink:0;width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:2;transition:stroke .18s}
 .src-card:hover .src-arrow{stroke:var(--acc)}
 
@@ -241,10 +236,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .think-icon{font-size:13px}
 .think-searched-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);border-radius:20px;padding:2px 9px;font-size:.69rem;font-weight:600;color:var(--grn);margin-left:auto;margin-right:6px;white-space:nowrap}
 .think-content{padding:10px 13px 12px;color:var(--dim);line-height:1.65;border-top:1px solid var(--think-bdr)}
-
-/* ── VISION ANALYSIS BADGE ── */
-.vision-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1.5px solid rgba(99,102,241,.25);border-radius:20px;padding:4px 12px;font-size:.72rem;font-weight:600;color:var(--acc);margin-top:6px;animation:visionPulse 2s ease infinite}
-.vision-badge svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
 
 .msg-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .mac-btn{background:none;border:1.5px solid var(--bdr2);color:var(--dim);border-radius:8px;padding:5px 11px;font-size:.72rem;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .18s}
@@ -305,7 +296,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 #msgin{flex:1;background:none;border:none;outline:none;color:var(--txt);font-size:.9rem;font-family:'DM Sans',system-ui,sans-serif;resize:none;max-height:120px;min-height:26px;line-height:1.55;transition:color .35s;padding:4px 2px}
 #msgin::placeholder{color:var(--dim)}
 .mic-btn{width:36px;height:36px;min-width:36px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-.mic-btn:hover{border-color:var(--acc);color:var(--acc)}
+.mic-btn:hover{border-color:var(--acc)}
 .mic-btn svg{width:16px;height:16px;stroke:var(--dim);fill:none;stroke-width:1.8;transition:stroke .2s}
 .mic-btn.mic-active{background:rgba(239,68,68,.1);border-color:#ef4444;animation:micPulse 1.5s infinite}
 .mic-btn.mic-active svg{stroke:#ef4444}
@@ -360,7 +351,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 @media(max-width:768px){
   .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:100;width:280px;min-width:280px;transform:translateX(0);transition:transform .3s ease}
   .sidebar.collapsed{transform:translateX(-100%);width:280px;min-width:280px;opacity:1;border-right-color:var(--bdr-vis)}
-  .sb-backdrop{display:none}
   .sb-backdrop.show{display:block;animation:fadeIn .2s ease}
   .online-pill span.pill-text{display:none}
   .messages{padding:16px 12px 12px}
@@ -369,8 +359,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   .del-actions{flex-direction:column}
   .mbody{max-width:calc(100vw - 90px)}
   .bbl{font-size:.85rem}
-  .code-block-wrap pre code{font-size:.75rem}
-  .bot-bbl th,.bot-bbl td{padding:7px 10px;font-size:.75rem}
   .image-preview-container{padding:0 12px}
 }
 @media(max-width:420px){
@@ -391,15 +379,12 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 
 <div class="zp-toast" id="zpToast">
   <span class="toast-ico">🗂️</span>
-  <div class="toast-body">
-    <strong>Conversation hidden</strong>
-    <span>All chats saved</span>
-  </div>
+  <div class="toast-body"><strong>Conversation hidden</strong><span>All chats saved</span></div>
 </div>
 
 <div class="sb-backdrop" id="sbBackdrop" onclick="closeSbMobile()"></div>
 
-<!-- AUTH SCREENS -->
+<!-- AUTH -->
 <div id="login-screen" class="auth-screen">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb1">☀️</span></button>
@@ -476,23 +461,20 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   <div class="auth-card">
     <div class="auth-logo-row"><div class="z-logo lg">Z</div><div class="auth-brand"><h1>Zippy AI</h1><p>Recovery</p></div></div>
     <div id="forgot-step1">
-      <div class="auth-heading">Find account</div>
-      <div class="auth-sub">Enter username.</div>
+      <div class="auth-heading">Find account</div><div class="auth-sub">Enter username.</div>
       <div class="field"><label>Username</label><input type="text" id="fu" placeholder="Username" autocomplete="username"/></div>
       <div class="auth-err" id="ferr1"></div>
       <button class="auth-btn" onclick="forgotStep1()">Continue <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </div>
     <div id="forgot-step2" style="display:none">
-      <div class="auth-heading">Answer questions</div>
-      <div class="auth-sub">Verify identity.</div>
+      <div class="auth-heading">Answer questions</div><div class="auth-sub">Verify identity.</div>
       <div class="field"><label id="fq1-label">Question 1</label><input type="text" id="fa1" placeholder="Answer" autocomplete="off"/></div>
       <div class="field"><label id="fq2-label">Question 2</label><input type="text" id="fa2" placeholder="Answer" autocomplete="off"/></div>
       <div class="auth-err" id="ferr2"></div>
       <button class="auth-btn" onclick="forgotStep2()">Verify <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </div>
     <div id="forgot-step3" style="display:none">
-      <div class="auth-heading">New password</div>
-      <div class="auth-sub">Choose strong password.</div>
+      <div class="auth-heading">New password</div><div class="auth-sub">Choose strong password.</div>
       <form id="reset-form" autocomplete="on" onsubmit="forgotStep3(event)">
         <input type="text" id="reset-user-hidden" name="username" autocomplete="username" style="display:none"/>
         <div class="field"><label>New Password</label>
@@ -510,9 +492,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
       </form>
     </div>
     <div id="forgot-step4" style="display:none">
-      <div class="success-box">
-        <div class="success-icon">✅</div><h3>Reset!</h3>
-        <p>Password updated.</p>
+      <div class="success-box"><div class="success-icon">✅</div><h3>Reset!</h3><p>Password updated.</p>
         <button class="auth-btn" style="margin-top:20px" onclick="showLogin()">Sign In</button>
       </div>
     </div>
@@ -524,7 +504,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 <div id="chat-screen">
   <div class="sidebar" id="sidebar">
     <div class="sb-top">
-      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>Enhanced v4.1</small></div></div>
+      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>Enhanced v5.0</small></div></div>
       <button class="new-btn" onclick="newChat()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Chat</button>
     </div>
     <div class="sb-section">Conversations</div>
@@ -550,38 +530,38 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="empty-wrap" id="emptywrap">
           <div class="z-logo hero">Z</div>
           <h2>How can I help?</h2>
-          <p>Chat · Search · Analyze files & images</p>
+          <p>Chat · Search · Analyze images & files</p>
           <div class="chips">
             <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Languages</div>
-            <div class="chip" onclick="chip('Latest AI news')">🔍 AI news</div>
-            <div class="chip" onclick="chip('Explain ML')">🤖 ML</div>
-            <div class="chip" onclick="chip('Startup ideas')">💡 Ideas</div>
+            <div class="chip" onclick="chip('Latest AI news today')">🔍 AI news</div>
+            <div class="chip" onclick="chip('Explain Machine Learning')">🤖 ML</div>
+            <div class="chip" onclick="chip('Give me startup ideas')">💡 Ideas</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="image-preview-container" id="imagePreviewContainer"></div>
+    <div class="image-preview-container" id="imagePreviewContainer" style="display:none"></div>
 
     <div class="input-area">
       <div class="input-inner">
         <div class="input-box">
-          <button class="iico-btn" title="Attach">
+          <button class="iico-btn" title="Attach file or image">
             <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
             <input type="file" id="fileInput" accept="image/*,.pdf,.txt,.doc,.docx,.json,.csv" multiple onchange="handleFileUpload(event)"/>
           </button>
           <button class="iico-btn" title="Camera" onclick="openCamera()">
             <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </button>
-          <textarea id="msgin" rows="1" placeholder="Message..."></textarea>
-          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice">
+          <textarea id="msgin" rows="1" placeholder="Message Zippy..."></textarea>
+          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">
             <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
           </button>
           <button class="send-btn" id="sendbtn" onclick="sendMsg()">
             <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="hint" id="hintText">Enter ↵ send · Shift+Enter line</div>
+        <div class="hint">Enter ↵ send · Shift+Enter new line · 📎 attach images</div>
       </div>
     </div>
   </div>
@@ -599,7 +579,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="setting-item">
           <div class="setting-label">Voice</div>
           <select class="voice-select" id="voiceSelect" onchange="saveVoiceSettings()"></select>
-          <button class="voice-test-btn" onclick="testVoice()">🔊 Test</button>
+          <button class="voice-test-btn" onclick="testVoice()">🔊 Test Voice</button>
         </div>
         <div class="setting-item">
           <div class="setting-label">Speed <span class="value" id="speedVal">1.0x</span></div>
@@ -610,57 +590,36 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
           <input type="range" id="voicePitch" min="0.5" max="2" step="0.1" value="1" oninput="updatePitch(this.value)">
         </div>
       </div>
-
       <div class="setting-section">
         <h3>🤖 AI</h3>
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="setting-label" style="margin-bottom:4px">Auto Search</div>
-            <div style="font-size:.72rem;color:var(--dim)">Search when needed</div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="autoSearch" checked onchange="saveSettings()">
-            <span class="toggle-slider"></span>
-          </label>
+          <div><div class="setting-label" style="margin-bottom:4px">Auto Search</div><div style="font-size:.72rem;color:var(--dim)">Search when needed</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="autoSearch" checked onchange="saveSettings()"><span class="toggle-slider"></span></label>
         </div>
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="setting-label" style="margin-bottom:4px">Sources</div>
-            <div style="font-size:.72rem;color:var(--dim)">Show links</div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showSources" checked onchange="saveSettings()">
-            <span class="toggle-slider"></span>
-          </label>
+          <div><div class="setting-label" style="margin-bottom:4px">Sources</div><div style="font-size:.72rem;color:var(--dim)">Show source links</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="showSources" checked onchange="saveSettings()"><span class="toggle-slider"></span></label>
         </div>
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="setting-label" style="margin-bottom:4px">Thinking</div>
-            <div style="font-size:.72rem;color:var(--dim)">Show reasoning</div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showThinking" checked onchange="saveSettings()">
-            <span class="toggle-slider"></span>
-          </label>
+          <div><div class="setting-label" style="margin-bottom:4px">Thinking</div><div style="font-size:.72rem;color:var(--dim)">Show AI reasoning</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="showThinking" checked onchange="saveSettings()"><span class="toggle-slider"></span></label>
         </div>
       </div>
-
       <div class="setting-section">
         <h3>💾 Data</h3>
         <div class="setting-item">
-          <button class="voice-test-btn" onclick="exportChats()" style="background:var(--accg);color:var(--acc)">📥 Export</button>
+          <button class="voice-test-btn" onclick="exportChats()">📥 Export Chats</button>
         </div>
         <div class="setting-item">
-          <button class="voice-test-btn" onclick="clearAllData()" style="background:rgba(220,38,38,.1);color:var(--red);border-color:rgba(220,38,38,.3)">🗑️ Clear All</button>
+          <button class="voice-test-btn" onclick="clearAllData()" style="background:rgba(220,38,38,.1);color:var(--red);border-color:rgba(220,38,38,.3)">🗑️ Clear All Data</button>
         </div>
       </div>
-
       <div class="setting-section">
         <h3>ℹ️ About</h3>
-        <div style="font-size:.78rem;color:var(--txt2);line-height:1.65">
-          <p><strong>Zippy AI v4.1</strong></p>
+        <div style="font-size:.78rem;color:var(--txt2);line-height:1.8">
+          <p><strong>Zippy AI v5.0</strong></p>
           <p style="margin-top:8px">By <strong>Arul Vethathiri</strong><br>Class 11 · 2026</p>
-          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Chat · Search · Files · AI Vision · Voice</p>
+          <p style="margin-top:10px;font-size:.72rem;color:var(--dim)">Chat · Web Search · File Analysis · AI Vision · Voice</p>
         </div>
       </div>
     </div>
@@ -668,433 +627,292 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 </div>
 
 <script>
-const BACKEND = "https://zippy-backend-coz2.onrender.com";
-const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
-const OLD_DAYS = 30;
-const MAX_IMAGES = 2;
-let curUser="", curId=null, apiHist=[], dispMsgs=[], forgotUser="";
-let sbOpen = window.innerWidth >= 1024;
+// ─────────────────────────────────────────────────────────────
+//  CONFIG
+// ─────────────────────────────────────────────────────────────
+const BACKEND  = "https://zippy-backend-coz2.onrender.com";
+const MAX_FILES = 3;
+const OLD_DAYS  = 30;
+
+let curUser = "", curId = null, apiHist = [], dispMsgs = [];
+let sbOpen  = window.innerWidth >= 1024;
 let lastUserMsg = "";
 let activeSpeechBtn = null, isRecording = false, recognition = null;
-let attachedFiles = [];
+let attachedFiles   = [];   // { name, type, size, dataUrl, textContent }
 
-let settings = {
-  voice: null, speed: 1.0, pitch: 1.0,
-  autoSearch: true, showSources: true, showThinking: true,
-};
+let settings = { voice:null, speed:1.0, pitch:1.0, autoSearch:true, showSources:true, showThinking:true };
 
-/* ══════════════════════════════════════════════════════════════
-   FIX 1 — IMAGE ANALYSIS with Claude Vision API
-   Replaces TensorFlow COCO-SSD: gives full, detailed descriptions
-   ══════════════════════════════════════════════════════════════ */
-async function analyzeImage(fileObj) {
-  fileObj.analyzing = true;
-  fileObj.analysis = null;
-  updateImagePreview();
+// ─────────────────────────────────────────────────────────────
+//  THEME
+// ─────────────────────────────────────────────────────────────
+function syncIcons(){ const i = getTheme()==='dark'?'🌙':'☀️'; ['atb1','atb2','atb3','themeicon'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=i;}); }
+function getTheme(){ return document.documentElement.getAttribute('data-theme')||'light'; }
+function setTheme(t){ document.documentElement.setAttribute('data-theme',t); localStorage.setItem('zp_theme',t); syncIcons(); }
+function toggleTheme(){ setTheme(getTheme()==='dark'?'light':'dark'); }
+(()=>{ setTheme(localStorage.getItem('zp_theme')||'light'); loadSettings(); })();
 
-  try {
-    const base64Data = fileObj.dataUrl.split(',')[1];
-    const mediaType  = fileObj.type || 'image/jpeg';
-
-    const response = await fetch(ANTHROPIC_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: mediaType, data: base64Data }
-            },
-            {
-              type: 'text',
-              text: `Analyze this image thoroughly and describe:
-1. What is shown in the image (main subject)
-2. Colors — be specific (e.g. "red pen", "blue cap", "yellow wall")
-3. Text visible in the image (if any)
-4. Background / setting / environment
-5. Any other notable details, brands, or features
-
-Be concise but precise. Start directly with the description.`
-            }
-          ]
-        }]
-      })
-    });
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error?.message || `HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    fileObj.analysis = data.content?.[0]?.text?.trim() || 'Could not analyze image.';
-
-  } catch (err) {
-    console.error('Vision analysis error:', err);
-    fileObj.analysis = `Analysis unavailable: ${err.message}`;
-  }
-
-  fileObj.analyzing = false;
-  updateImagePreview();
-}
-
-/* ── FILES ── */
-async function handleFileUpload(event) {
-  const files = Array.from(event.target.files);
-  for (let file of files) {
-    if (attachedFiles.length >= MAX_IMAGES) { alert(`Max ${MAX_IMAGES} files`); break; }
-    const fileObj = { file, name: file.name, type: file.type, size: file.size, dataUrl: null, analysis: null, analyzing: false };
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      fileObj.dataUrl = e.target.result;
-      if (file.type.startsWith('image/')) {
-        attachedFiles.push(fileObj);
-        updateImagePreview();
-        await analyzeImage(fileObj);
-      } else if (file.type === 'text/plain' || file.type === 'application/json') {
-        const textReader = new FileReader();
-        textReader.onload = (te) => { fileObj.textContent = te.target.result; attachedFiles.push(fileObj); updateImagePreview(); };
-        textReader.readAsText(file);
-      } else {
-        attachedFiles.push(fileObj);
-        updateImagePreview();
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-  event.target.value = '';
-}
-
-/* ── CAMERA ── */
-async function openCamera() {
-  if (!navigator.mediaDevices?.getUserMedia) { alert('Camera not supported'); return; }
-  if (attachedFiles.length >= MAX_IMAGES) { alert(`Max ${MAX_IMAGES} files`); return; }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `<div class="delete-modal" style="max-width:600px"><div class="del-header"><div class="del-title">📷 Camera</div><div class="del-subtitle">Capture</div></div><div class="del-body" style="padding:20px"><video id="cameraVideo" autoplay playsinline style="width:100%;border-radius:12px;background:#000"></video><canvas id="cameraCanvas" style="display:none"></canvas><div class="del-actions" style="margin-top:16px"><button class="del-btn cancel" id="cancelCamera">Cancel</button><button class="del-btn delete" id="capturePhoto" style="background:var(--acc)">📸 Capture</button></div></div></div>`;
-    document.body.appendChild(modal);
-    const video = document.getElementById('cameraVideo');
-    const canvas = document.getElementById('cameraCanvas');
-    video.srcObject = stream;
-    document.getElementById('cancelCamera').onclick = () => { stream.getTracks().forEach(t => t.stop()); modal.remove(); };
-    document.getElementById('capturePhoto').onclick = () => {
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0);
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], `camera_${Date.now()}.jpg`, { type: 'image/jpeg' });
-        const fileObj = { file, name: file.name, type: file.type, size: file.size, dataUrl: canvas.toDataURL('image/jpeg'), analysis: null, analyzing: false };
-        attachedFiles.push(fileObj); updateImagePreview();
-        await analyzeImage(fileObj);
-        stream.getTracks().forEach(t => t.stop()); modal.remove();
-      }, 'image/jpeg', 0.9);
-    };
-  } catch (err) { console.error('Camera error:', err); alert('Camera access failed: ' + err.message); }
-}
-
-/* ── PREVIEW ── */
-function updateImagePreview() {
-  const container = document.getElementById('imagePreviewContainer');
-  container.innerHTML = '';
-  if (!attachedFiles.length) { container.style.display = 'none'; return; }
-  container.style.display = 'flex';
-  attachedFiles.forEach((fileObj, index) => {
-    const item = document.createElement('div');
-    item.className = 'preview-item';
-    if (fileObj.type.startsWith('image/')) {
-      item.innerHTML = `
-        <button class="preview-remove" onclick="removeAttachedFile(${index})">×</button>
-        <img src="${fileObj.dataUrl}" class="preview-img" alt="${escHtml(fileObj.name)}"/>
-        ${fileObj.analyzing ? '<div class="analyzing-overlay"><div class="analyzing-spinner"></div><div class="analyzing-text">AI Vision</div></div>' : ''}`;
-    } else {
-      item.innerHTML = `<button class="preview-remove" onclick="removeAttachedFile(${index})">×</button><div style="font-size:28px">${getFileIcon(fileObj.type)}</div>`;
-    }
-    container.appendChild(item);
-  });
-}
-
-function removeAttachedFile(index) { attachedFiles.splice(index, 1); updateImagePreview(); }
-
-/* ══════════════════════════════════════════════════════════════
-   FIX 2 — SOURCE CARDS with favicon + site name
-   Replaces raw URLs with clean, clickable site cards
-   ══════════════════════════════════════════════════════════════ */
-function buildSourceCard(s) {
-  const url = s.url || '#';
-  let domain = url;
-  let siteName = '';
-  try {
-    const u = new URL(url);
-    domain = u.hostname.replace(/^www\./, '');
-    // Prettify common news domains
-    const nameMap = {
-      'timesofindia.indiatimes.com': 'Times of India',
-      'thehindu.com': 'The Hindu',
-      'ndtv.com': 'NDTV',
-      'hindustantimes.com': 'Hindustan Times',
-      'indianexpress.com': 'Indian Express',
-      'bbc.com': 'BBC', 'bbc.co.uk': 'BBC',
-      'reuters.com': 'Reuters',
-      'apnews.com': 'AP News',
-      'theguardian.com': 'The Guardian',
-      'nytimes.com': 'New York Times',
-      'washingtonpost.com': 'Washington Post',
-      'bloomberg.com': 'Bloomberg',
-      'cnbc.com': 'CNBC',
-      'cnn.com': 'CNN',
-      'techcrunch.com': 'TechCrunch',
-      'theverge.com': 'The Verge',
-      'wired.com': 'Wired',
-      'forbes.com': 'Forbes',
-      'news.google.com': 'Google News',
-      'wikipedia.org': 'Wikipedia',
-      'github.com': 'GitHub',
-      'stackoverflow.com': 'Stack Overflow',
-      'medium.com': 'Medium',
-      'reddit.com': 'Reddit',
-      'youtube.com': 'YouTube',
-      'twitter.com': 'Twitter / X',
-      'x.com': 'X (Twitter)',
-      'linkedin.com': 'LinkedIn',
-      'amazon.com': 'Amazon',
-      'news18.com': 'News18',
-      'scroll.in': 'Scroll.in',
-      'theprint.in': 'The Print',
-      'livemint.com': 'Mint',
-      'businesstoday.in': 'Business Today',
-      'economictimes.indiatimes.com': 'Economic Times',
-      'financialexpress.com': 'Financial Express',
-    };
-    siteName = nameMap[domain] || domain.charAt(0).toUpperCase() + domain.slice(1);
-  } catch {
-    siteName = domain.substring(0, 30);
-  }
-
-  const title = (s.title && s.title !== url) ? s.title : '';
-  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
-
-  return `
-    <a class="src-card" href="${escHtml(url)}" target="_blank" rel="noopener noreferrer">
-      <div class="src-favicon-wrap">
-        <img class="src-favicon" src="${escHtml(faviconUrl)}" alt="${escHtml(siteName)}"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
-        <span class="src-favicon-fallback" style="display:none">🔗</span>
-      </div>
-      <div class="src-text">
-        <span class="src-site-name">${escHtml(siteName)}</span>
-        ${title ? `<span class="src-title-line">${escHtml(title)}</span>` : `<span class="src-title-line">${escHtml(domain)}</span>`}
-      </div>
-      <svg class="src-arrow" viewBox="0 0 24 24">
-        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-        <polyline points="15 3 21 3 21 9"/>
-        <line x1="10" y1="14" x2="21" y2="3"/>
-      </svg>
-    </a>`;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   FIX 3 — BETTER NEWS / CURRENT DATA PROMPTING
-   Injects date context + forces detailed factual responses
-   ══════════════════════════════════════════════════════════════ */
-function buildEnhancedPrompt(text, filesForMessage) {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  const timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-
-  const isNews     = /\b(news|latest|recent|today|current|happening|update|breaking|2024|2025|2026)\b/i.test(text);
-  const isCompare  = /\b(compare|difference|vs|versus|between)\b/i.test(text);
-  const isCurrent  = /\b(price|rate|score|result|winner|rank|standing|live|now|who is|ceo|president|pm|minister)\b/i.test(text);
-
-  let systemContext = `Today is ${dateStr}, ${timeStr} IST. `;
-
-  if (isNews || isCurrent) {
-    systemContext += `The user is asking about current/recent events. Provide detailed, factual information. Include: key facts, dates, relevant context, and multiple angles. Do NOT just say "I cannot access real-time data" — use your web search capability to find and share actual current information. Be thorough and informative, like a news reporter. `;
-  }
-
-  if (isCompare) {
-    systemContext += `Present comparisons in a clear table. `;
-  }
-
-  let enhancedMessage = systemContext + '\n\n' + text;
-
-  if (filesForMessage.length) {
-    let fileContext = '\n\n═══════════════════════════════════════════\n';
-    fileContext += '🚨 FILES ATTACHED — ANALYZE CAREFULLY 🚨\n';
-    fileContext += '═══════════════════════════════════════════\n\n';
-    filesForMessage.forEach((fileObj, idx) => {
-      fileContext += `📎 FILE ${idx + 1}: ${fileObj.name}\n`;
-      fileContext += `Type: ${fileObj.type} | Size: ${formatFileSize(fileObj.size)}\n\n`;
-      if (fileObj.type.startsWith('image/') && fileObj.analysis) {
-        fileContext += `🤖 AI VISION ANALYSIS:\n${fileObj.analysis}\n\n`;
-        fileContext += `📸 IMAGE DATA (base64 prefix):\n${fileObj.dataUrl.substring(0, 100)}...\n\n`;
-      }
-      if (fileObj.textContent) {
-        fileContext += `📄 TEXT CONTENT:\n${fileObj.textContent.substring(0, 8000)}\n\n`;
-      }
-      fileContext += `───────────────────────────────────────────\n\n`;
-    });
-    fileContext += '⚠️ MUST: Acknowledge & analyze every file above.\n';
-    fileContext += '═══════════════════════════════════════════\n\n';
-    enhancedMessage = fileContext + `USER QUESTION: ${text}`;
-  }
-
-  return enhancedMessage;
-}
-
-/* ── SETTINGS ── */
-function loadSettings() {
+// ─────────────────────────────────────────────────────────────
+//  SETTINGS
+// ─────────────────────────────────────────────────────────────
+function loadSettings(){
   const saved = localStorage.getItem('zp_settings');
-  if (saved) settings = {...settings, ...JSON.parse(saved)};
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el[typeof val === 'boolean' ? 'checked' : 'value'] = val; };
-  set('voiceSpeed',  settings.speed);   if(document.getElementById('speedVal'))  document.getElementById('speedVal').textContent  = settings.speed + 'x';
-  set('voicePitch',  settings.pitch);   if(document.getElementById('pitchVal'))  document.getElementById('pitchVal').textContent  = settings.pitch + 'x';
-  set('autoSearch',  settings.autoSearch);
-  set('showSources', settings.showSources);
+  if(saved) settings = {...settings,...JSON.parse(saved)};
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el[typeof val==='boolean'?'checked':'value']=val;};
+  set('voiceSpeed',settings.speed);   const sv=document.getElementById('speedVal'); if(sv) sv.textContent=settings.speed+'x';
+  set('voicePitch',settings.pitch);   const pv=document.getElementById('pitchVal'); if(pv) pv.textContent=settings.pitch+'x';
+  set('autoSearch',settings.autoSearch);
+  set('showSources',settings.showSources);
   set('showThinking',settings.showThinking);
 }
-function saveSettings() {
+function saveSettings(){
   settings.autoSearch   = document.getElementById('autoSearch')?.checked   ?? true;
   settings.showSources  = document.getElementById('showSources')?.checked  ?? true;
   settings.showThinking = document.getElementById('showThinking')?.checked ?? true;
-  localStorage.setItem('zp_settings', JSON.stringify(settings));
+  localStorage.setItem('zp_settings',JSON.stringify(settings));
 }
-function saveVoiceSettings() { settings.voice = document.getElementById('voiceSelect').value; localStorage.setItem('zp_settings', JSON.stringify(settings)); }
-function updateSpeed(val) { settings.speed = parseFloat(val); document.getElementById('speedVal').textContent = val + 'x'; saveSettings(); }
-function updatePitch(val) { settings.pitch = parseFloat(val); document.getElementById('pitchVal').textContent = val + 'x'; saveSettings(); }
-function exportChats() {
-  const data = JSON.stringify(getChats(curUser), null, 2);
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([data], {type:'application/json'})), download: `zippy-${curUser}-${new Date().toISOString().split('T')[0]}.json` });
-  a.click();
+function saveVoiceSettings(){ settings.voice=document.getElementById('voiceSelect').value; localStorage.setItem('zp_settings',JSON.stringify(settings)); }
+function updateSpeed(val){ settings.speed=parseFloat(val); document.getElementById('speedVal').textContent=val+'x'; saveSettings(); }
+function updatePitch(val){ settings.pitch=parseFloat(val); document.getElementById('pitchVal').textContent=val+'x'; saveSettings(); }
+function exportChats(){
+  const data=JSON.stringify(getChats(curUser),null,2);
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([data],{type:'application/json'})),download:`zippy-${curUser}-${new Date().toISOString().split('T')[0]}.json`}).click();
 }
-function clearAllData() {
-  if (!confirm('⚠️ Delete ALL? Cannot undo.')) return;
-  if (!confirm('Really delete?')) return;
-  localStorage.removeItem('zp_c_' + curUser);
-  newChat(); loadSb(); alert('✅ Cleared.');
+function clearAllData(){
+  if(!confirm('⚠️ Delete ALL conversations? This cannot be undone.')) return;
+  if(!confirm('Are you sure?')) return;
+  localStorage.removeItem('zp_c_'+curUser);
+  newChat(); loadSb(); alert('✅ All data cleared.');
 }
+function toggleSettings(){ document.getElementById('settingsPanel').classList.toggle('open'); }
 
-/* ── VOICE ── */
-function loadVoices() {
-  const voices = window.speechSynthesis.getVoices();
-  const select = document.getElementById('voiceSelect');
-  if (!select || !voices.length) return;
-  select.innerHTML = '';
-  const maleVoices = { indian:[], us:[], uk:[], other:[] };
-  const femaleVoices = { indian:[], us:[], uk:[], other:[] };
-  voices.forEach(v => {
-    const name = v.name.toLowerCase(), lang = v.lang.toLowerCase();
-    const isFemale = name.includes('female')||name.includes('woman')||name.includes('samantha')||name.includes('victoria')||name.includes('karen')||name.includes('moira')||name.includes('fiona')||name.includes('kate')||name.includes('zira')||name.includes('susan');
-    let accent = 'other';
-    if (lang.includes('en-in')) accent = 'indian';
-    else if (lang.includes('en-us')) accent = 'us';
-    else if (lang.includes('en-gb')) accent = 'uk';
-    else if (!lang.startsWith('en')) return;
-    (isFemale ? femaleVoices : maleVoices)[accent].push(v);
+// ─────────────────────────────────────────────────────────────
+//  FILE HANDLING
+// ─────────────────────────────────────────────────────────────
+function handleFileUpload(event){
+  const files = Array.from(event.target.files);
+  files.forEach(file=>{
+    if(attachedFiles.length >= MAX_FILES){ alert(`Maximum ${MAX_FILES} files per message`); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      const obj = { name:file.name, type:file.type, size:file.size, dataUrl:e.target.result };
+      if(file.type==='text/plain'||file.type==='application/json'||file.type==='text/csv'){
+        const tr = new FileReader();
+        tr.onload = te => { obj.textContent = te.target.result; attachedFiles.push(obj); updatePreview(); };
+        tr.readAsText(file);
+      } else {
+        attachedFiles.push(obj); updatePreview();
+      }
+    };
+    reader.readAsDataURL(file);
   });
-  const addGroup = (voices, label) => {
-    if (!voices.length) return;
-    const og = document.createElement('optgroup'); og.label = label;
-    voices.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; og.appendChild(o); });
-    select.appendChild(og);
-  };
-  addGroup(maleVoices.indian,   '👨 Male - 🇮🇳 Indian');
-  addGroup(maleVoices.us,       '👨 Male - 🇺🇸 US');
-  addGroup(maleVoices.uk,       '👨 Male - 🇬🇧 UK');
-  addGroup(maleVoices.other,    '👨 Male - Other');
-  addGroup(femaleVoices.indian, '👩 Female - 🇮🇳 Indian');
-  addGroup(femaleVoices.us,     '👩 Female - 🇺🇸 US');
-  addGroup(femaleVoices.uk,     '👩 Female - 🇬🇧 UK');
-  addGroup(femaleVoices.other,  '👩 Female - Other');
-  if (!settings.voice) {
-    const def = maleVoices.us.find(v=>v.name.includes('David'))||maleVoices.us.find(v=>v.name.includes('Daniel'))||maleVoices.us[0]||maleVoices.uk[0]||maleVoices.indian[0]||maleVoices.other[0];
-    if (def) { settings.voice = def.name; saveVoiceSettings(); }
+  event.target.value='';
+}
+
+async function openCamera(){
+  if(!navigator.mediaDevices?.getUserMedia){ alert('Camera not supported on this device'); return; }
+  if(attachedFiles.length >= MAX_FILES){ alert(`Max ${MAX_FILES} files`); return; }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    const modal  = document.createElement('div'); modal.className='modal-overlay';
+    modal.innerHTML=`<div class="delete-modal" style="max-width:600px"><div class="del-header"><div class="del-title">📷 Camera</div><div class="del-subtitle">Point and capture</div></div><div class="del-body" style="padding:20px"><video id="camVid" autoplay playsinline style="width:100%;border-radius:12px;background:#000;max-height:340px;object-fit:cover"></video><canvas id="camCvs" style="display:none"></canvas><div class="del-actions" style="margin-top:16px"><button class="del-btn cancel" id="camCancel">Cancel</button><button class="del-btn delete" id="camShoot" style="background:var(--acc)">📸 Capture</button></div></div></div>`;
+    document.body.appendChild(modal);
+    document.getElementById('camVid').srcObject = stream;
+    document.getElementById('camCancel').onclick = ()=>{ stream.getTracks().forEach(t=>t.stop()); modal.remove(); };
+    document.getElementById('camShoot').onclick = ()=>{
+      const v=document.getElementById('camVid'), c=document.getElementById('camCvs');
+      c.width=v.videoWidth; c.height=v.videoHeight;
+      c.getContext('2d').drawImage(v,0,0);
+      c.toBlob(blob=>{
+        const f=new File([blob],`photo_${Date.now()}.jpg`,{type:'image/jpeg'});
+        const obj={name:f.name,type:f.type,size:f.size,dataUrl:c.toDataURL('image/jpeg')};
+        attachedFiles.push(obj); updatePreview();
+        stream.getTracks().forEach(t=>t.stop()); modal.remove();
+      },'image/jpeg',0.9);
+    };
+  } catch(e){ alert('Camera error: '+e.message); }
+}
+
+function updatePreview(){
+  const c = document.getElementById('imagePreviewContainer');
+  c.innerHTML = '';
+  if(!attachedFiles.length){ c.style.display='none'; return; }
+  c.style.display='flex';
+  attachedFiles.forEach((f,i)=>{
+    const item = document.createElement('div');
+    item.className = 'preview-item';
+    if(f.type.startsWith('image/')){
+      item.innerHTML=`<button class="preview-remove" onclick="removeFile(${i})">×</button><img src="${f.dataUrl}" class="preview-img"/><span class="vision-ready-badge">👁 AI</span>`;
+    } else {
+      item.innerHTML=`<button class="preview-remove" onclick="removeFile(${i})">×</button><div style="font-size:26px;text-align:center">${getFileIcon(f.type)}</div><div style="font-size:.55rem;color:var(--dim);text-align:center;padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:72px">${escHtml(f.name)}</div>`;
+    }
+    c.appendChild(item);
+  });
+}
+function removeFile(i){ attachedFiles.splice(i,1); updatePreview(); }
+
+// ─────────────────────────────────────────────────────────────
+//  BUILD MESSAGE PAYLOAD
+//  Images are sent as base64 blocks inside the `images` array
+//  so the backend can pass them to Claude as vision content.
+//  The text prompt tells Claude exactly what to do — no back-
+//  and-forth questions.
+// ─────────────────────────────────────────────────────────────
+function buildPayload(userText, filesArr, historySlice){
+  const now  = new Date();
+  const date = now.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const time = now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  const imageFiles = filesArr.filter(f => f.type.startsWith('image/'));
+  const textFiles  = filesArr.filter(f => f.textContent);
+  const otherFiles = filesArr.filter(f => !f.type.startsWith('image/') && !f.textContent);
+  const hasImages  = imageFiles.length > 0;
+
+  // ── Build the instruction text sent alongside images ──────
+  let prompt = `[Context: ${date}, ${time} IST]\n\n`;
+
+  if(hasImages){
+    // Tell the model EXACTLY what to do with the image(s):
+    // answer the user's question directly using what it sees.
+    prompt += `The user has sent ${imageFiles.length} image(s). `;
+    prompt += `Look at the image(s) carefully and:\n`;
+    prompt += `1. Identify ALL objects, people, animals, text, logos, colours, and background elements visible.\n`;
+    prompt += `2. Read and transcribe ANY text, numbers, labels, or signs visible in the image.\n`;
+    prompt += `3. Describe specific colours accurately (e.g. "red pen", "blue shirt", "yellow wall").\n`;
+    prompt += `4. If people are visible, describe them (appearance, clothing, activity) — do NOT refuse unless the image is inappropriate.\n`;
+    prompt += `5. Then answer the user's question below using everything you see.\n`;
+    prompt += `DO NOT ask for clarification. DO NOT say "I can't see". Just describe and answer.\n\n`;
   }
-  if (settings.voice) select.value = settings.voice;
+
+  if(textFiles.length){
+    textFiles.forEach(f=>{
+      prompt += `[File: ${f.name}]\n${f.textContent.substring(0,8000)}\n\n`;
+    });
+  }
+  if(otherFiles.length){
+    otherFiles.forEach(f=>{ prompt += `[Attached file: ${f.name}, type: ${f.type}, size: ${formatFileSize(f.size)}]\n`; });
+    prompt += '\n';
+  }
+
+  // Current-events context injection
+  const isNews = /\b(news|latest|recent|today|current|happening|update|breaking|2024|2025|2026|match|score|winner|election|result)\b/i.test(userText);
+  if(isNews) prompt += `[This question is about current events. Use your search capability and give detailed, factual, up-to-date information.]\n\n`;
+
+  prompt += `User: ${userText}`;
+
+  // ── Build the `images` array for the backend ─────────────
+  // Each entry: { data: "<base64>", media_type: "image/jpeg" }
+  const images = imageFiles.map(f=>({
+    data: f.dataUrl.split(',')[1],         // strip "data:image/jpeg;base64,"
+    media_type: f.type || 'image/jpeg'
+  }));
+
+  return {
+    message: prompt,
+    history: historySlice,
+    ...(images.length ? { images } : {})   // only include if there are images
+  };
 }
-if (window.speechSynthesis) { window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
-function testVoice() {
-  stopSpeech();
-  const utt = new SpeechSynthesisUtterance("Hello! I'm Zippy AI. I can now analyze images in full detail!");
-  const v = window.speechSynthesis.getVoices().find(x => x.name === settings.voice);
-  if (v) utt.voice = v;
-  utt.rate = settings.speed; utt.pitch = settings.pitch;
-  window.speechSynthesis.speak(utt);
+
+// ─────────────────────────────────────────────────────────────
+//  SOURCE CARDS
+// ─────────────────────────────────────────────────────────────
+const SITE_NAMES = {
+  'timesofindia.indiatimes.com':'Times of India','thehindu.com':'The Hindu',
+  'ndtv.com':'NDTV','hindustantimes.com':'Hindustan Times','indianexpress.com':'Indian Express',
+  'news18.com':'News18','theprint.in':'The Print','scroll.in':'Scroll.in',
+  'livemint.com':'Mint','economictimes.indiatimes.com':'Economic Times',
+  'businesstoday.in':'Business Today','financialexpress.com':'Financial Express',
+  'bbc.com':'BBC','bbc.co.uk':'BBC','reuters.com':'Reuters','apnews.com':'AP News',
+  'theguardian.com':'The Guardian','nytimes.com':'New York Times',
+  'washingtonpost.com':'Washington Post','bloomberg.com':'Bloomberg',
+  'cnbc.com':'CNBC','cnn.com':'CNN','techcrunch.com':'TechCrunch',
+  'theverge.com':'The Verge','wired.com':'Wired','forbes.com':'Forbes',
+  'news.google.com':'Google News','wikipedia.org':'Wikipedia',
+  'github.com':'GitHub','stackoverflow.com':'Stack Overflow',
+  'medium.com':'Medium','reddit.com':'Reddit','youtube.com':'YouTube',
+  'twitter.com':'Twitter','x.com':'X (Twitter)','linkedin.com':'LinkedIn',
+};
+
+function buildSourceCard(s){
+  const url = s.url || '#';
+  let domain = '', siteName = '';
+  try{
+    const u = new URL(url);
+    domain = u.hostname.replace(/^www\./,'');
+    siteName = SITE_NAMES[domain] || domain.charAt(0).toUpperCase()+domain.slice(1);
+  } catch{ siteName = 'Source'; domain = url.substring(0,40); }
+  const title = (s.title && s.title !== url) ? s.title : domain;
+  return `<a class="src-card" href="${escHtml(url)}" target="_blank" rel="noopener noreferrer">
+    <div class="src-favicon-wrap">
+      <img class="src-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32" alt=""
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none;font-size:13px">🔗</span>
+    </div>
+    <div class="src-text">
+      <span class="src-site-name">${escHtml(siteName)}</span>
+      <span class="src-domain">${escHtml(title.substring(0,60))}</span>
+    </div>
+    <svg class="src-arrow" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>`;
 }
-function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('open'); }
 
-/* ── THEME ── */
-function syncIcons() { const i = getTheme() === 'dark' ? '🌙' : '☀️'; ['atb1','atb2','atb3','themeicon'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = i; }); }
-function getTheme()  { return document.documentElement.getAttribute('data-theme') || 'light'; }
-function setTheme(t) { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('zp_theme', t); syncIcons(); }
-function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
-(function(){ setTheme(localStorage.getItem('zp_theme') || 'light'); loadSettings(); })();
+// ─────────────────────────────────────────────────────────────
+//  STORAGE
+// ─────────────────────────────────────────────────────────────
+const getUsers  = ()    => JSON.parse(localStorage.getItem('zp_u')||'{}');
+const saveUsers = u     => localStorage.setItem('zp_u',JSON.stringify(u));
+const getChats  = u     => JSON.parse(localStorage.getItem('zp_c_'+u)||'[]');
+const saveChats = (u,c) => localStorage.setItem('zp_c_'+u,JSON.stringify(c));
 
-/* ── EYE ── */
-function toggleEye(id, btn) {
-  const inp = document.getElementById(id), show = inp.type === 'password';
-  inp.type = show ? 'text' : 'password';
-  btn.querySelector('svg').innerHTML = show
-    ? `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
-    : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
-}
+// ─────────────────────────────────────────────────────────────
+//  AUTH
+// ─────────────────────────────────────────────────────────────
+function showReg()   { hide('login-screen'); show('reg-screen'); }
+function showLogin() { hide('reg-screen'); hide('forgot-screen'); show('login-screen'); }
+function showForgot(){ hide('login-screen'); show('forgot-screen'); resetForgot(); }
+function show(id){ document.getElementById(id).style.display='flex'; }
+function hide(id){ document.getElementById(id).style.display='none'; }
+function v(id){ return document.getElementById(id).value.trim(); }
+function showErr(id,msg){ const e=document.getElementById(id); e.textContent=msg; e.style.display='block'; }
 
-/* ── STORAGE ── */
-const getUsers  = ()    => JSON.parse(localStorage.getItem('zp_u') || '{}');
-const saveUsers = u     => localStorage.setItem('zp_u', JSON.stringify(u));
-const getChats  = u     => JSON.parse(localStorage.getItem('zp_c_' + u) || '[]');
-const saveChats = (u,c) => localStorage.setItem('zp_c_' + u, JSON.stringify(c));
-
-/* ── AUTH ── */
-function showReg()    { hide('login-screen');  show('reg-screen');    }
-function showLogin()  { hide('reg-screen');    hide('forgot-screen'); show('login-screen'); }
-function showForgot() { hide('login-screen');  show('forgot-screen'); resetForgot(); }
-function show(id) { document.getElementById(id).style.display = 'flex'; }
-function hide(id) { document.getElementById(id).style.display = 'none'; }
-function v(id)    { return document.getElementById(id).value.trim(); }
-function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
-
-function doReg(e) {
+function doReg(e){
   e.preventDefault();
   const u=v('ru'),p=v('rp'),p2=v('rp2'),q1=v('rq1'),a1=v('ra1').toLowerCase(),q2=v('rq2'),a2=v('ra2').toLowerCase();
-  if (!u||!p) { showErr('rerr','❌ Required'); return; }
-  if (p.length<4) { showErr('rerr','❌ Min 4 chars'); return; }
-  if (p!==p2) { showErr('rerr','❌ No match'); return; }
-  if (!q1||!a1||!q2||!a2) { showErr('rerr','❌ Answer both'); return; }
-  const users = getUsers();
-  if (users[u]) { showErr('rerr','❌ Taken'); return; }
-  users[u] = {pw:p,q1,a1,q2,a2}; saveUsers(users);
+  if(!u||!p){showErr('rerr','❌ Required');return;}
+  if(p.length<4){showErr('rerr','❌ Min 4 chars');return;}
+  if(p!==p2){showErr('rerr','❌ Passwords do not match');return;}
+  if(!q1||!a1||!q2||!a2){showErr('rerr','❌ Answer both questions');return;}
+  const users=getUsers();
+  if(users[u]){showErr('rerr','❌ Username taken');return;}
+  users[u]={pw:p,q1,a1,q2,a2}; saveUsers(users);
   document.getElementById('rerr').style.display='none';
   triggerBrowserSave(u,p); showLogin();
   document.getElementById('lu').value=u; document.getElementById('lp').focus();
 }
-function doLogin(e) {
+function doLogin(e){
   e.preventDefault();
   const u=v('lu'),p=v('lp');
   const users=getUsers(),ud=users[u];
   const pw=ud?(typeof ud==='string'?ud:ud.pw):null;
-  if (!pw||pw!==p) { document.getElementById('lerr').style.display='block'; return; }
+  if(!pw||pw!==p){document.getElementById('lerr').style.display='block';return;}
   document.getElementById('lerr').style.display='none';
   localStorage.setItem('zp_s',u); triggerBrowserSave(u,p); curUser=u; enterChat();
 }
-function triggerBrowserSave(u,p) {
+function triggerBrowserSave(u,p){
   const su=document.getElementById('save-user'),sp=document.getElementById('save-pass');
-  if (su&&sp) { su.value=u; sp.value=p; document.getElementById('pw-save-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})); }
+  if(su&&sp){su.value=u;sp.value=p;document.getElementById('pw-save-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));}
 }
-function resetForgot() {
+function resetForgot(){
   ['forgot-step2','forgot-step3','forgot-step4'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('forgot-step1').style.display='block';
   ['ferr1','ferr2','ferr3'].forEach(id=>{document.getElementById(id).style.display='none';});
   document.getElementById('fu').value=''; forgotUser='';
 }
-function forgotStep1() {
-  const u=v('fu'); if (!u) { showErr('ferr1','❌ Enter username'); return; }
-  const users=getUsers(),ud=users[u];
-  if (!ud||typeof ud==='string'||!ud.q1) { showErr('ferr1','❌ Not found'); return; }
+let forgotUser='';
+function forgotStep1(){
+  const u=v('fu'); if(!u){showErr('ferr1','❌ Enter username');return;}
+  const ud=getUsers()[u];
+  if(!ud||typeof ud==='string'||!ud.q1){showErr('ferr1','❌ Account not found');return;}
   forgotUser=u;
   document.getElementById('fq1-label').textContent=ud.q1;
   document.getElementById('fq2-label').textContent=ud.q2;
@@ -1102,34 +920,34 @@ function forgotStep1() {
   document.getElementById('forgot-step1').style.display='none';
   document.getElementById('forgot-step2').style.display='block';
 }
-function forgotStep2() {
+function forgotStep2(){
   const a1=v('fa1').toLowerCase(),a2=v('fa2').toLowerCase();
   const ud=getUsers()[forgotUser];
-  if (!a1||!a2) { showErr('ferr2','❌ Answer both'); return; }
-  if (a1!==ud.a1||a2!==ud.a2) { showErr('ferr2','❌ Wrong'); return; }
+  if(!a1||!a2){showErr('ferr2','❌ Answer both');return;}
+  if(a1!==ud.a1||a2!==ud.a2){showErr('ferr2','❌ Wrong answers');return;}
   document.getElementById('ferr2').style.display='none';
   document.getElementById('reset-user-hidden').value=forgotUser;
   document.getElementById('forgot-step2').style.display='none';
   document.getElementById('forgot-step3').style.display='block';
 }
-function forgotStep3(e) {
+function forgotStep3(e){
   e.preventDefault();
   const p1=v('np1'),p2=v('np2');
-  if (p1.length<4) { showErr('ferr3','❌ Min 4'); return; }
-  if (p1!==p2) { showErr('ferr3','❌ No match'); return; }
+  if(p1.length<4){showErr('ferr3','❌ Min 4 chars');return;}
+  if(p1!==p2){showErr('ferr3','❌ No match');return;}
   const users=getUsers(); users[forgotUser].pw=p1; saveUsers(users);
   triggerBrowserSave(forgotUser,p1);
   document.getElementById('ferr3').style.display='none';
   document.getElementById('forgot-step3').style.display='none';
   document.getElementById('forgot-step4').style.display='block';
 }
-function doLogout() {
+function doLogout(){
   stopSpeech(); localStorage.removeItem('zp_s');
   curUser=''; curId=null; apiHist=[]; dispMsgs=[]; attachedFiles=[];
   hide('chat-screen'); show('login-screen');
   document.getElementById('lp').value=''; resetEmpty();
 }
-function enterChat() {
+function enterChat(){
   hide('login-screen'); hide('reg-screen'); hide('forgot-screen');
   document.getElementById('chat-screen').style.display='flex';
   const ini=curUser.substring(0,2).toUpperCase();
@@ -1138,150 +956,154 @@ function enterChat() {
   document.getElementById('sidebar').classList.toggle('collapsed',!sbOpen);
   loadSb(); newChat(); checkOldChats(curUser); loadSettings();
 }
-window.addEventListener('load', () => {
+window.addEventListener('load',()=>{
   const s=localStorage.getItem('zp_s');
-  if (s) { const u=getUsers(); if (u[s]) { curUser=s; enterChat(); return; } }
+  if(s){const u=getUsers();if(u[s]){curUser=s;enterChat();return;}}
   document.getElementById('rem').checked=true;
 });
 
-/* ── SIDEBAR ── */
-function toggleSb() {
+// ─────────────────────────────────────────────────────────────
+//  EYE TOGGLE
+// ─────────────────────────────────────────────────────────────
+function toggleEye(id,btn){
+  const inp=document.getElementById(id), show=inp.type==='password';
+  inp.type=show?'text':'password';
+  btn.querySelector('svg').innerHTML=show
+    ?`<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+    :`<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+//  SIDEBAR
+// ─────────────────────────────────────────────────────────────
+function toggleSb(){
   sbOpen=!sbOpen;
   document.getElementById('sidebar').classList.toggle('collapsed',!sbOpen);
-  if (window.innerWidth<=768) document.getElementById('sbBackdrop').classList.toggle('show',sbOpen);
-  if (!sbOpen) showToast();
+  if(window.innerWidth<=768) document.getElementById('sbBackdrop').classList.toggle('show',sbOpen);
+  if(!sbOpen) showToast();
 }
-function closeSbMobile() {
+function closeSbMobile(){
   sbOpen=false;
   document.getElementById('sidebar').classList.add('collapsed');
   document.getElementById('sbBackdrop').classList.remove('show');
 }
 let toastTmr=null;
-function showToast() {
+function showToast(){
   const t=document.getElementById('zpToast'); t.classList.add('show');
-  clearTimeout(toastTmr); toastTmr=setTimeout(()=>t.classList.remove('show'),3200);
+  clearTimeout(toastTmr); toastTmr=setTimeout(()=>t.classList.remove('show'),3000);
 }
-function checkOldChats(user) {
+function checkOldChats(user){
   const chats=getChats(user),now=Date.now(),cutoff=OLD_DAYS*864e5;
   const old=chats.filter(c=>(now-c.ts)>cutoff);
-  if (!old.length) return;
-  showSimpleModal(`🗑️ Clean?`,`${old.length} old chat${old.length>1?'s':''}. Delete?`,
-    ()=>{ saveChats(user,chats.filter(c=>(now-c.ts)<=cutoff)); loadSb(); });
+  if(!old.length) return;
+  showSimpleModal(`🗑️ Clean up?`,`${old.length} old chat${old.length>1?'s':''} found. Delete?`,
+    ()=>{saveChats(user,chats.filter(c=>(now-c.ts)<=cutoff));loadSb();});
 }
-function showSimpleModal(title,msg,onConfirm) {
+function showSimpleModal(title,msg,onConfirm){
   const ov=document.createElement('div'); ov.className='modal-overlay';
-  ov.innerHTML=`<div class="delete-modal"><div class="del-header"><div class="del-title">${title}</div><div class="del-subtitle">${msg}</div></div><div class="del-body" style="padding:16px 24px"><div class="del-actions"><button class="del-btn cancel" id="mcx">Cancel</button><button class="del-btn delete" id="mok">OK</button></div></div></div>`;
+  ov.innerHTML=`<div class="delete-modal"><div class="del-header"><div class="del-title">${title}</div><div class="del-subtitle">${msg}</div></div><div class="del-body" style="padding:16px 24px"><div class="del-actions"><button class="del-btn cancel" id="mcx">Cancel</button><button class="del-btn delete" id="mok">Delete</button></div></div></div>`;
   document.body.appendChild(ov);
   ov.querySelector('#mcx').onclick=()=>ov.remove();
-  ov.querySelector('#mok').onclick=()=>{ ov.remove(); onConfirm(); };
-  ov.addEventListener('click',e=>{ if (e.target===ov) ov.remove(); });
+  ov.querySelector('#mok').onclick=()=>{ov.remove();onConfirm();};
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});
 }
-function showDeleteWarning(chatTitle,onConfirm) {
+function showDeleteWarning(chatTitle,onConfirm){
   const ov=document.createElement('div'); ov.className='modal-overlay';
-  ov.innerHTML=`<div class="delete-modal"><div class="del-header"><div class="del-title">Delete?</div><div class="del-subtitle">Cannot undo</div></div><div class="del-body"><div class="del-chat-info"><span class="del-chat-info-icon">💬</span><div class="del-chat-info-text"><div class="del-chat-info-title">${escHtml(chatTitle)}</div><div class="del-chat-info-meta">Permanent</div></div></div><div class="del-warning">Erased from device.</div><div class="del-actions"><button class="del-btn cancel" id="delCancel">Cancel</button><button class="del-btn delete" id="delConfirm">Delete</button></div></div></div>`;
+  ov.innerHTML=`<div class="delete-modal"><div class="del-header"><div class="del-title">Delete conversation?</div><div class="del-subtitle">This cannot be undone</div></div><div class="del-body"><div class="del-chat-info"><span class="del-chat-info-icon">💬</span><div class="del-chat-info-text"><div class="del-chat-info-title">${escHtml(chatTitle)}</div><div class="del-chat-info-meta">Permanently deleted from this device</div></div></div><div class="del-warning">All messages in this conversation will be erased.</div><div class="del-actions"><button class="del-btn cancel" id="delCancel">Cancel</button><button class="del-btn delete" id="delConfirm">Delete</button></div></div></div>`;
   document.body.appendChild(ov);
   ov.querySelector('#delCancel').onclick=()=>ov.remove();
-  ov.querySelector('#delConfirm').onclick=()=>{ ov.remove(); onConfirm(); };
-  ov.addEventListener('click',e=>{ if (e.target===ov) ov.remove(); });
+  ov.querySelector('#delConfirm').onclick=()=>{ov.remove();onConfirm();};
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});
 }
 
-/* ── CHAT LIST ── */
-function loadSb() {
-  const chats=getChats(curUser),el=document.getElementById('sblist');
+// ─────────────────────────────────────────────────────────────
+//  CHAT LIST
+// ─────────────────────────────────────────────────────────────
+function loadSb(){
+  const chats=getChats(curUser), el=document.getElementById('sblist');
   el.innerHTML='';
-  if (!chats.length) { el.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">💬</div>No conversations yet.<br>Start chatting!</div>`; return; }
-  [...chats].reverse().forEach(c => {
+  if(!chats.length){el.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">💬</div>No conversations yet.<br>Start a new chat!</div>`;return;}
+  [...chats].reverse().forEach(c=>{
     const d=new Date(c.ts),now=new Date();
     const ts=d.toDateString()===now.toDateString()?d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString([],{month:'short',day:'numeric'});
     const div=document.createElement('div');
     div.className='sb-item'+(c.id===curId?' active':'');
     div.innerHTML=`<span class="sb-ico">💬</span><div class="sb-info"><div class="sb-ttl">${escHtml(c.title)}</div><div class="sb-ts">${ts}</div></div><button class="sb-del" onclick="delChat(event,'${c.id}','${escHtml(c.title).replace(/'/g,"\\'")}')">✕</button>`;
-    div.addEventListener('click',()=>{ loadChat(c.id); if (window.innerWidth<=768) closeSbMobile(); });
+    div.addEventListener('click',()=>{loadChat(c.id);if(window.innerWidth<=768)closeSbMobile();});
     el.appendChild(div);
   });
 }
-function delChat(e,id,title) {
+function delChat(e,id,title){
   e.stopPropagation();
   showDeleteWarning(title||'Untitled',()=>{
     const chats=getChats(curUser).filter(c=>c.id!==id);
     saveChats(curUser,chats);
-    if (curId===id) newChat(); else loadSb();
+    if(curId===id) newChat(); else loadSb();
   });
 }
-function newChat() {
+function newChat(){
   stopSpeech(); curId='c'+Date.now(); apiHist=[]; dispMsgs=[]; lastUserMsg=''; attachedFiles=[];
   document.getElementById('chattitle').textContent='New Chat';
   resetEmpty(); loadSb(); document.getElementById('msgin').focus();
-  updateImagePreview();
+  updatePreview();
 }
-function resetEmpty() {
+function resetEmpty(){
   document.getElementById('msgwrap').innerHTML=`
     <div class="empty-wrap" id="emptywrap">
       <div class="z-logo hero">Z</div>
       <h2>How can I help?</h2>
-      <p>Chat · Search · Analyze files & images</p>
+      <p>Chat · Search · Analyze images & files</p>
       <div class="chips">
         <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Languages</div>
         <div class="chip" onclick="chip('Latest AI news today')">🔍 AI news</div>
-        <div class="chip" onclick="chip('Explain ML')">🤖 ML</div>
-        <div class="chip" onclick="chip('Startup ideas')">💡 Ideas</div>
+        <div class="chip" onclick="chip('Explain Machine Learning')">🤖 ML</div>
+        <div class="chip" onclick="chip('Give me startup ideas')">💡 Ideas</div>
       </div>
     </div>`;
 }
-function loadChat(id) {
-  const c=getChats(curUser).find(x=>x.id===id); if (!c) return;
+function loadChat(id){
+  const c=getChats(curUser).find(x=>x.id===id); if(!c) return;
   stopSpeech(); curId=id; apiHist=c.apiHist||[]; dispMsgs=c.dispMsgs||[]; attachedFiles=[];
   document.getElementById('chattitle').textContent=c.title;
   document.getElementById('msgwrap').innerHTML='';
   dispMsgs.forEach(m=>{
-    if (m.role==='user') renderUser(m.content,m.time,false,m.files);
+    if(m.role==='user') renderUser(m.content,m.time,false,m.files);
     else renderBot(m.content,m.time,false,m.lu||'',m.thinking,m.sources);
   });
-  document.getElementById('messages').scrollTop=9999; loadSb();
-  updateImagePreview();
+  document.getElementById('messages').scrollTop=9999; loadSb(); updatePreview();
 }
-function saveCurrent(title) {
+function saveCurrent(title){
   let chats=getChats(curUser);
   const ex=chats.find(c=>c.id===curId);
-  if (ex) { ex.dispMsgs=dispMsgs; ex.apiHist=apiHist; if (title) ex.title=title; }
+  if(ex){ex.dispMsgs=dispMsgs;ex.apiHist=apiHist;if(title)ex.title=title;}
   else chats.push({id:curId,title:title||'New Chat',ts:Date.now(),dispMsgs,apiHist});
   saveChats(curUser,chats); loadSb();
 }
 
-/* ── HELPERS ── */
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function getTime()  { return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
-function scrollBottom() { const m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
-function removeEmpty()  { const e=document.getElementById('emptywrap'); if (e) e.remove(); }
-function stripSymbols(text) { return text.replace(/[\u{1F300}-\u{1F9FF}]/gu,'').replace(/[*#_~`\[\]]/g,'').replace(/\s+/g,' ').trim(); }
-function formatFileSize(bytes) {
-  if (bytes<1024) return bytes+' B';
-  if (bytes<1048576) return (bytes/1024).toFixed(1)+' KB';
-  return (bytes/1048576).toFixed(1)+' MB';
-}
-function getFileIcon(type) {
-  if (type.startsWith('image/')) return '🖼️';
-  if (type==='application/pdf') return '📄';
-  if (type==='text/plain') return '📝';
-  if (type.includes('json')) return '📋';
-  if (type.includes('csv')) return '📊';
-  return '📎';
-}
+// ─────────────────────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────────────────────
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function getTime(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+function scrollBottom(){ const m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
+function removeEmpty(){ const e=document.getElementById('emptywrap'); if(e)e.remove(); }
+function stripSymbols(t){ return t.replace(/[\u{1F300}-\u{1F9FF}]/gu,'').replace(/[*#_~`\[\]]/g,'').replace(/\s+/g,' ').trim(); }
+function formatFileSize(b){ if(b<1024)return b+' B'; if(b<1048576)return(b/1024).toFixed(1)+' KB'; return(b/1048576).toFixed(1)+' MB'; }
+function getFileIcon(type){ if(type.startsWith('image/'))return '🖼️'; if(type==='application/pdf')return '📄'; if(type==='text/plain')return '📝'; if(type.includes('json'))return '📋'; if(type.includes('csv'))return '📊'; return '📎'; }
 
-/* ── MARKED ── */
+// ─────────────────────────────────────────────────────────────
+//  MARKED RENDERER
+// ─────────────────────────────────────────────────────────────
 const renderer=new marked.Renderer();
 renderer.code=function(code,lang){
   const raw=typeof code==='object'?(code.text||''):String(code||'');
-  const lang2=typeof code==='object'&&code.lang?code.lang:(lang||'');
-  const badge=lang2?`<span class="code-lang-badge">${escHtml(lang2)}</span>`:`<span class="code-lang-badge">code</span>`;
+  const l=typeof code==='object'&&code.lang?code.lang:(lang||'');
+  const badge=l?`<span class="code-lang-badge">${escHtml(l)}</span>`:`<span class="code-lang-badge">code</span>`;
   return `<div class="code-block-wrap"><div class="code-header">${badge}<button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><pre><code>${escHtml(raw)}</code></pre></div>`;
 };
-renderer.table=function(header,body){
-  return `<div class="table-scroll-wrap"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
-};
+renderer.table=function(header,body){ return `<div class="table-scroll-wrap"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`; };
 marked.setOptions({renderer,gfm:true,breaks:true});
-
-function copyCode(btn) {
+function copyCode(btn){
   const code=btn.closest('.code-block-wrap').querySelector('code');
   navigator.clipboard.writeText(code.textContent).then(()=>{
     btn.classList.add('copied'); btn.innerHTML=`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
@@ -1289,45 +1111,43 @@ function copyCode(btn) {
   });
 }
 
-/* ── RENDER ── */
-function renderUser(text,time,animate=true,filesArr=null) {
+// ─────────────────────────────────────────────────────────────
+//  RENDER MESSAGES
+// ─────────────────────────────────────────────────────────────
+function renderUser(text,time,animate=true,filesArr=null){
   removeEmpty();
   const ini=curUser.substring(0,2).toUpperCase();
   const row=document.createElement('div');
-  row.className='mrow urow'; if (!animate) row.style.animation='none';
+  row.className='mrow urow'; if(!animate)row.style.animation='none';
   let filesHtml='';
-  if (filesArr&&filesArr.length) {
-    filesArr.forEach(fileObj=>{
-      const icon=getFileIcon(fileObj.type),size=formatFileSize(fileObj.size);
-      let imageHtml='';
-      if (fileObj.type.startsWith('image/')&&fileObj.dataUrl) {
-        imageHtml=`<img src="${fileObj.dataUrl}" class="file-image" alt="${escHtml(fileObj.name)}"/>`;
+  if(filesArr&&filesArr.length){
+    filesArr.forEach(f=>{
+      if(f.type&&f.type.startsWith('image/')&&f.dataUrl){
+        filesHtml+=`<div style="margin-bottom:8px"><img src="${f.dataUrl}" style="max-width:240px;max-height:180px;border-radius:10px;display:block;border:1.5px solid var(--bdr-vis)"/></div>`;
+      } else {
+        filesHtml+=`<div class="file-attachment"><div class="file-icon">${getFileIcon(f.type||'')}</div><div class="file-info"><div class="file-name">${escHtml(f.name)}</div><div class="file-meta">${formatFileSize(f.size)}</div></div></div>`;
       }
-      filesHtml+=`<div class="file-attachment"><div class="file-icon">${icon}</div><div class="file-info"><div class="file-name">${escHtml(fileObj.name)}</div><div class="file-meta">${size}</div>${imageHtml}</div></div>`;
     });
   }
   row.innerHTML=`<div class="av usr-av">${ini}</div><div class="mbody"><div class="msender">${escHtml(curUser)}</div>${filesHtml}<div class="bbl usr-bbl">${escHtml(text)}</div><div class="mtime">${time||getTime()}</div></div>`;
   document.getElementById('msgwrap').appendChild(row); scrollBottom();
 }
 
-function renderBot(md,time,animate=true,userMsg='',thinking='',sources=[]) {
+function renderBot(md,time,animate=true,userMsg='',thinking='',sources=[]){
   const row=document.createElement('div');
-  row.className='mrow'; if (!animate) row.style.animation='none';
-
+  row.className='mrow'; if(!animate)row.style.animation='none';
   const plainForVoice=stripSymbols(String(md).replace(/<[^>]+>/g,'').replace(/[#*`_~\[\]]/g,''));
   let html=typeof marked!=='undefined'?marked.parse(typeof md==='string'?md:String(md)):escHtml(md);
 
   let thinkHtml='';
-  if (settings.showThinking&&thinking) {
-    const searchedBadge=(sources&&sources.length)?`<span class="think-searched-badge">🔍 Searched</span>`:'';
-    thinkHtml=`<details class="think-block"><summary><span class="think-icon">🧠</span><span>Thought process</span>${searchedBadge}<svg class="think-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="think-content">${escHtml(thinking)}</div></details>`;
+  if(settings.showThinking&&thinking){
+    const badge=(sources&&sources.length)?`<span class="think-searched-badge">🔍 Searched</span>`:'';
+    thinkHtml=`<details class="think-block"><summary><span class="think-icon">🧠</span><span>Thought process</span>${badge}<svg class="think-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="think-content">${escHtml(thinking)}</div></details>`;
   }
 
-  /* ── FIXED SOURCE CARDS ── */
   let sourcesHtml='';
-  if (settings.showSources&&sources&&sources.length) {
-    const cards=sources.map(s=>buildSourceCard(s)).join('');
-    sourcesHtml=`<div class="sources-block"><div class="sources-label">🔗 Sources</div><div class="sources-grid">${cards}</div></div>`;
+  if(settings.showSources&&sources&&sources.length){
+    sourcesHtml=`<div class="sources-block"><div class="sources-label">🔗 Sources</div>${sources.map(s=>buildSourceCard(s)).join('')}</div>`;
   }
 
   const mid='m'+Date.now()+Math.random().toString(36).slice(2,6);
@@ -1336,11 +1156,7 @@ function renderBot(md,time,animate=true,userMsg='',thinking='',sources=[]) {
     <div class="z-logo msg">Z</div>
     <div class="mbody">
       <div class="msender">Zippy AI</div>
-      <div class="bbl bot-bbl">
-        ${thinkHtml}
-        ${html}
-        ${sourcesHtml}
-      </div>
+      <div class="bbl bot-bbl">${thinkHtml}${html}${sourcesHtml}</div>
       <div class="mtime">${time||getTime()}</div>
       <div class="msg-actions">
         <button class="mac-btn" id="rb_${mid}" onclick="toggleRead(this)">
@@ -1355,33 +1171,65 @@ function renderBot(md,time,animate=true,userMsg='',thinking='',sources=[]) {
   document.getElementById('msgwrap').appendChild(row); scrollBottom();
 }
 
-/* ── THINKING INDICATOR ── */
-function addThinkWait() {
+// ─────────────────────────────────────────────────────────────
+//  THINKING WAIT INDICATOR
+// ─────────────────────────────────────────────────────────────
+function addThinkWait(){
   removeThinkWait();
   const row=document.createElement('div'); row.className='think-wait-row'; row.id='thinkwaitrow';
-  row.innerHTML=`<div class="z-logo msg">Z</div><div class="think-wait-body"><div class="think-wait-label">Zippy AI</div><div class="think-wait-box"><div class="think-spinner"><div class="think-spinner-ring"></div><div class="think-spinner-arc"></div></div><div class="think-wait-text"><div class="think-wait-title">Processing…</div><div class="think-wait-dots"><span></span><span></span><span></span></div></div></div></div>`;
+  row.innerHTML=`<div class="z-logo msg">Z</div><div class="think-wait-body"><div class="think-wait-label">Zippy AI</div><div class="think-wait-box"><div class="think-spinner"><div class="think-spinner-ring"></div><div class="think-spinner-arc"></div></div><div class="think-wait-text"><div class="think-wait-title">Analysing…</div><div class="think-wait-dots"><span></span><span></span><span></span></div></div></div></div>`;
   document.getElementById('msgwrap').appendChild(row); scrollBottom();
 }
-function removeThinkWait() { const t=document.getElementById('thinkwaitrow'); if (t) t.remove(); }
+function removeThinkWait(){ const t=document.getElementById('thinkwaitrow'); if(t)t.remove(); }
 
-/* ── VOICE OUTPUT ── */
-function stopSpeech() {
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (activeSpeechBtn) {
+// ─────────────────────────────────────────────────────────────
+//  VOICE OUTPUT
+// ─────────────────────────────────────────────────────────────
+function loadVoices(){
+  const voices=window.speechSynthesis.getVoices(), select=document.getElementById('voiceSelect');
+  if(!select||!voices.length) return;
+  select.innerHTML='';
+  const groups={ mI:[],mU:[],mK:[],mO:[], fI:[],fU:[],fK:[],fO:[] };
+  voices.forEach(v=>{
+    const n=v.name.toLowerCase(),l=v.lang.toLowerCase();
+    const female=n.includes('female')||n.includes('woman')||['samantha','victoria','karen','moira','fiona','kate','zira','susan'].some(x=>n.includes(x));
+    let acc=l.includes('en-in')?'I':l.includes('en-us')?'U':l.includes('en-gb')?'K':'O';
+    if(!l.startsWith('en')) return;
+    groups[(female?'f':'m')+acc].push(v);
+  });
+  const add=(arr,label)=>{ if(!arr.length)return; const og=document.createElement('optgroup');og.label=label;arr.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name;og.appendChild(o);});select.appendChild(og); };
+  add(groups.mI,'👨 Male 🇮🇳 Indian'); add(groups.mU,'👨 Male 🇺🇸 US'); add(groups.mK,'👨 Male 🇬🇧 UK'); add(groups.mO,'👨 Male Other');
+  add(groups.fI,'👩 Female 🇮🇳 Indian'); add(groups.fU,'👩 Female 🇺🇸 US'); add(groups.fK,'👩 Female 🇬🇧 UK'); add(groups.fO,'👩 Female Other');
+  if(!settings.voice){
+    const def=groups.mU.find(v=>v.name.includes('David'))||groups.mU[0]||groups.mK[0]||groups.mI[0]||groups.mO[0];
+    if(def){settings.voice=def.name;saveVoiceSettings();}
+  }
+  if(settings.voice) select.value=settings.voice;
+}
+if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=loadVoices;loadVoices();}
+function testVoice(){
+  stopSpeech();
+  const utt=new SpeechSynthesisUtterance("Hi! I'm Zippy AI. I can now fully analyse images and answer your questions about them.");
+  const v=window.speechSynthesis.getVoices().find(x=>x.name===settings.voice);
+  if(v)utt.voice=v; utt.rate=settings.speed; utt.pitch=settings.pitch;
+  window.speechSynthesis.speak(utt);
+}
+function stopSpeech(){
+  if(window.speechSynthesis)window.speechSynthesis.cancel();
+  if(activeSpeechBtn){
     activeSpeechBtn.classList.remove('reading');
     activeSpeechBtn.innerHTML=`<svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>Read`;
     activeSpeechBtn=null;
   }
 }
-function toggleRead(btn) {
-  if (activeSpeechBtn===btn) { stopSpeech(); return; }
+function toggleRead(btn){
+  if(activeSpeechBtn===btn){stopSpeech();return;}
   stopSpeech();
-  const text=btn.dataset.txt||''; if (!text) return;
+  const text=btn.dataset.txt||''; if(!text)return;
   const utt=new SpeechSynthesisUtterance(text);
   utt.rate=settings.speed; utt.pitch=settings.pitch;
-  const voices=window.speechSynthesis.getVoices();
-  let sv=voices.find(v=>v.name===settings.voice)||voices.find(v=>v.lang.startsWith('en-IN'))||voices.find(v=>v.lang.startsWith('en'));
-  if (sv) utt.voice=sv;
+  const sv=window.speechSynthesis.getVoices().find(v=>v.name===settings.voice)||window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('en'));
+  if(sv)utt.voice=sv;
   utt.onend=stopSpeech; utt.onerror=stopSpeech;
   btn.classList.add('reading');
   btn.innerHTML=`<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Stop`;
@@ -1389,111 +1237,141 @@ function toggleRead(btn) {
   window.speechSynthesis.speak(utt);
 }
 
-/* ── VOICE INPUT ── */
-function toggleMic() {
-  if (!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)) { alert('Voice needs Chrome/Edge'); return; }
-  if (isRecording) { recognition&&recognition.stop(); return; }
+// ─────────────────────────────────────────────────────────────
+//  VOICE INPUT
+// ─────────────────────────────────────────────────────────────
+function toggleMic(){
+  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){alert('Voice input needs Chrome or Edge');return;}
+  if(isRecording){recognition&&recognition.stop();return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recognition=new SR(); recognition.continuous=false; recognition.interimResults=true; recognition.lang='en-US';
+  recognition=new SR(); recognition.continuous=false; recognition.interimResults=true; recognition.lang='en-IN';
   const inp=document.getElementById('msgin'),btn=document.getElementById('micBtn');
-  recognition.onstart=()=>{ isRecording=true; btn.classList.add('mic-active'); inp.placeholder='Listening…'; };
-  recognition.onresult=e=>{ let t=''; for (let i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript; inp.value=t; inp.style.height='auto'; inp.style.height=Math.min(inp.scrollHeight,120)+'px'; };
-  recognition.onend=()=>{ isRecording=false; btn.classList.remove('mic-active'); inp.placeholder='Message…'; };
-  recognition.onerror=err=>{ isRecording=false; btn.classList.remove('mic-active'); inp.placeholder='Message…'; if (err.error!=='aborted') alert('Mic error: '+err.error); };
+  recognition.onstart=()=>{isRecording=true;btn.classList.add('mic-active');inp.placeholder='Listening…';};
+  recognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;inp.value=t;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,120)+'px';};
+  recognition.onend=()=>{isRecording=false;btn.classList.remove('mic-active');inp.placeholder='Message Zippy…';};
+  recognition.onerror=err=>{isRecording=false;btn.classList.remove('mic-active');inp.placeholder='Message Zippy…';if(err.error!=='aborted')alert('Mic error: '+err.error);};
   recognition.start();
 }
 
-/* ── RETRY ── */
-function retryMsg(userMsg) {
-  if (!userMsg) userMsg=lastUserMsg; if (!userMsg) return;
-  if (apiHist.length>=2&&apiHist[apiHist.length-1].role==='assistant') {
+// ─────────────────────────────────────────────────────────────
+//  RETRY
+// ─────────────────────────────────────────────────────────────
+function retryMsg(userMsg){
+  if(!userMsg)userMsg=lastUserMsg; if(!userMsg)return;
+  if(apiHist.length>=2&&apiHist[apiHist.length-1].role==='assistant'){
     apiHist.pop(); dispMsgs.pop();
-    const lastRow=document.getElementById('msgwrap').lastElementChild; if (lastRow) lastRow.remove();
+    const last=document.getElementById('msgwrap').lastElementChild; if(last)last.remove();
   }
   document.getElementById('msgin').value=userMsg; sendMsg();
 }
 
-/* ── TITLE ── */
-async function generateTitle(firstMsg,botReply) {
-  try {
-    const p=`3-6 word title. No quotes.\nUser: ${firstMsg}\nReply: ${botReply.substring(0,150)}\nTitle:`;
-    const r=await fetch(`${BACKEND}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:p,history:[]})});
+// ─────────────────────────────────────────────────────────────
+//  TITLE GENERATION
+// ─────────────────────────────────────────────────────────────
+async function generateTitle(firstMsg,botReply){
+  try{
+    const r=await fetch(`${BACKEND}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`3-6 word title, no quotes.\nUser: ${firstMsg}\nReply: ${botReply.substring(0,150)}\nTitle:`,history:[]})});
     const d=await r.json();
     return (d.reply||'').trim().replace(/^["']|["']$/g,'').replace(/[.!?]$/,'').substring(0,55)||firstMsg.substring(0,48);
-  } catch { return firstMsg.length>48?firstMsg.substring(0,48)+'…':firstMsg; }
+  } catch{ return firstMsg.length>48?firstMsg.substring(0,48)+'…':firstMsg; }
 }
 
-/* ── SEND ── */
-async function sendMsg() {
-  const inp=document.getElementById('msgin'),btn=document.getElementById('sendbtn');
+// ─────────────────────────────────────────────────────────────
+//  SEND MESSAGE  ← core function
+// ─────────────────────────────────────────────────────────────
+async function sendMsg(){
+  const inp=document.getElementById('msgin'), btn=document.getElementById('sendbtn');
   let text=inp.value.trim();
-  const filesForMessage=[...attachedFiles];
-  if (!text&&!filesForMessage.length) return;
-  if (!text&&filesForMessage.length) {
-    text=filesForMessage.some(f=>f.type.startsWith('image/'))?'What\'s in this image?':'Analyze this file';
+  const filesSnap=[...attachedFiles];   // snapshot before clearing
+
+  if(!text&&!filesSnap.length) return;
+
+  // Default prompts so user doesn't have to type when attaching
+  if(!text){
+    const hasImg=filesSnap.some(f=>f.type.startsWith('image/'));
+    text = hasImg ? 'Describe this image in detail' : 'Analyse this file';
   }
+
   inp.value=''; inp.style.height='auto'; btn.disabled=true; stopSpeech();
   lastUserMsg=text;
-  const t=getTime();
-  const filesToSave=filesForMessage.map(f=>({name:f.name,type:f.type,size:f.size,dataUrl:f.dataUrl}));
-  renderUser(text,t,true,filesToSave);
-  dispMsgs.push({role:'user',content:text,time:t,files:filesToSave});
+
+  // Render user bubble with thumbnails
+  const filesToSave=filesSnap.map(f=>({name:f.name,type:f.type,size:f.size,dataUrl:f.dataUrl||null}));
+  renderUser(text,getTime(),true,filesToSave);
+  dispMsgs.push({role:'user',content:text,time:getTime(),files:filesToSave});
+
   const isFirst=dispMsgs.filter(m=>m.role==='user').length===1;
-  if (isFirst) {
+  if(isFirst){
     document.getElementById('chattitle').innerHTML=`<span class="title-generating"><span class="title-dot"></span><span class="title-dot"></span><span class="title-dot"></span></span>`;
   }
-  addThinkWait();
-  try {
-    /* Use the improved prompt builder (FIX 3) */
-    const enhancedMessage=buildEnhancedPrompt(text,filesForMessage);
 
-    const controller=new AbortController();
-    const timeoutId=setTimeout(()=>controller.abort(),120000);
+  addThinkWait();
+  attachedFiles=[]; updatePreview();   // clear preview immediately after sending
+
+  try{
+    // Build the payload – images go as base64 in `images` array
+    const payload = buildPayload(text, filesSnap, apiHist.slice(-20));
+
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),120000);
     const res=await fetch(`${BACKEND}/chat`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:enhancedMessage,history:apiHist.slice(-20)}),
-      signal:controller.signal
+      body:JSON.stringify(payload),
+      signal:ctrl.signal
     });
-    clearTimeout(timeoutId);
-    if (!res.ok) throw new Error(`Server: ${res.status}`);
+    clearTimeout(tid);
+    if(!res.ok) throw new Error(`Server error: ${res.status}`);
+
     const data=await res.json();
     removeThinkWait();
-    const rt=getTime();
-    const reply=data.reply||'No response';
-    const thinking=data.thinking||'';
-    const sources=data.sources||[];
-    apiHist.push({role:'user',content:enhancedMessage});
-    apiHist.push({role:'assistant',content:reply});
-    if (apiHist.length>40) apiHist=apiHist.slice(-40);
+
+    const reply   = data.reply    || 'No response received.';
+    const thinking= data.thinking || '';
+    const sources = data.sources  || [];
+    const rt      = getTime();
+
+    apiHist.push({role:'user',      content:payload.message});
+    apiHist.push({role:'assistant', content:reply});
+    if(apiHist.length>40) apiHist=apiHist.slice(-40);
+
     renderBot(reply,rt,true,text,thinking,sources);
     dispMsgs.push({role:'bot',content:reply,time:rt,lu:text,thinking,sources});
-    if (isFirst) {
-      generateTitle(text,reply).then(title=>{ document.getElementById('chattitle').textContent=title; saveCurrent(title); loadSb(); });
+
+    if(isFirst){
+      generateTitle(text,reply).then(title=>{
+        document.getElementById('chattitle').textContent=title;
+        saveCurrent(title); loadSb();
+      });
       saveCurrent('Generating…');
     } else { saveCurrent(null); }
-    attachedFiles=[]; updateImagePreview();
-  } catch(err) {
-    console.error('Error:',err);
+
+  } catch(err){
+    console.error(err);
     removeThinkWait();
     const rt=getTime();
     let msg='Connection issue. ';
-    if (err.name==='AbortError') msg+='Timeout. Try shorter message.';
-    else msg+='Backend might be starting (30-60s first request) or unavailable. Wait and retry.';
+    if(err.name==='AbortError') msg+='Request timed out — try a shorter message or smaller image.';
+    else msg+='The backend may be waking up (first request takes ~30s). Please retry.';
     renderBot(msg,rt,true,text,'', []);
     dispMsgs.push({role:'bot',content:msg,time:rt,lu:text,thinking:'',sources:[]});
-    if (isFirst) document.getElementById('chattitle').textContent=text.substring(0,48);
+    if(isFirst) document.getElementById('chattitle').textContent=text.substring(0,48);
   }
+
   btn.disabled=false; inp.focus();
 }
 
-/* ── CHIP ── */
-function chip(text) { document.getElementById('msgin').value=text; sendMsg(); }
+// ─────────────────────────────────────────────────────────────
+//  CHIP SHORTCUTS
+// ─────────────────────────────────────────────────────────────
+function chip(text){ document.getElementById('msgin').value=text; sendMsg(); }
 
-/* ── TEXTAREA ── */
+// ─────────────────────────────────────────────────────────────
+//  TEXTAREA AUTO-RESIZE
+// ─────────────────────────────────────────────────────────────
 const ta=document.getElementById('msgin');
-ta.addEventListener('input',function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,120)+'px'; });
-ta.addEventListener('keydown',function(e){ if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); sendMsg(); } });
+ta.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
 </script>
 </body>
 </html>
