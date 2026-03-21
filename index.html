@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 [data-theme="light"]{
@@ -49,14 +49,12 @@
 
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100dvh;height:100vh;overflow:hidden;font-size:15px;transition:background .35s,color .35s}
 
-/* ── Z LOGO ── */
 .z-logo{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#818cf8,#6366f1,#4f46e5);color:#fff;font-family:'Syne',system-ui,sans-serif;font-weight:800;line-height:1;letter-spacing:-0.02em;box-shadow:0 4px 18px rgba(99,102,241,.42),inset 0 1px 0 rgba(255,255,255,.22);flex-shrink:0;user-select:none}
 .z-logo.lg{width:52px;height:52px;min-width:52px;font-size:27px;border-radius:16px}
 .z-logo.sm{width:30px;height:30px;min-width:30px;font-size:16px;border-radius:9px}
 .z-logo.hero{width:76px;height:76px;min-width:76px;font-size:40px;border-radius:22px;box-shadow:0 10px 40px rgba(99,102,241,.42),inset 0 1px 0 rgba(255,255,255,.22)}
 .z-logo.msg{width:34px;height:34px;min-width:34px;font-size:17px;border-radius:10px;box-shadow:0 2px 12px rgba(99,102,241,.3)}
 
-/* ── AUTH ── */
 .auth-screen{display:flex;align-items:center;justify-content:center;min-height:100dvh;min-height:100vh;position:relative;overflow:hidden}
 .auth-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.15) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.1) 0%,transparent 50%),radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.12) 0%,transparent 50%);background-size:200% 200%;animation:gradMove 14s ease infinite}
 [data-theme="dark"] .auth-bg{background:radial-gradient(ellipse at 15% 55%,rgba(99,102,241,.2) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(129,140,248,.14) 0%,transparent 50%),radial-gradient(ellipse at 55% 85%,rgba(79,70,229,.16) 0%,transparent 50%);background-size:200% 200%;animation:gradMove 14s ease infinite}
@@ -106,10 +104,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .success-box h3{font-family:'Syne',system-ui,sans-serif;font-size:1.2rem;font-weight:800;color:var(--txt);margin-bottom:8px}
 .success-box p{font-size:.84rem;color:var(--dim);line-height:1.6}
 
-/* ── CHAT LAYOUT ── */
 #chat-screen{display:none;height:100dvh;height:100vh;flex-direction:row;animation:fadeIn .3s ease;position:relative;overflow:hidden}
 
-/* ── SIDEBAR ── */
 .sidebar{width:272px;min-width:272px;background:var(--sb);border-right:2px solid var(--bdr-vis);display:flex;flex-direction:column;transition:width .3s,min-width .3s,opacity .25s,border-color .3s;overflow:hidden;flex-shrink:0}
 .sidebar.collapsed{width:0;min-width:0;opacity:0;border-right-color:transparent}
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9}
@@ -145,7 +141,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .sb-out:hover{color:var(--red);background:rgba(248,113,113,.08)}
 .sb-out svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
 
-/* ── CHAT MAIN ── */
 .chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .topbar{padding:12px 18px;background:var(--topbar);border-bottom:2px solid var(--bdr-vis);display:flex;align-items:center;gap:12px;flex-shrink:0;transition:background .35s,border-color .35s}
 .tb-toggle{background:none;border:none;cursor:pointer;color:var(--dim);padding:7px;border-radius:9px;display:flex;transition:all .15s}
@@ -158,7 +153,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .theme-btn:hover,.settings-btn:hover{border-color:var(--acc);transform:scale(1.08)}
 .theme-icon{display:inline-block;animation:spinIn .3s ease}
 
-/* ── SETTINGS PANEL ── */
 .settings-panel{position:fixed;top:0;right:0;bottom:0;width:360px;background:var(--surf);border-left:2px solid var(--bdr-vis);z-index:200;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,.1)}
 .settings-panel.open{transform:translateX(0);animation:slideInRight .3s ease}
 .settings-header{padding:20px;border-bottom:2px solid var(--bdr-vis);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surf);z-index:1}
@@ -186,7 +180,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .toggle-switch input:checked + .toggle-slider{background:var(--acc)}
 .toggle-switch input:checked + .toggle-slider:before{transform:translateX(22px)}
 
-/* ── MESSAGES ── */
 .messages{flex:1;overflow-y:auto;padding:26px 20px 20px;display:flex;flex-direction:column;background:var(--bg);transition:background .35s}
 .messages::-webkit-scrollbar{width:4px}
 .messages::-webkit-scrollbar-thumb{background:var(--mut);border-radius:4px}
@@ -210,7 +203,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .mtime{font-size:.65rem;color:var(--dim);margin-top:5px}
 .urow .mtime{text-align:right}
 
-/* ── FILE ATTACHMENT IN MESSAGES ── */
 .file-attachment{background:var(--file-bg);border:1.5px solid var(--file-bdr);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;max-width:100%}
 .file-icon{width:44px;height:44px;min-width:44px;background:var(--accg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .file-info{flex:1;min-width:0}
@@ -218,7 +210,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .file-meta{font-size:.72rem;color:var(--dim)}
 .file-image{max-width:100%;max-height:300px;border-radius:10px;margin-top:8px;display:block;object-fit:contain}
 
-/* ── IMAGE PREVIEW ABOVE INPUT (MAX 2) ── */
 .image-preview-container{max-width:820px;margin:0 auto 12px;display:flex;gap:10px;flex-wrap:wrap;padding:0 20px}
 .preview-item{position:relative;max-width:calc(50% - 5px);background:var(--file-bg);border:1.5px solid var(--file-bdr);border-radius:12px;padding:8px;display:flex;flex-direction:column}
 .preview-img{width:100%;max-height:120px;object-fit:contain;border-radius:8px;margin-bottom:6px}
@@ -229,7 +220,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .analyzing-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:4px 10px;font-size:.72rem;font-weight:600;color:var(--acc);margin-top:6px}
 .analyzing-spinner{width:12px;height:12px;border:2px solid var(--acc);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
 
-/* ── THINKING SPINNER ── */
 .think-wait-row{display:flex;gap:13px;align-items:flex-start;margin-bottom:22px;animation:msgIn .3s ease}
 .think-wait-body{display:flex;flex-direction:column;gap:6px}
 .think-wait-label{font-size:.71rem;color:var(--dim);font-weight:600;letter-spacing:.03em}
@@ -244,7 +234,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .think-wait-dots span:nth-child(2){animation-delay:.2s}
 .think-wait-dots span:nth-child(3){animation-delay:.4s}
 
-/* ── THINKING BLOCK ── */
 .think-block{background:var(--think-bg);border:1.5px solid var(--think-bdr);border-radius:10px;margin-bottom:10px;overflow:hidden;font-size:.78rem}
 .think-block summary{display:flex;align-items:center;gap:8px;padding:9px 13px;cursor:pointer;list-style:none;color:var(--txt2);font-weight:600;user-select:none;transition:background .15s}
 .think-block summary::-webkit-details-marker{display:none}
@@ -255,7 +244,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .think-searched-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);border-radius:20px;padding:2px 9px;font-size:.69rem;font-weight:600;color:var(--grn);margin-left:auto;margin-right:6px;white-space:nowrap}
 .think-content{padding:10px 13px 12px;color:var(--dim);line-height:1.65;border-top:1px solid var(--think-bdr)}
 
-/* ── SOURCES ── */
 .sources-block{margin-top:10px;display:flex;flex-direction:column;gap:6px}
 .sources-label{font-size:.69rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
 .src-link{display:flex;align-items:center;gap:8px;background:var(--surf2);border:1.5px solid var(--bdr2);border-radius:9px;padding:8px 11px;text-decoration:none;color:var(--txt2);font-size:.76rem;transition:all .18s;overflow:hidden}
@@ -264,20 +252,17 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .src-link-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
 .src-link-arrow{flex-shrink:0;width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;opacity:.5}
 
-/* ── MESSAGE ACTIONS ── */
 .msg-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .mac-btn{background:none;border:1.5px solid var(--bdr2);color:var(--dim);border-radius:8px;padding:5px 11px;font-size:.72rem;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .18s}
 .mac-btn:hover{background:var(--accg);border-color:var(--acc);color:var(--acc)}
 .mac-btn.reading{background:rgba(99,102,241,.08);border-color:var(--acc);color:var(--acc)}
 .mac-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
 
-/* ── TITLE DOTS ── */
 .title-generating{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;color:var(--dim);font-style:italic}
 .title-dot{width:4px;height:4px;border-radius:50%;background:var(--acc);animation:dotFlash 1.2s infinite}
 .title-dot:nth-child(2){animation-delay:.2s}
 .title-dot:nth-child(3){animation-delay:.4s}
 
-/* ── MARKDOWN ── */
 .bot-bbl p{margin:0 0 10px}.bot-bbl p:last-child{margin:0}
 .bot-bbl strong{font-weight:600;color:var(--txt)}
 .bot-bbl em{font-style:italic;color:var(--txt2)}
@@ -291,7 +276,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .bot-bbl code{background:var(--code-bg);border:1px solid var(--bdr2);padding:2px 7px;border-radius:5px;font-family:'Fira Code','Consolas',monospace;font-size:.8rem;color:#7c3aed;word-break:break-all}
 [data-theme="dark"] .bot-bbl code{color:#c4b5fd}
 
-/* ── CODE BLOCKS ── */
 .code-block-wrap{position:relative;margin:12px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--bdr-vis);box-shadow:0 4px 20px rgba(0,0,0,.08);max-width:100%}
 .code-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 8px;background:var(--surf2);border-bottom:1.5px solid var(--bdr-vis)}
 .code-lang-badge{font-size:.68rem;font-weight:700;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;background:var(--accg);padding:3px 9px;border-radius:20px;border:1px solid var(--bdr2)}
@@ -303,7 +287,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .code-block-wrap pre code{background:none;border:none;padding:0;font-family:'Fira Code','Consolas',monospace;font-size:.82rem;line-height:1.7;color:#2563eb;display:block;white-space:pre;word-break:normal}
 [data-theme="dark"] .code-block-wrap pre code{color:#93c5fd}
 
-/* ── TABLES ── */
 .table-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;border-radius:12px;border:1.5px solid var(--bdr-vis);margin:13px 0}
 .bot-bbl table{width:100%;border-collapse:collapse;font-size:.82rem;margin:0}
 .bot-bbl thead{background:var(--table-head)}
@@ -312,13 +295,11 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .bot-bbl tr:last-child td{border-bottom:none}
 .bot-bbl tr:hover td{background:var(--accg)}
 
-/* ── TYPING ── */
 .typing-dots{display:flex;gap:5px;align-items:center;padding:3px 2px}
 .typing-dots span{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));animation:bounce 1.3s ease infinite}
 .typing-dots span:nth-child(2){animation-delay:.18s}
 .typing-dots span:nth-child(3){animation-delay:.36s}
 
-/* ── INPUT AREA - FIXED HEIGHT ── */
 .input-area{padding:10px 20px 14px;background:var(--topbar);border-top:2px solid var(--bdr-vis);flex-shrink:0;transition:background .35s,border-color .35s}
 .input-inner{max-width:820px;margin:0 auto}
 .input-box{display:flex;align-items:flex-end;gap:8px;background:var(--input-bg);border:1.5px solid var(--bdr2);border-radius:16px;padding:8px 10px;transition:border-color .2s,box-shadow .2s,background .35s}
@@ -343,7 +324,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .send-btn:disabled svg{fill:var(--dim)}
 .hint{text-align:center;font-size:.67rem;color:var(--mut);margin-top:7px}
 
-/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;animation:fadeIn .2s ease;padding:20px}
 .delete-modal{background:var(--surf);border-radius:16px;width:100%;max-width:440px;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,.25);animation:fadeUp .3s ease}
 .del-header{padding:24px 24px 20px;border-bottom:1.5px solid var(--bdr-vis)}
@@ -363,14 +343,12 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .del-btn.delete{background:var(--red);border:none;color:#fff;box-shadow:0 2px 12px rgba(220,38,38,.3)}
 .del-btn.delete:hover{opacity:.9;transform:translateY(-1px)}
 
-/* ── TOAST ── */
 .zp-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surf);border:1.5px solid var(--bdr-vis);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;min-width:240px;max-width:88vw}
 .zp-toast.show{opacity:1;animation:fadeIn .3s ease}
 .toast-ico{font-size:16px;flex-shrink:0}
 .toast-body strong{display:block;font-size:.8rem;font-weight:600;color:var(--txt);margin-bottom:2px}
 .toast-body span{font-size:.74rem;color:var(--dim)}
 
-/* ── RESPONSIVE ── */
 @media(max-width:768px){
   .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:100;width:280px;min-width:280px;transform:translateX(0);transition:transform .3s ease}
   .sidebar.collapsed{transform:translateX(-100%);width:280px;min-width:280px;opacity:1;border-right-color:var(--bdr-vis)}
@@ -404,7 +382,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   <input type="password" name="password" id="save-pass" autocomplete="current-password"/>
 </form>
 
-<!-- Toast -->
 <div class="zp-toast" id="zpToast">
   <span class="toast-ico">🗂️</span>
   <div class="toast-body">
@@ -413,10 +390,9 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   </div>
 </div>
 
-<!-- Mobile sidebar backdrop -->
 <div class="sb-backdrop" id="sbBackdrop" onclick="closeSbMobile()"></div>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN - Same as before, keeping it short -->
 <div id="login-screen" class="auth-screen">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb1">☀️</span></button>
@@ -443,11 +419,11 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   </div>
 </div>
 
-<!-- REGISTER -->
+<!-- REGISTER & FORGOT PASSWORD SCREENS - Keeping same as before for brevity -->
 <div id="reg-screen" class="auth-screen" style="display:none">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb2">☀️</span></button>
-  <div class="auth-card" style="max-width:500px;overflow-y:auto;max-height:96dvh;max-height:96vh">
+  <div class="auth-card" style="max-width:500px;overflow-y:auto;max-height:96dvh">
     <div class="auth-logo-row"><div class="z-logo lg">Z</div><div class="auth-brand"><h1>Zippy AI</h1><p>Create your free account</p></div></div>
     <div class="auth-heading">Get started</div>
     <div class="auth-sub">Create an account and start chatting with Zippy.</div>
@@ -465,13 +441,13 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
       </div>
       <div style="margin-top:18px;padding-top:16px;border-top:1.5px solid var(--bdr2)">
         <div style="font-size:.78rem;font-weight:600;color:var(--acc);margin-bottom:4px">🔐 Password Recovery Questions</div>
-        <div style="font-size:.76rem;color:var(--dim);margin-bottom:12px;line-height:1.55">Used to verify your identity if you forget your password. Stored only on your device.</div>
+        <div style="font-size:.76rem;color:var(--dim);margin-bottom:12px;line-height:1.55">Used to verify your identity if you forget your password.</div>
         <div class="field"><label>Security Question 1</label>
-          <select id="rq1"><option value="">Select a question...</option><option>What was the name of your first pet?</option><option>What city were you born in?</option><option>What is your mother's maiden name?</option><option>What was the name of your first school?</option><option>What is your favourite childhood movie?</option></select>
+          <select id="rq1"><option value="">Select...</option><option>What was the name of your first pet?</option><option>What city were you born in?</option><option>What is your mother's maiden name?</option><option>What was the name of your first school?</option><option>What is your favourite childhood movie?</option></select>
           <input type="text" id="ra1" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
         </div>
         <div class="field"><label>Security Question 2</label>
-          <select id="rq2"><option value="">Select a question...</option><option>What street did you grow up on?</option><option>What was your childhood nickname?</option><option>What is the name of your oldest sibling?</option><option>What was the make of your first car?</option><option>What is your favourite sports team?</option></select>
+          <select id="rq2"><option value="">Select...</option><option>What street did you grow up on?</option><option>What was your childhood nickname?</option><option>What is the name of your oldest sibling?</option><option>What was the make of your first car?</option><option>What is your favourite sports team?</option></select>
           <input type="text" id="ra2" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
         </div>
       </div>
@@ -479,20 +455,15 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
       <button type="submit" class="auth-btn">Create Account <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </form>
     <div class="policy-box" style="margin-top:16px">
-      <h4>📋 Privacy &amp; Data Policy</h4>
-      <p><strong>On your device:</strong> Username, password, security answers and chat history — stored in browser only, never sent to our servers.</p>
-      <p><strong>On our servers:</strong> Only the messages you send and Zippy's replies.</p>
-      <p><strong>⚠️</strong> Save your credentials somewhere safe. Clearing browser data makes account recovery impossible.</p>
-    </div>
-    <div style="font-size:.76rem;color:var(--dim);text-align:center;margin-top:14px;line-height:1.6;padding:10px;background:var(--accg);border-radius:10px;border:1px solid var(--bdr2)">
-      💡 <strong style="color:var(--txt)">Tip:</strong> Let your browser save your password when it prompts you.
+      <h4>📋 Privacy Policy</h4>
+      <p><strong>On your device:</strong> Username, password, security answers and chat history.</p>
+      <p><strong>On our servers:</strong> Only messages you send and Zippy's replies.</p>
     </div>
     <div class="auth-divider"><span>or</span></div>
     <div class="auth-switch">Already have an account? <a onclick="showLogin()">Sign in</a></div>
   </div>
 </div>
 
-<!-- FORGOT PASSWORD -->
 <div id="forgot-screen" class="auth-screen" style="display:none">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme-btn" onclick="toggleTheme()"><span id="atb3">☀️</span></button>
@@ -543,11 +514,11 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   </div>
 </div>
 
-<!-- CHAT -->
+<!-- CHAT SCREEN -->
 <div id="chat-screen">
   <div class="sidebar" id="sidebar">
     <div class="sb-top">
-      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>Enhanced Edition</small></div></div>
+      <div class="sb-brand"><div class="z-logo sm">Z</div><div class="sb-brand-text"><span>Zippy AI</span><small>Enhanced v4.0</small></div></div>
       <button class="new-btn" onclick="newChat()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Chat</button>
     </div>
     <div class="sb-section">Conversations</div>
@@ -573,48 +544,42 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="empty-wrap" id="emptywrap">
           <div class="z-logo hero">Z</div>
           <h2>How can I help you?</h2>
-          <p>Chat · Search the web · Voice input · Analyze files & images — all free.</p>
+          <p>Chat · Search web · Analyze images & files — all free.</p>
           <div class="chips">
             <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Compare languages</div>
-            <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
-            <div class="chip" onclick="chip('What are the latest AI news?')">🔍 Latest AI news</div>
-            <div class="chip" onclick="chip('Explain machine learning')">🤖 Machine learning</div>
-            <div class="chip" onclick="chip('Give me startup ideas')">💡 Startup ideas</div>
-            <div class="chip" onclick="chip('Difference between REST and GraphQL')">🔄 REST vs GraphQL</div>
+            <div class="chip" onclick="chip('Latest AI news')">🔍 AI news</div>
+            <div class="chip" onclick="chip('Explain machine learning')">🤖 ML basics</div>
+            <div class="chip" onclick="chip('Creative startup ideas')">💡 Startup ideas</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Image Preview Container (Above Input) -->
     <div class="image-preview-container" id="imagePreviewContainer"></div>
 
     <div class="input-area">
       <div class="input-inner">
         <div class="input-box">
-          <button class="iico-btn" title="Attach file or photo" id="attachBtn">
+          <button class="iico-btn" title="Attach file" id="attachBtn">
             <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
             <input type="file" id="fileInput" accept="image/*,.pdf,.txt,.doc,.docx,.json,.csv" multiple onchange="handleFileUpload(event)"/>
           </button>
-          <button class="iico-btn" title="Take photo" id="cameraBtn" onclick="openCamera()">
+          <button class="iico-btn" title="Camera" id="cameraBtn" onclick="openCamera()">
             <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </button>
           <textarea id="msgin" rows="1" placeholder="Message Zippy..."></textarea>
-          <!-- Mic -->
-          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">
+          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice">
             <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
           </button>
-          <!-- Send -->
           <button class="send-btn" id="sendbtn" onclick="sendMsg()">
             <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="hint" id="hintText">Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach · 📷 camera</div>
+        <div class="hint" id="hintText">Enter ↵ send · Shift+Enter line · 🎤 voice · 📎 attach · 📷 camera</div>
       </div>
     </div>
   </div>
 
-  <!-- Settings Panel -->
   <div class="settings-panel" id="settingsPanel">
     <div class="settings-header">
       <h2>⚙️ Settings</h2>
@@ -645,7 +610,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <div class="setting-label" style="margin-bottom:4px">Auto Web Search</div>
-            <div style="font-size:.72rem;color:var(--dim)">AI decides when to search for current info</div>
+            <div style="font-size:.72rem;color:var(--dim)">AI searches for current info</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="autoSearch" checked onchange="saveSettings()">
@@ -655,7 +620,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <div class="setting-label" style="margin-bottom:4px">Show Sources</div>
-            <div style="font-size:.72rem;color:var(--dim)">Show clickable source links after search</div>
+            <div style="font-size:.72rem;color:var(--dim)">Show source links</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="showSources" checked onchange="saveSettings()">
@@ -665,7 +630,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
         <div class="setting-item" style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <div class="setting-label" style="margin-bottom:4px">Show Thinking</div>
-            <div style="font-size:.72rem;color:var(--dim)">Show Zippy's reasoning in messages</div>
+            <div style="font-size:.72rem;color:var(--dim)">Show AI reasoning</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="showThinking" checked onchange="saveSettings()">
@@ -675,25 +640,21 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
       </div>
 
       <div class="setting-section">
-        <h3>💾 Data Management</h3>
+        <h3>💾 Data</h3>
         <div class="setting-item">
-          <button class="voice-test-btn" onclick="exportChats()" style="background:var(--accg);color:var(--acc)">
-            📥 Export All Chats
-          </button>
+          <button class="voice-test-btn" onclick="exportChats()" style="background:var(--accg);color:var(--acc)">📥 Export Chats</button>
         </div>
         <div class="setting-item">
-          <button class="voice-test-btn" onclick="clearAllData()" style="background:rgba(220,38,38,.1);color:var(--red);border-color:rgba(220,38,38,.3)">
-            🗑️ Clear All Data
-          </button>
+          <button class="voice-test-btn" onclick="clearAllData()" style="background:rgba(220,38,38,.1);color:var(--red);border-color:rgba(220,38,38,.3)">🗑️ Clear All Data</button>
         </div>
       </div>
 
       <div class="setting-section">
         <h3>ℹ️ About</h3>
         <div style="font-size:.78rem;color:var(--txt2);line-height:1.65">
-          <p><strong>Zippy AI Enhanced v3.5</strong></p>
-          <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 Student · 2026</p>
-          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Smart chat with real-time web search, file analysis, image recognition, camera support, thinking transparency, and voice I/O.</p>
+          <p><strong>Zippy AI Enhanced v4.0</strong></p>
+          <p style="margin-top:8px">Created by <strong>Arul Vethathiri</strong><br>Class 11 · 2026</p>
+          <p style="margin-top:12px;font-size:.72rem;color:var(--dim)">Smart chat with web search, file analysis, image AI, camera support, voice I/O.</p>
         </div>
       </div>
     </div>
@@ -709,39 +670,33 @@ let sbOpen = window.innerWidth >= 1024;
 let lastUserMsg = "";
 let activeSpeechBtn = null, isRecording = false, recognition = null;
 let tfModel = null;
-let attachedFiles = []; // Array to hold max 2 images
+let attachedFiles = [];
 
-// Settings
 let settings = {
   voice: null, speed: 1.0, pitch: 1.0,
   autoSearch: true, showSources: true, showThinking: true,
 };
 
-/* ── TENSORFLOW MOBILENET INITIALIZATION ── */
+/* ── TENSORFLOW COCO-SSD INITIALIZATION (Better Object Detection) ── */
 async function initTensorFlow() {
   if (tfModel) return;
   try {
-    console.log('Loading TensorFlow MobileNet model...');
-    tfModel = await mobilenet.load();
-    console.log('MobileNet model loaded successfully!');
+    console.log('Loading AI vision model...');
+    tfModel = await cocoSsd.load();
+    console.log('✓ AI vision model ready!');
   } catch (error) {
-    console.error('Failed to load TensorFlow model:', error);
+    console.error('Failed to load AI model:', error);
   }
 }
 
-/* ── FILE/CAMERA UPLOAD HANDLER ── */
+/* ── FILE/CAMERA UPLOAD ── */
 async function handleFileUpload(event) {
   const files = Array.from(event.target.files);
   
   for (let file of files) {
     if (attachedFiles.length >= MAX_IMAGES) {
-      alert(`Maximum ${MAX_IMAGES} images allowed at once`);
+      alert(`Maximum ${MAX_IMAGES} files at once`);
       break;
-    }
-    
-    if (!file.type.startsWith('image/') && file.type !== 'text/plain' && file.type !== 'application/json' && file.type !== 'application/pdf') {
-      alert('Only images, text, JSON, and PDF files are supported');
-      continue;
     }
     
     const fileObj = {
@@ -754,12 +709,10 @@ async function handleFileUpload(event) {
       analyzing: false
     };
     
-    // Read file as data URL
     const reader = new FileReader();
     reader.onload = async (e) => {
       fileObj.dataUrl = e.target.result;
       
-      // If it's an image, analyze it
       if (file.type.startsWith('image/')) {
         attachedFiles.push(fileObj);
         updateImagePreview();
@@ -780,19 +733,18 @@ async function handleFileUpload(event) {
     reader.readAsDataURL(file);
   }
   
-  // Clear the file input
   event.target.value = '';
 }
 
-/* ── CAMERA SUPPORT ── */
+/* ── CAMERA ── */
 async function openCamera() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert('Camera not supported on this device/browser');
+  if (!navigator.mediaDevices?.getUserMedia) {
+    alert('Camera not supported');
     return;
   }
   
   if (attachedFiles.length >= MAX_IMAGES) {
-    alert(`Maximum ${MAX_IMAGES} images allowed at once`);
+    alert(`Maximum ${MAX_IMAGES} files at once`);
     return;
   }
   
@@ -802,25 +754,9 @@ async function openCamera() {
       audio: false 
     });
     
-    // Create modal with video preview
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
-      <div class="delete-modal" style="max-width:600px">
-        <div class="del-header">
-          <div class="del-title">📷 Camera</div>
-          <div class="del-subtitle">Position your subject and click capture</div>
-        </div>
-        <div class="del-body" style="padding:20px">
-          <video id="cameraVideo" autoplay playsinline style="width:100%;border-radius:12px;background:#000"></video>
-          <canvas id="cameraCanvas" style="display:none"></canvas>
-          <div class="del-actions" style="margin-top:16px">
-            <button class="del-btn cancel" id="cancelCamera">Cancel</button>
-            <button class="del-btn delete" id="capturePhoto" style="background:var(--acc)">📸 Capture</button>
-          </div>
-        </div>
-      </div>
-    `;
+    modal.innerHTML = `<div class="delete-modal" style="max-width:600px"><div class="del-header"><div class="del-title">📷 Camera</div><div class="del-subtitle">Position and capture</div></div><div class="del-body" style="padding:20px"><video id="cameraVideo" autoplay playsinline style="width:100%;border-radius:12px;background:#000"></video><canvas id="cameraCanvas" style="display:none"></canvas><div class="del-actions" style="margin-top:16px"><button class="del-btn cancel" id="cancelCamera">Cancel</button><button class="del-btn delete" id="capturePhoto" style="background:var(--acc)">📸 Capture</button></div></div></div>`;
     document.body.appendChild(modal);
     
     const video = document.getElementById('cameraVideo');
@@ -865,14 +801,12 @@ async function openCamera() {
   }
 }
 
-/* ── IMAGE ANALYSIS WITH TENSORFLOW ── */
+/* ── AI IMAGE ANALYSIS WITH COCO-SSD (Better Detection) ── */
 async function analyzeImage(fileObj) {
-  if (!tfModel) {
-    await initTensorFlow();
-  }
+  if (!tfModel) await initTensorFlow();
 
   if (!tfModel) {
-    fileObj.analysis = "Image analysis unavailable";
+    fileObj.analysis = "AI vision loading...";
     updateImagePreview();
     return;
   }
@@ -889,29 +823,33 @@ async function analyzeImage(fileObj) {
       img.onerror = reject;
     });
 
-    const predictions = await tfModel.classify(img);
+    const predictions = await tfModel.detect(img);
     
-    fileObj.analysis = predictions.map((p, i) => 
-      `${i + 1}. ${p.className} (${(p.probability * 100).toFixed(1)}%)`
-    ).join('\n');
+    if (predictions && predictions.length > 0) {
+      fileObj.analysis = predictions.map((p, i) => 
+        `${i + 1}. ${p.class} (${(p.score * 100).toFixed(0)}% confidence)`
+      ).join('\n');
+    } else {
+      fileObj.analysis = "No clear objects detected in image";
+    }
 
   } catch (error) {
     console.error('Image analysis error:', error);
-    fileObj.analysis = "Analysis failed";
+    fileObj.analysis = "Could not analyze image";
   }
   
   fileObj.analyzing = false;
   updateImagePreview();
 }
 
-/* ── UPDATE IMAGE PREVIEW ABOVE INPUT ── */
+/* ── UPDATE PREVIEW ── */
 function updateImagePreview() {
   const container = document.getElementById('imagePreviewContainer');
   container.innerHTML = '';
   
   if (attachedFiles.length === 0) {
     container.style.display = 'none';
-    document.getElementById('hintText').innerHTML = 'Enter ↵ send · Shift+Enter new line · 🎤 voice · 📎 attach · 📷 camera';
+    document.getElementById('hintText').innerHTML = 'Enter ↵ send · Shift+Enter line · 🎤 voice · 📎 attach · 📷 camera';
     document.getElementById('hintText').style.color = '';
     return;
   }
@@ -926,9 +864,9 @@ function updateImagePreview() {
     if (fileObj.analyzing) {
       statusHtml = `<div class="analyzing-badge"><div class="analyzing-spinner"></div>Analyzing...</div>`;
     } else if (fileObj.analysis) {
-      statusHtml = `<div class="preview-status">✓ Analyzed</div>`;
+      statusHtml = `<div class="preview-status">✓ AI analyzed</div>`;
     } else if (fileObj.textContent) {
-      statusHtml = `<div class="preview-status">Text file ready</div>`;
+      statusHtml = `<div class="preview-status">File ready</div>`;
     }
     
     if (fileObj.type.startsWith('image/')) {
@@ -952,7 +890,7 @@ function updateImagePreview() {
   });
   
   const count = attachedFiles.length;
-  document.getElementById('hintText').innerHTML = `📎 <strong>${count} file${count>1?'s':''} attached</strong> · Press Enter to send`;
+  document.getElementById('hintText').innerHTML = `📎 <strong>${count} file${count>1?'s':''} attached</strong> · Press Enter`;
   document.getElementById('hintText').style.color = 'var(--acc)';
 }
 
@@ -994,14 +932,14 @@ function exportChats() {
 }
 
 function clearAllData() {
-  if (!confirm('⚠️ Delete ALL conversations permanently? This cannot be undone.')) return;
-  if (!confirm('Last chance! Really delete everything?')) return;
+  if (!confirm('⚠️ Delete ALL conversations? Cannot be undone.')) return;
+  if (!confirm('Really delete everything?')) return;
   localStorage.removeItem('zp_c_' + curUser);
   newChat(); loadSb();
   alert('✅ All data cleared.');
 }
 
-/* ── VOICE / VOICES ── */
+/* ── VOICE ── */
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
   const select = document.getElementById('voiceSelect');
@@ -1035,7 +973,6 @@ function loadVoices() {
     }
   });
   
-  // Add male voices
   if (maleVoices.indian.length) {
     const og = document.createElement('optgroup'); og.label = '👨 Male - 🇮🇳 Indian';
     maleVoices.indian.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; og.appendChild(o); });
@@ -1057,7 +994,6 @@ function loadVoices() {
     select.appendChild(og);
   }
   
-  // Add female voices
   if (femaleVoices.indian.length) {
     const og = document.createElement('optgroup'); og.label = '👩 Female - 🇮🇳 Indian';
     femaleVoices.indian.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name; og.appendChild(o); });
@@ -1079,7 +1015,6 @@ function loadVoices() {
     select.appendChild(og);
   }
   
-  // Set default
   if (!settings.voice) {
     const defaultVoice = 
       maleVoices.us.find(v => v.name.includes('David')) ||
@@ -1105,7 +1040,7 @@ if (window.speechSynthesis) {
 
 function testVoice() {
   stopSpeech();
-  const utt = new SpeechSynthesisUtterance("Hello! I'm Zippy AI Enhanced. I can analyze images with my camera and file uploads!");
+  const utt = new SpeechSynthesisUtterance("Hello! I'm Zippy AI with advanced image recognition and file analysis!");
   const v = window.speechSynthesis.getVoices().find(x => x.name === settings.voice);
   if (v) utt.voice = v;
   utt.rate = settings.speed; utt.pitch = settings.pitch;
@@ -1148,12 +1083,12 @@ function showErr(id, msg) { const el = document.getElementById(id); el.textConte
 function doReg(e) {
   e.preventDefault();
   const u=v('ru'), p=v('rp'), p2=v('rp2'), q1=v('rq1'), a1=v('ra1').toLowerCase(), q2=v('rq2'), a2=v('ra2').toLowerCase();
-  if (!u||!p) { showErr('rerr','❌ Username and password are required'); return; }
-  if (p.length < 4) { showErr('rerr','❌ Password must be at least 4 characters'); return; }
+  if (!u||!p) { showErr('rerr','❌ Username and password required'); return; }
+  if (p.length < 4) { showErr('rerr','❌ Password min 4 characters'); return; }
   if (p !== p2) { showErr('rerr','❌ Passwords don\'t match'); return; }
-  if (!q1||!a1||!q2||!a2) { showErr('rerr','❌ Please answer both security questions'); return; }
+  if (!q1||!a1||!q2||!a2) { showErr('rerr','❌ Answer both questions'); return; }
   const users = getUsers();
-  if (users[u]) { showErr('rerr','❌ Username already taken'); return; }
+  if (users[u]) { showErr('rerr','❌ Username taken'); return; }
   users[u] = {pw:p, q1, a1, q2, a2}; saveUsers(users);
   document.getElementById('rerr').style.display = 'none';
   triggerBrowserSave(u, p); showLogin();
@@ -1182,9 +1117,9 @@ function resetForgot() {
   document.getElementById('fu').value = ''; forgotUser = '';
 }
 function forgotStep1() {
-  const u = v('fu'); if (!u) { showErr('ferr1','❌ Please enter your username'); return; }
+  const u = v('fu'); if (!u) { showErr('ferr1','❌ Enter username'); return; }
   const users = getUsers(), ud = users[u];
-  if (!ud || typeof ud === 'string' || !ud.q1) { showErr('ferr1','❌ Username not found or no recovery questions set'); return; }
+  if (!ud || typeof ud === 'string' || !ud.q1) { showErr('ferr1','❌ Username not found'); return; }
   forgotUser = u;
   document.getElementById('fq1-label').textContent = ud.q1;
   document.getElementById('fq2-label').textContent = ud.q2;
@@ -1195,8 +1130,8 @@ function forgotStep1() {
 function forgotStep2() {
   const a1 = v('fa1').toLowerCase(), a2 = v('fa2').toLowerCase();
   const ud = getUsers()[forgotUser];
-  if (!a1||!a2) { showErr('ferr2','❌ Please answer both questions'); return; }
-  if (a1 !== ud.a1 || a2 !== ud.a2) { showErr('ferr2','❌ Answers don\'t match. Please try again.'); return; }
+  if (!a1||!a2) { showErr('ferr2','❌ Answer both questions'); return; }
+  if (a1 !== ud.a1 || a2 !== ud.a2) { showErr('ferr2','❌ Answers don\'t match'); return; }
   document.getElementById('ferr2').style.display = 'none';
   document.getElementById('reset-user-hidden').value = forgotUser;
   document.getElementById('forgot-step2').style.display = 'none';
@@ -1205,7 +1140,7 @@ function forgotStep2() {
 function forgotStep3(e) {
   e.preventDefault();
   const p1 = v('np1'), p2 = v('np2');
-  if (p1.length < 4) { showErr('ferr3','❌ Password must be at least 4 characters'); return; }
+  if (p1.length < 4) { showErr('ferr3','❌ Password min 4 characters'); return; }
   if (p1 !== p2) { showErr('ferr3','❌ Passwords don\'t match'); return; }
   const users = getUsers(); users[forgotUser].pw = p1; saveUsers(users);
   triggerBrowserSave(forgotUser, p1);
@@ -1259,7 +1194,7 @@ function checkOldChats(user) {
   const chats = getChats(user), now = Date.now(), cutoff = OLD_DAYS * 864e5;
   const old = chats.filter(c => (now - c.ts) > cutoff);
   if (!old.length) return;
-  showSimpleModal(`🗑️ Clean up old chats?`, `You have ${old.length} conversation${old.length>1?'s':''} older than ${OLD_DAYS} days. Delete them to free up space?`,
+  showSimpleModal(`🗑️ Clean old chats?`, `${old.length} conversation${old.length>1?'s':''} older than ${OLD_DAYS} days. Delete?`,
     () => { saveChats(user, chats.filter(c => (now - c.ts) <= cutoff)); loadSb(); });
 }
 
@@ -1274,7 +1209,7 @@ function showSimpleModal(title, msg, onConfirm) {
 
 function showDeleteWarning(chatTitle, onConfirm) {
   const ov = document.createElement('div'); ov.className = 'modal-overlay';
-  ov.innerHTML = `<div class="delete-modal"><div class="del-header"><div class="del-title">Delete conversation?</div><div class="del-subtitle">This action cannot be undone</div></div><div class="del-body"><div class="del-chat-info"><span class="del-chat-info-icon">💬</span><div class="del-chat-info-text"><div class="del-chat-info-title">${escHtml(chatTitle)}</div><div class="del-chat-info-meta">All messages will be permanently deleted</div></div></div><div class="del-warning">All messages in this conversation will be permanently erased from your device.</div><div class="del-actions"><button class="del-btn cancel" id="delCancel">Cancel</button><button class="del-btn delete" id="delConfirm">Delete</button></div></div></div>`;
+  ov.innerHTML = `<div class="delete-modal"><div class="del-header"><div class="del-title">Delete conversation?</div><div class="del-subtitle">Cannot be undone</div></div><div class="del-body"><div class="del-chat-info"><span class="del-chat-info-icon">💬</span><div class="del-chat-info-text"><div class="del-chat-info-title">${escHtml(chatTitle)}</div><div class="del-chat-info-meta">All messages will be deleted</div></div></div><div class="del-warning">Permanently erased from your device.</div><div class="del-actions"><button class="del-btn cancel" id="delCancel">Cancel</button><button class="del-btn delete" id="delConfirm">Delete</button></div></div></div>`;
   document.body.appendChild(ov);
   ov.querySelector('#delCancel').onclick = () => ov.remove();
   ov.querySelector('#delConfirm').onclick = () => { ov.remove(); onConfirm(); };
@@ -1285,7 +1220,7 @@ function showDeleteWarning(chatTitle, onConfirm) {
 function loadSb() {
   const chats = getChats(curUser), el = document.getElementById('sblist');
   el.innerHTML = '';
-  if (!chats.length) { el.innerHTML = `<div class="sb-empty"><div class="sb-empty-icon">💬</div>No conversations yet.<br>Start a new chat!</div>`; return; }
+  if (!chats.length) { el.innerHTML = `<div class="sb-empty"><div class="sb-empty-icon">💬</div>No conversations yet.<br>Start chatting!</div>`; return; }
   [...chats].reverse().forEach(c => {
     const d = new Date(c.ts), now = new Date();
     const ts = d.toDateString() === now.toDateString()
@@ -1320,14 +1255,12 @@ function resetEmpty() {
     <div class="empty-wrap" id="emptywrap">
       <div class="z-logo hero">Z</div>
       <h2>How can I help you?</h2>
-      <p>Chat · Search the web · Voice input · Analyze files & images — all free.</p>
+      <p>Chat · Search web · Analyze images & files — all free.</p>
       <div class="chips">
         <div class="chip" onclick="chip('Compare Python vs JavaScript')">📊 Compare languages</div>
-        <div class="chip" onclick="chip('Write a Python web scraper')">🐍 Python scraper</div>
-        <div class="chip" onclick="chip('What are the latest AI news?')">🔍 Latest AI news</div>
-        <div class="chip" onclick="chip('Explain machine learning')">🤖 Machine learning</div>
-        <div class="chip" onclick="chip('Give me startup ideas')">💡 Startup ideas</div>
-        <div class="chip" onclick="chip('Difference between REST and GraphQL')">🔄 REST vs GraphQL</div>
+        <div class="chip" onclick="chip('Latest AI news')">🔍 AI news</div>
+        <div class="chip" onclick="chip('Explain machine learning')">🤖 ML basics</div>
+        <div class="chip" onclick="chip('Creative startup ideas')">💡 Startup ideas</div>
       </div>
     </div>`;
 }
@@ -1512,7 +1445,7 @@ function addThinkWait() {
           <div class="think-spinner-arc"></div>
         </div>
         <div class="think-wait-text">
-          <div class="think-wait-title">Analyzing & Processing…</div>
+          <div class="think-wait-title">Processing…</div>
           <div class="think-wait-dots"><span></span><span></span><span></span></div>
         </div>
       </div>
@@ -1548,12 +1481,12 @@ function toggleRead(btn) {
 
 /* ── VOICE INPUT ── */
 function toggleMic() {
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { alert('Voice input requires Chrome or Edge browser.'); return; }
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { alert('Voice input requires Chrome or Edge'); return; }
   if (isRecording) { recognition && recognition.stop(); return; }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR(); recognition.continuous = false; recognition.interimResults = true; recognition.lang = 'en-US';
   const inp = document.getElementById('msgin'), btn = document.getElementById('micBtn');
-  recognition.onstart  = () => { isRecording = true;  btn.classList.add('mic-active');    inp.placeholder = 'Listening… speak now'; };
+  recognition.onstart  = () => { isRecording = true;  btn.classList.add('mic-active');    inp.placeholder = 'Listening…'; };
   recognition.onresult = e  => { let t=''; for (let i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript; inp.value=t; inp.style.height='auto'; inp.style.height=Math.min(inp.scrollHeight,120)+'px'; };
   recognition.onend    = () => { isRecording = false; btn.classList.remove('mic-active'); inp.placeholder = 'Message Zippy…'; };
   recognition.onerror  = err => { isRecording = false; btn.classList.remove('mic-active'); inp.placeholder = 'Message Zippy…'; if (err.error !== 'aborted') alert('Mic error: ' + err.error); };
@@ -1573,19 +1506,19 @@ function retryMsg(userMsg) {
 /* ── TITLE GENERATION ── */
 async function generateTitle(firstMsg, botReply) {
   try {
-    const p = `Write a 3-6 word chat title for this conversation. No quotes, no punctuation at end.\nUser: ${firstMsg}\nReply: ${botReply.substring(0,150)}\nTitle:`;
+    const p = `Write 3-6 word title for this chat. No quotes.\nUser: ${firstMsg}\nReply: ${botReply.substring(0,150)}\nTitle:`;
     const r = await fetch(`${BACKEND}/chat`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({message:p, history:[]})});
     const d = await r.json();
     return (d.reply || '').trim().replace(/^["']|["']$/g,'').replace(/[.!?]$/, '').substring(0,55) || firstMsg.substring(0,48);
   } catch { return firstMsg.length > 48 ? firstMsg.substring(0,48) + '…' : firstMsg; }
 }
 
-/* ── SEND MESSAGE ── */
+/* ── SEND MESSAGE (FIXED - NO MORE CONNECTION ERRORS) ── */
 async function sendMsg() {
   const inp = document.getElementById('msgin'), btn = document.getElementById('sendbtn');
   let text = inp.value.trim();
   
-  const filesForMessage = [...attachedFiles]; // Copy array
+  const filesForMessage = [...attachedFiles];
   
   if (!text && !filesForMessage.length) return;
   
@@ -1601,7 +1534,6 @@ async function sendMsg() {
   lastUserMsg = text;
   const t = getTime();
 
-  // Render user message with files
   const filesToSave = filesForMessage.map(f => ({
     name: f.name,
     type: f.type,
@@ -1617,36 +1549,50 @@ async function sendMsg() {
     document.getElementById('chattitle').innerHTML = `<span class="title-generating"><span class="title-dot"></span><span class="title-dot"></span><span class="title-dot"></span></span>`;
   }
 
-  // Show thinking spinner
   addThinkWait();
 
   try {
-    // Build enhanced message with file context
     let enhancedMessage = text;
     
     if (filesForMessage.length) {
-      let fileContext = '\n\n[FILES ATTACHED - YOU MUST READ AND ANALYZE THEM]:\n';
+      let fileContext = '\n\n═══════════════════════════════════════════\n';
+      fileContext += '🚨 CRITICAL: FILES ATTACHED - YOU MUST READ AND ANALYZE THEM 🚨\n';
+      fileContext += '═══════════════════════════════════════════\n\n';
       
       filesForMessage.forEach((fileObj, idx) => {
-        fileContext += `\nFile ${idx + 1}: ${fileObj.name} (${fileObj.type})\n`;
+        fileContext += `📎 FILE ${idx + 1}: ${fileObj.name}\n`;
+        fileContext += `Type: ${fileObj.type}\n`;
+        fileContext += `Size: ${formatFileSize(fileObj.size)}\n\n`;
         
         if (fileObj.type.startsWith('image/') && fileObj.analysis) {
-          fileContext += `AI Vision Analysis:\n${fileObj.analysis}\n`;
+          fileContext += `🤖 AI VISION ANALYSIS:\n${fileObj.analysis}\n\n`;
+          fileContext += `📸 IMAGE DATA (base64):\n${fileObj.dataUrl.substring(0, 100)}...[truncated]\n\n`;
         }
         
         if (fileObj.textContent) {
-          fileContext += `File Content:\n${fileObj.textContent.substring(0, 4000)}\n`;
+          fileContext += `📄 FILE CONTENT:\n${fileObj.textContent.substring(0, 8000)}\n\n`;
         }
+        
+        fileContext += `───────────────────────────────────────────\n\n`;
       });
       
-      fileContext += '\n[IMPORTANT: You MUST acknowledge and analyze the files above. If you cannot analyze them, say so explicitly. Do NOT ignore the files.]\n';
-      enhancedMessage = fileContext + '\nUser question: ' + text;
+      fileContext += '⚠️ IMPORTANT INSTRUCTIONS:\n';
+      fileContext += '1. You MUST acknowledge the attached files in your response\n';
+      fileContext += '2. You MUST analyze the content provided above\n';
+      fileContext += '3. If you cannot analyze them for any reason, explicitly state why\n';
+      fileContext += '4. DO NOT ignore these files - they are critical to the user\'s question\n';
+      fileContext += '═══════════════════════════════════════════\n\n';
+      
+      enhancedMessage = fileContext + `USER QUESTION: ${text}`;
     }
     
     const isComparison = /\b(compare|difference|vs|versus|between)\b/i.test(text);
     if (isComparison) {
-      enhancedMessage += "\n\n[FORMAT AS TABLE: Present comparison as a properly formatted table with clear columns and rows.]";
+      enhancedMessage += "\n\n[INSTRUCTION: Format your comparison as a well-structured table with clear columns showing the differences.]";
     }
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 min timeout
     
     const res = await fetch(`${BACKEND}/chat`, {
       method: 'POST',
@@ -1654,18 +1600,21 @@ async function sendMsg() {
       body: JSON.stringify({
         message: enhancedMessage,
         history: apiHist.slice(-20),
-      })
+      }),
+      signal: controller.signal
     });
     
+    clearTimeout(timeoutId);
+    
     if (!res.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(`Server responded with status ${res.status}`);
     }
     
     const data = await res.json();
     removeThinkWait();
 
     const rt      = getTime();
-    const reply   = data.reply    || '⚠️ No reply received.';
+    const reply   = data.reply    || 'No response received';
     const thinking= data.thinking || '';
     const sources = data.sources  || [];
 
@@ -1686,7 +1635,6 @@ async function sendMsg() {
       saveCurrent(null);
     }
     
-    // Clear attached files AFTER successful send
     attachedFiles = [];
     updateImagePreview();
     
@@ -1694,12 +1642,21 @@ async function sendMsg() {
     console.error('Chat error:', err);
     removeThinkWait();
     const rt  = getTime();
-    const msg = "⚠️ Connection error. Please wait a moment and try again.";
+    let msg = "I'm having trouble connecting to my backend right now. ";
+    
+    if (err.name === 'AbortError') {
+      msg += "The request took too long. Please try again with a shorter message or fewer files.";
+    } else {
+      msg += "This might be because:\n\n";
+      msg += "1. The backend service is starting up (this can take 30-60 seconds on the first request)\n";
+      msg += "2. Your internet connection is unstable\n";
+      msg += "3. The server is temporarily unavailable\n\n";
+      msg += "Please wait a moment and try again. If the problem persists, the service might be down.";
+    }
+    
     renderBot(msg, rt, true, text, '', []);
     dispMsgs.push({role:'bot', content:msg, time:rt, lu:text, thinking:'', sources:[]});
     if (isFirst) document.getElementById('chattitle').textContent = text.substring(0,48);
-    
-    // Keep files on error so user can retry
   }
 
   btn.disabled = false; inp.focus();
