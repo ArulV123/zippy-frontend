@@ -450,7 +450,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
 <div class="toast" id="toast"><span class="toast-ico" id="t-ico">💬</span><div><strong id="t-ttl">Info</strong><span id="t-msg"></span></div></div>
 <div class="sb-back" id="sbBack" onclick="closeSbMobile()"></div>
 
-<!-- LOGIN -->
 <div id="login-screen" class="auth-screen">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme" onclick="toggleTheme()"><span id="atb1">☀️</span></button>
@@ -476,7 +475,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
   </div>
 </div>
 
-<!-- REGISTER -->
 <div id="reg-screen" class="auth-screen" style="display:none">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme" onclick="toggleTheme()"><span id="atb2">☀️</span></button>
@@ -499,11 +497,11 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
         <div style="font-size:.77rem;font-weight:700;color:var(--acc);margin-bottom:4px">🔐 Recovery Questions</div>
         <div style="font-size:.74rem;color:var(--dim);margin-bottom:12px">Used to recover your account if you forget your password</div>
         <div class="field"><label>Question 1</label>
-          <select id="rq1"><option value="">Select a question…</option><option>First pet name?</option><option>City of birth?</option><option>Mother's maiden name?</option><option>First school name?</option><option>Favourite childhood movie?</option></select>
+          <select id="rq1"><option value="">Select…</option><option>First pet name?</option><option>City of birth?</option><option>Mother's maiden name?</option><option>First school name?</option><option>Favourite childhood movie?</option></select>
           <input type="text" id="ra1" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
         </div>
         <div class="field"><label>Question 2</label>
-          <select id="rq2"><option value="">Select a question…</option><option>Childhood street?</option><option>Nickname?</option><option>Oldest sibling's name?</option><option>First car model?</option><option>Favourite sports team?</option></select>
+          <select id="rq2"><option value="">Select…</option><option>Childhood street?</option><option>Nickname?</option><option>Oldest sibling's name?</option><option>First car model?</option><option>Favourite sports team?</option></select>
           <input type="text" id="ra2" placeholder="Your answer" autocomplete="off" style="margin-top:7px"/>
         </div>
       </div>
@@ -516,24 +514,26 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
   </div>
 </div>
 
-<!-- FORGOT -->
 <div id="forgot-screen" class="auth-screen" style="display:none">
   <div class="auth-bg"></div><div class="auth-grid"></div>
   <button class="auth-theme" onclick="toggleTheme()"><span id="atb3">☀️</span></button>
   <div class="auth-card">
     <div class="auth-logo-row"><div class="zl lg">Z</div><div class="auth-brand"><h1>Zippy AI</h1><p>Account Recovery</p></div></div>
-    <div id="fs1"><div class="auth-h">Find your account</div><div class="auth-sub">Enter your username to begin.</div>
+    <div id="fs1">
+      <div class="auth-h">Find your account</div><div class="auth-sub">Enter your username to begin.</div>
       <div class="field"><label>Username</label><input type="text" id="fu" placeholder="Your username" autocomplete="username"/></div>
       <div class="auth-err" id="fe1"></div>
       <button class="auth-btn" onclick="fS1()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </div>
-    <div id="fs2" style="display:none"><div class="auth-h">Verify identity</div><div class="auth-sub">Answer your security questions.</div>
+    <div id="fs2" style="display:none">
+      <div class="auth-h">Verify identity</div><div class="auth-sub">Answer your security questions.</div>
       <div class="field"><label id="fq1l">Q1</label><input type="text" id="fa1" placeholder="Answer" autocomplete="off"/></div>
       <div class="field"><label id="fq2l">Q2</label><input type="text" id="fa2" placeholder="Answer" autocomplete="off"/></div>
       <div class="auth-err" id="fe2"></div>
       <button class="auth-btn" onclick="fS2()">Verify</button>
     </div>
-    <div id="fs3" style="display:none"><div class="auth-h">Set new password</div>
+    <div id="fs3" style="display:none">
+      <div class="auth-h">Set new password</div>
       <form id="rfm" autocomplete="on" onsubmit="fS3(event)">
         <input type="text" id="ruh" name="username" autocomplete="username" style="display:none"/>
         <div class="field"><label>New Password</label>
@@ -555,7 +555,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
   </div>
 </div>
 
-<!-- CHAT -->
 <div id="chat-screen">
   <div class="sidebar" id="sidebar">
     <div class="sb-top">
@@ -570,7 +569,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
       <button class="sb-out" onclick="doLogout()" title="Sign out"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
     </div>
   </div>
-
   <div class="chat-main">
     <div class="topbar">
       <button class="tb-toggle" onclick="toggleSb()"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
@@ -580,7 +578,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
       <button class="tb-btn" onclick="toggleSP()" title="Settings">⚙️</button>
       <button class="tb-btn" onclick="toggleTheme()"><span class="th-ico" id="thico">☀️</span></button>
     </div>
-
     <div class="messages" id="messages">
       <div class="msg-wrap" id="msgwrap">
         <div class="empty-wrap" id="emptywrap">
@@ -598,9 +595,7 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
         </div>
       </div>
     </div>
-
     <div class="prev-bar" id="prevBar"></div>
-
     <div class="input-area">
       <div class="input-inner">
         <div class="input-box">
@@ -620,12 +615,10 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
             <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="hint">Enter ↵ to send · Shift+Enter new line · 📎 attach images & text files</div>
+        <div class="hint">Enter ↵ to send · Shift+Enter new line · 📎 attach images &amp; text files</div>
       </div>
     </div>
   </div>
-
-  <!-- SETTINGS PANEL -->
   <div class="sp" id="sp">
     <div class="sp-hdr"><h2>⚙️ Settings</h2><button class="sp-cls" onclick="toggleSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="sp-body">
@@ -656,7 +649,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
           </select>
         </div>
       </div>
-
       <div class="sp-sec">
         <h3>💬 Response Style</h3>
         <div class="sp-row"><div class="sp-lbl">Tone</div>
@@ -684,7 +676,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
         <div class="tgl-row"><div class="tgl-info"><strong>Indian number format</strong><span>Use 1,00,000 instead of 100,000</span></div><label class="tgl"><input type="checkbox" id="fmtNum" checked onchange="SS('fmtNum',this.checked)"><span class="tgl-sl"></span></label></div>
         <div class="tgl-row"><div class="tgl-info"><strong>Proactive context</strong><span>AI adds useful background automatically</span></div><label class="tgl"><input type="checkbox" id="proCtx" checked onchange="SS('proCtx',this.checked)"><span class="tgl-sl"></span></label></div>
       </div>
-
       <div class="sp-sec">
         <h3>📰 News &amp; Search</h3>
         <div class="tgl-row"><div class="tgl-info"><strong>Web search</strong><span>Search the web for current information</span></div><label class="tgl"><input type="checkbox" id="webSearch" checked onchange="SS('webSearch',this.checked)"><span class="tgl-sl"></span></label></div>
@@ -702,7 +693,6 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
           <div class="src-list" id="srcList"></div>
         </div>
       </div>
-
       <div class="sp-sec">
         <h3>🎨 Interface</h3>
         <div class="sp-row"><div class="sp-lbl">Font size</div>
@@ -732,13 +722,11 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
           </div>
         </div>
       </div>
-
       <div class="sp-sec">
         <h3>💾 Data</h3>
         <button class="sp-act-btn" onclick="exportChats()">📥 Export all chats (JSON)</button>
         <button class="sp-act-btn danger" onclick="clearAll()">🗑️ Clear all data</button>
       </div>
-
       <div class="sp-sec">
         <h3>ℹ️ About</h3>
         <div style="background:var(--surf2);border-radius:12px;padding:16px;font-size:.77rem;color:var(--txt2);line-height:2">
@@ -755,186 +743,49 @@ body.bubble-sharp .bbl{border-radius:8px}body.bubble-sharp .bot-bbl{border-top-l
 const BACKEND="https://zippy-backend-coz2.onrender.com";
 const MAX_FILES=3,OLD_DAYS=30,MAX_HIST_MSGS=20,MAX_HIST_CHATS=50,CONTENT_CAP=1800;
 let isSending=false;
+
 const LANGUAGES=[
-{
-  id:'en-gb',flag:'🇬🇧',name:'English',sub:'British (UK)',voiceLang:'en-GB',mic:'en-GB',prompt:''
-},
-{
-  id:'en-us',flag:'🇺🇸',name:'English',sub:'American (US)',voiceLang:'en-US',mic:'en-US',prompt:''
-},
-{
-  id:'en-in',flag:'🇮🇳',name:'English',sub:'Indian',voiceLang:'en-IN',mic:'en-IN',prompt:''
-},
-{
-  id:'en-au',flag:'🇦🇺',name:'English',sub:'Australian',voiceLang:'en-AU',mic:'en-AU',prompt:''
-},
-{
-  id:'en-ie',flag:'🇮🇪',name:'English',sub:'Irish',voiceLang:'en-IE',mic:'en-IE',prompt:''
-},
-{
-  id:'ta',flag:'🇮🇳',name:'Tamil',sub:'தமிழ்',voiceLang:'ta-IN',mic:'ta-IN',prompt:'நீங்கள் தமிழில் மட்டுமே பதில் அளிக்க வேண்டும். Reply ONLY in Tamil language using Tamil script (தமிழ் எழுத்து). Every single word must be in Tamil. Do not use English words except for technical terms.'
-},
-{
-  id:'hi',flag:'🇮🇳',name:'Hindi',sub:'हिंदी',voiceLang:'hi-IN',mic:'hi-IN',prompt:'आप केवल हिंदी में उत्तर दें। Reply ONLY in Hindi using Devanagari script. Every word must be in Hindi.'
-},
-{
-  id:'te',flag:'🇮🇳',name:'Telugu',sub:'తెలుగు',voiceLang:'te-IN',mic:'te-IN',prompt:'Reply ONLY in Telugu (తెలుగు). Use Telugu script for every word.'
-},
-{
-  id:'kn',flag:'🇮🇳',name:'Kannada',sub:'ಕನ್ನಡ',voiceLang:'kn-IN',mic:'kn-IN',prompt:'Reply ONLY in Kannada (ಕನ್ನಡ). Use Kannada script.'
-},
-{
-  id:'ml',flag:'🇮🇳',name:'Malayalam',sub:'മലയാളം',voiceLang:'ml-IN',mic:'ml-IN',prompt:'Reply ONLY in Malayalam (മലയാളം). Use Malayalam script.'
-},
-{
-  id:'bn',flag:'🇮🇳',name:'Bengali',sub:'বাংলা',voiceLang:'bn-IN',mic:'bn-IN',prompt:'Reply ONLY in Bengali (বাংলা). Use Bengali script.'
-},
-{
-  id:'mr',flag:'🇮🇳',name:'Marathi',sub:'मराठी',voiceLang:'mr-IN',mic:'mr-IN',prompt:'Reply ONLY in Marathi (मराठी). Use Devanagari script.'
-},
-{
-  id:'gu',flag:'🇮🇳',name:'Gujarati',sub:'ગુજરાતી',voiceLang:'gu-IN',mic:'gu-IN',prompt:'Reply ONLY in Gujarati (ગુજરાતી). Use Gujarati script.'
-},
-{
-  id:'pa',flag:'🇮🇳',name:'Punjabi',sub:'ਪੰਜਾਬੀ',voiceLang:'pa-IN',mic:'pa-IN',prompt:'Reply ONLY in Punjabi (ਪੰਜਾਬੀ). Use Gurmukhi script.'
-},
-{
-  id:'ar',flag:'🇸🇦',name:'Arabic',sub:'العربية',voiceLang:'ar-SA',mic:'ar-SA',prompt:'Reply ONLY in Arabic (العربية). Use Arabic script. Write right-to-left.'
-},
-{
-  id:'fr',flag:'🇫🇷',name:'French',sub:'Français',voiceLang:'fr-FR',mic:'fr-FR',prompt:'Répondez UNIQUEMENT en français. Every word must be in French.'
-},
-{
-  id:'de',flag:'🇩🇪',name:'German',sub:'Deutsch',voiceLang:'de-DE',mic:'de-DE',prompt:'Antworten Sie NUR auf Deutsch. Every word must be in German.'
-},
-{
-  id:'es',flag:'🇪🇸',name:'Spanish',sub:'Español',voiceLang:'es-ES',mic:'es-ES',prompt:'Responda ÚNICAMENTE en español. Every word must be in Spanish.'
-},
-{
-  id:'pt',flag:'🇵🇹',name:'Portuguese',sub:'Português',voiceLang:'pt-PT',mic:'pt-PT',prompt:'Responda APENAS em português. Every word must be in Portuguese.'
-},
-{
-  id:'it',flag:'🇮🇹',name:'Italian',sub:'Italiano',voiceLang:'it-IT',mic:'it-IT',prompt:'Rispondete SOLO in italiano. Every word must be in Italian.'
-},
-{
-  id:'ru',flag:'🇷🇺',name:'Russian',sub:'Русский',voiceLang:'ru-RU',mic:'ru-RU',prompt:'Отвечайте ТОЛЬКО на русском языке. Use Cyrillic script.'
-},
-{
-  id:'ja',flag:'🇯🇵',name:'Japanese',sub:'日本語',voiceLang:'ja-JP',mic:'ja-JP',prompt:'必ず日本語のみで返答してください。Reply ONLY in Japanese.'
-},
-{
-  id:'zh',flag:'🇨🇳',name:'Chinese',sub:'中文',voiceLang:'zh-CN',mic:'zh-CN',prompt:'只用中文回答。Reply ONLY in Simplified Chinese.'
-},
-{
-  id:'ko',flag:'🇰🇷',name:'Korean',sub:'한국어',voiceLang:'ko-KR',mic:'ko-KR',prompt:'한국어로만 답변하세요. Reply ONLY in Korean.'
-},
-{
-  id:'el',flag:'🇬🇷',name:'Greek',sub:'Ελληνικά',voiceLang:'el-GR',mic:'el-GR',prompt:'Απαντήστε ΜΟΝΟ στα Ελληνικά. Reply ONLY in Greek.'
-},
-{
-  id:'tr',flag:'🇹🇷',name:'Turkish',sub:'Türkçe',voiceLang:'tr-TR',mic:'tr-TR',prompt:'Yalnızca Türkçe yanıt verin. Reply ONLY in Turkish.'
-},
+  {id:'en-gb',flag:'🇬🇧',name:'English',sub:'British (UK)',voiceLang:'en-GB',mic:'en-GB',prompt:''},
+  {id:'en-us',flag:'🇺🇸',name:'English',sub:'American (US)',voiceLang:'en-US',mic:'en-US',prompt:''},
+  {id:'en-in',flag:'🇮🇳',name:'English',sub:'Indian',voiceLang:'en-IN',mic:'en-IN',prompt:''},
+  {id:'en-au',flag:'🇦🇺',name:'English',sub:'Australian',voiceLang:'en-AU',mic:'en-AU',prompt:''},
+  {id:'en-ie',flag:'🇮🇪',name:'English',sub:'Irish',voiceLang:'en-IE',mic:'en-IE',prompt:''},
+  {id:'ta',flag:'🇮🇳',name:'Tamil',sub:'தமிழ்',voiceLang:'ta-IN',mic:'ta-IN',prompt:'நீங்கள் தமிழில் மட்டுமே பதில் அளிக்க வேண்டும். Reply ONLY in Tamil language using Tamil script (தமிழ் எழுத்து). Every single word must be in Tamil. Do not use English words except for technical terms.'},
+  {id:'hi',flag:'🇮🇳',name:'Hindi',sub:'हिंदी',voiceLang:'hi-IN',mic:'hi-IN',prompt:'आप केवल हिंदी में उत्तर दें। Reply ONLY in Hindi using Devanagari script. Every word must be in Hindi.'},
+  {id:'te',flag:'🇮🇳',name:'Telugu',sub:'తెలుగు',voiceLang:'te-IN',mic:'te-IN',prompt:'Reply ONLY in Telugu (తెలుగు). Use Telugu script for every word.'},
+  {id:'kn',flag:'🇮🇳',name:'Kannada',sub:'ಕನ್ನಡ',voiceLang:'kn-IN',mic:'kn-IN',prompt:'Reply ONLY in Kannada (ಕನ್ನಡ). Use Kannada script.'},
+  {id:'ml',flag:'🇮🇳',name:'Malayalam',sub:'മലയാളം',voiceLang:'ml-IN',mic:'ml-IN',prompt:'Reply ONLY in Malayalam (മലയാളം). Use Malayalam script.'},
+  {id:'bn',flag:'🇮🇳',name:'Bengali',sub:'বাংলা',voiceLang:'bn-IN',mic:'bn-IN',prompt:'Reply ONLY in Bengali (বাংলা). Use Bengali script.'},
+  {id:'mr',flag:'🇮🇳',name:'Marathi',sub:'मराठी',voiceLang:'mr-IN',mic:'mr-IN',prompt:'Reply ONLY in Marathi (मराठी). Use Devanagari script.'},
+  {id:'gu',flag:'🇮🇳',name:'Gujarati',sub:'ગુજરાતી',voiceLang:'gu-IN',mic:'gu-IN',prompt:'Reply ONLY in Gujarati (ગુજરાતી). Use Gujarati script.'},
+  {id:'pa',flag:'🇮🇳',name:'Punjabi',sub:'ਪੰਜਾਬੀ',voiceLang:'pa-IN',mic:'pa-IN',prompt:'Reply ONLY in Punjabi (ਪੰਜਾਬੀ). Use Gurmukhi script.'},
+  {id:'ar',flag:'🇸🇦',name:'Arabic',sub:'العربية',voiceLang:'ar-SA',mic:'ar-SA',prompt:'Reply ONLY in Arabic (العربية). Use Arabic script. Write right-to-left.'},
+  {id:'fr',flag:'🇫🇷',name:'French',sub:'Français',voiceLang:'fr-FR',mic:'fr-FR',prompt:'Répondez UNIQUEMENT en français. Every word must be in French.'},
+  {id:'de',flag:'🇩🇪',name:'German',sub:'Deutsch',voiceLang:'de-DE',mic:'de-DE',prompt:'Antworten Sie NUR auf Deutsch. Every word must be in German.'},
+  {id:'es',flag:'🇪🇸',name:'Spanish',sub:'Español',voiceLang:'es-ES',mic:'es-ES',prompt:'Responda ÚNICAMENTE en español. Every word must be in Spanish.'},
+  {id:'pt',flag:'🇵🇹',name:'Portuguese',sub:'Português',voiceLang:'pt-PT',mic:'pt-PT',prompt:'Responda APENAS em português. Every word must be in Portuguese.'},
+  {id:'it',flag:'🇮🇹',name:'Italian',sub:'Italiano',voiceLang:'it-IT',mic:'it-IT',prompt:'Rispondete SOLO in italiano. Every word must be in Italian.'},
+  {id:'ru',flag:'🇷🇺',name:'Russian',sub:'Русский',voiceLang:'ru-RU',mic:'ru-RU',prompt:'Отвечайте ТОЛЬКО на русском языке. Use Cyrillic script.'},
+  {id:'ja',flag:'🇯🇵',name:'Japanese',sub:'日本語',voiceLang:'ja-JP',mic:'ja-JP',prompt:'必ず日本語のみで返答してください。Reply ONLY in Japanese.'},
+  {id:'zh',flag:'🇨🇳',name:'Chinese',sub:'中文',voiceLang:'zh-CN',mic:'zh-CN',prompt:'只用中文回答。Reply ONLY in Simplified Chinese.'},
+  {id:'ko',flag:'🇰🇷',name:'Korean',sub:'한국어',voiceLang:'ko-KR',mic:'ko-KR',prompt:'한국어로만 답변하세요. Reply ONLY in Korean.'},
+  {id:'el',flag:'🇬🇷',name:'Greek',sub:'Ελληνικά',voiceLang:'el-GR',mic:'el-GR',prompt:'Απαντήστε ΜΟΝΟ στα Ελληνικά. Reply ONLY in Greek.'},
+  {id:'tr',flag:'🇹🇷',name:'Turkish',sub:'Türkçe',voiceLang:'tr-TR',mic:'tr-TR',prompt:'Yalnızca Türkçe yanıt verin. Reply ONLY in Turkish.'},
 ];
+
 const SRC_META={
-  'timesofindia.com':{
-    bg:'#d32f2f'
-  },
-  'thehindu.com':{
-    bg:'#1565c0'
-  },
-  'ndtv.com':{
-    bg:'#e53935'
-  },
-  'indianexpress.com':{
-    bg:'#0277bd'
-  },
-  'hindustantimes.com':{
-    bg:'#6a1b9a'
-  },
-  'news18.com':{
-    bg:'#2e7d32'
-  },
-  'theprint.in':{
-    bg:'#37474f'
-  },
-  'scroll.in':{
-    bg:'#4527a0'
-  },
-  'livemint.com':{
-    bg:'#ef6c00'
-  },
-  'bbc.com':{
-    bg:'#bb0000'
-  },
-  'bbc.co.uk':{
-    bg:'#bb0000'
-  },
-  'reuters.com':{
-    bg:'#ff6600'
-  },
-  'apnews.com':{
-    bg:'#1a237e'
-  },
-  'bloomberg.com':{
-    bg:'#212121'
-  },
-  'cnbc.com':{
-    bg:'#0033a0'
-  },
-  'theguardian.com':{
-    bg:'#005689'
-  },
-  'nytimes.com':{
-    bg:'#111'
-  },
-  'washingtonpost.com':{
-    bg:'#333'
-  },
-  'techcrunch.com':{
-    bg:'#0a7d0a'
-  },
-  'forbes.com':{
-    bg:'#b8860b'
-  },
-  'wired.com':{
-    bg:'#222'
-  },
-  'wikipedia.org':{
-    bg:'#737373'
-  },
-  'github.com':{
-    bg:'#24292e'
-  },
-  'stackoverflow.com':{
-    bg:'#f48024'
-  },
-  'medium.com':{
-    bg:'#000'
-  },
-  'reddit.com':{
-    bg:'#ff4500'
-  },
-  'economictimes.indiatimes.com':{
-    bg:'#c62828'
-  },
-  'news.google.com':{
-    bg:'#4285f4'
-  },
-  'nseindia.com':{
-    bg:'#003366'
-  },
-  'bseindia.com':{
-    bg:'#1a3c6e'
-  },
-  'moneycontrol.com':{
-    bg:'#007bff'
-  },
-  'investing.com':{
-    bg:'#e84142'
-  },
-  'mcxindia.com':{
-    bg:'#1b5e20'
-  },
+  'timesofindia.com':{bg:'#d32f2f'},'thehindu.com':{bg:'#1565c0'},'ndtv.com':{bg:'#e53935'},
+  'indianexpress.com':{bg:'#0277bd'},'hindustantimes.com':{bg:'#6a1b9a'},'news18.com':{bg:'#2e7d32'},
+  'theprint.in':{bg:'#37474f'},'scroll.in':{bg:'#4527a0'},'livemint.com':{bg:'#ef6c00'},
+  'bbc.com':{bg:'#bb0000'},'bbc.co.uk':{bg:'#bb0000'},'reuters.com':{bg:'#ff6600'},
+  'apnews.com':{bg:'#1a237e'},'bloomberg.com':{bg:'#212121'},'cnbc.com':{bg:'#0033a0'},
+  'theguardian.com':{bg:'#005689'},'nytimes.com':{bg:'#111'},'washingtonpost.com':{bg:'#333'},
+  'techcrunch.com':{bg:'#0a7d0a'},'forbes.com':{bg:'#b8860b'},'wired.com':{bg:'#222'},
+  'wikipedia.org':{bg:'#737373'},'github.com':{bg:'#24292e'},'stackoverflow.com':{bg:'#f48024'},
+  'medium.com':{bg:'#000'},'reddit.com':{bg:'#ff4500'},
+  'economictimes.indiatimes.com':{bg:'#c62828'},'news.google.com':{bg:'#4285f4'},
+  'nseindia.com':{bg:'#003366'},'bseindia.com':{bg:'#1a3c6e'},
+  'moneycontrol.com':{bg:'#007bff'},'investing.com':{bg:'#e84142'},'mcxindia.com':{bg:'#1b5e20'},
 };
 const DOMAIN_NAMES={
   'timesofindia.com':'Times of India','thehindu.com':'The Hindu','ndtv.com':'NDTV',
@@ -951,330 +802,129 @@ const DOMAIN_NAMES={
   'moneycontrol.com':'Moneycontrol','investing.com':'Investing.com','mcxindia.com':'MCX India',
 };
 const NEWS_SRCS=[
-{
-  id:'toi',name:'Times of India',domain:'timesofindia.com'
-},
-{
-  id:'hindu',name:'The Hindu',domain:'thehindu.com'
-},
-{
-  id:'ndtv',name:'NDTV',domain:'ndtv.com'
-},
-{
-  id:'ie',name:'Indian Express',domain:'indianexpress.com'
-},
-{
-  id:'ht',name:'Hindustan Times',domain:'hindustantimes.com'
-},
-{
-  id:'et',name:'Economic Times',domain:'economictimes.indiatimes.com'
-},
-{
-  id:'bbc',name:'BBC News',domain:'bbc.com'
-},
-{
-  id:'reuters',name:'Reuters',domain:'reuters.com'
-},
-{
-  id:'ap',name:'AP News',domain:'apnews.com'
-},
-{
-  id:'bloom',name:'Bloomberg',domain:'bloomberg.com'
-},
-{
-  id:'print',name:'The Print',domain:'theprint.in'
-},
-{
-  id:'cnbc',name:'CNBC',domain:'cnbc.com'
-},
+  {id:'toi',name:'Times of India',domain:'timesofindia.com'},
+  {id:'hindu',name:'The Hindu',domain:'thehindu.com'},
+  {id:'ndtv',name:'NDTV',domain:'ndtv.com'},
+  {id:'ie',name:'Indian Express',domain:'indianexpress.com'},
+  {id:'ht',name:'Hindustan Times',domain:'hindustantimes.com'},
+  {id:'et',name:'Economic Times',domain:'economictimes.indiatimes.com'},
+  {id:'bbc',name:'BBC News',domain:'bbc.com'},
+  {id:'reuters',name:'Reuters',domain:'reuters.com'},
+  {id:'ap',name:'AP News',domain:'apnews.com'},
+  {id:'bloom',name:'Bloomberg',domain:'bloomberg.com'},
+  {id:'print',name:'The Print',domain:'theprint.in'},
+  {id:'cnbc',name:'CNBC',domain:'cnbc.com'},
 ];
-const sourcesMap={
-};
-const DEFS={
-  langId:'en-gb',voice:null,speed:1.0,pitch:1.0,vol:1.0,autoRead:false,micLang:'en-GB',
+const sourcesMap={};
+
+const DEFS={langId:'en-gb',voice:null,speed:1.0,pitch:1.0,vol:1.0,autoRead:false,micLang:'en-GB',
   tone:'friendly',len:'standard',useEmoji:true,useTables:true,xCode:true,followUp:false,
   stepMath:true,fmtNum:true,proCtx:true,webSearch:true,showSrc:true,newsDepth:'detailed',
   newsSources:['toi','hindu','ndtv','bbc','reuters','ap','ie','ht','et'],
   showThink:true,currProb:true,fontSize:'medium',compact:false,showTime:true,renderMd:true,
-  autoTitle:true,enterSend:true,bubbleStyle:'rounded',showCharCount:false,autoScroll:true
-};
-let S={
-  ...DEFS
-};
+  autoTitle:true,enterSend:true,bubbleStyle:'rounded',showCharCount:false,autoScroll:true};
+let S={...DEFS};
+
 let curUser='',curId=null,apiHist=[],dispMsgs=[],forgotUser='';
 let sbOpen=window.innerWidth>=1024,lastUserMsg='',activeSpeechBtn=null,isRec=false,recog=null,attached=[];
-const getLang=(id)=>{
-  if(!id)id=S.langId;
-  return LANGUAGES.find(l=>l.id===id)||LANGUAGES[0];
-};
+
+const getLang=(id)=>{if(!id)id=S.langId;return LANGUAGES.find(l=>l.id===id)||LANGUAGES[0];};
+
 function loadS(){
-  try{
-    const d=localStorage.getItem('zp_cfg');
-    if(d)S={
-      ...DEFS,...JSON.parse(d)
-    };
-  }
-  catch{
-  }
-  const se=(id,v,p='value')=>{
-    const e=document.getElementById(id);
-    if(e)e[p]=v;
-  };
-  se('vSpeed',S.speed);
-  se('vPitch',S.pitch);
-  se('vVol',S.vol);
+  try{const d=localStorage.getItem('zp_cfg');if(d)S={...DEFS,...JSON.parse(d)};}catch{}
+  const se=(id,v,p='value')=>{const e=document.getElementById(id);if(e)e[p]=v;};
+  se('vSpeed',S.speed);se('vPitch',S.pitch);se('vVol',S.vol);
   document.getElementById('speedV').textContent=S.speed+'x';
   document.getElementById('pitchV').textContent=S.pitch+'x';
   document.getElementById('volV').textContent=Math.round(S.vol*100)+'%';
   ['autoRead','useEmoji','useTables','xCode','followUp','stepMath','fmtNum','proCtx','compact',
-  'showTime','renderMd','autoTitle','enterSend','webSearch','showSrc','showThink','currProb',
-  'showCharCount','autoScroll'].forEach(k=>se(k,S[k],'checked'));
+   'showTime','renderMd','autoTitle','enterSend','webSearch','showSrc','showThink','currProb',
+   'showCharCount','autoScroll'].forEach(k=>se(k,S[k],'checked'));
   se('micLang',S.micLang);
   ['toneP','lenP','ndP','fsP','bubP'].forEach((pid,i)=>{
     const key=['tone','len','newsDepth','fontSize','bubbleStyle'][i];
     actPill(pid,S[key]);
   });
-  applyFS();
-  applyCompact(S.compact);
-  applyBubble();
-  buildSrcList();
-  buildLangGrid();
-  updateLangBadge();
-  toggleCharCount();
+  applyFS();applyCompact(S.compact);applyBubble();buildSrcList();buildLangGrid();updateLangBadge();toggleCharCount();
 }
-const saveS=()=>{
-  try{
-    localStorage.setItem('zp_cfg',JSON.stringify(S));
-  }
-  catch{
-  }
-};
-const SS=(k,v)=>{
-  S[k]=v;
-  saveS();
-};
-function saveVS(){
-  S.voice=document.getElementById('voiceSel').value;
-  saveS();
-  const v=document.getElementById('voiceDisplay');
-  if(v)v.textContent=S.voice||'—';
-}
-function updSpeed(v){
-  S.speed=parseFloat(v);
-  document.getElementById('speedV').textContent=v+'x';
-  saveS();
-}
-function updPitch(v){
-  S.pitch=parseFloat(v);
-  document.getElementById('pitchV').textContent=v+'x';
-  saveS();
-}
-function updVol(v){
-  S.vol=parseFloat(v);
-  document.getElementById('volV').textContent=Math.round(v*100)+'%';
-  saveS();
-}
-function setPill(key,val,btn){
-  S[key]=val;
-  saveS();
-  const c=btn.closest('.pill-row')||btn.parentElement;
-  if(c)c.querySelectorAll('.pill').forEach(b=>b.classList.toggle('on',b.dataset.v===val));
-}
-function actPill(pid,val){
-  const c=document.getElementById(pid);
-  if(!c)return;
-  c.querySelectorAll('.pill').forEach(b=>b.classList.toggle('on',b.dataset.v===val));
-}
-function applyFS(){
-  document.body.classList.remove('fs-sm','fs-lg');
-  if(S.fontSize==='small')document.body.classList.add('fs-sm');
-  if(S.fontSize==='large')document.body.classList.add('fs-lg');
-}
-function applyCompact(on){
-  document.body.classList.toggle('compact',on);
-}
-function applyBubble(){
-  document.body.classList.toggle('bubble-sharp',S.bubbleStyle==='sharp');
-}
-function toggleCharCount(){
-  const cc=document.getElementById('charCount');
-  if(cc)cc.style.display=S.showCharCount?'block':'none';
-}
+const saveS=()=>{try{localStorage.setItem('zp_cfg',JSON.stringify(S));}catch{}};
+const SS=(k,v)=>{S[k]=v;saveS();};
+function saveVS(){S.voice=document.getElementById('voiceSel').value;saveS();const v=document.getElementById('voiceDisplay');if(v)v.textContent=S.voice||'—';}
+function updSpeed(v){S.speed=parseFloat(v);document.getElementById('speedV').textContent=v+'x';saveS();}
+function updPitch(v){S.pitch=parseFloat(v);document.getElementById('pitchV').textContent=v+'x';saveS();}
+function updVol(v){S.vol=parseFloat(v);document.getElementById('volV').textContent=Math.round(v*100)+'%';saveS();}
+function setPill(key,val,btn){S[key]=val;saveS();const c=btn.closest('.pill-row')||btn.parentElement;if(c)c.querySelectorAll('.pill').forEach(b=>b.classList.toggle('on',b.dataset.v===val));}
+function actPill(pid,val){const c=document.getElementById(pid);if(!c)return;c.querySelectorAll('.pill').forEach(b=>b.classList.toggle('on',b.dataset.v===val));}
+function applyFS(){document.body.classList.remove('fs-sm','fs-lg');if(S.fontSize==='small')document.body.classList.add('fs-sm');if(S.fontSize==='large')document.body.classList.add('fs-lg');}
+function applyCompact(on){document.body.classList.toggle('compact',on);}
+function applyBubble(){document.body.classList.toggle('bubble-sharp',S.bubbleStyle==='sharp');}
+function toggleCharCount(){const cc=document.getElementById('charCount');if(cc)cc.style.display=S.showCharCount?'block':'none';}
+
 function buildLangGrid(){
-  const grid=document.getElementById('langGrid');
-  if(!grid)return;
+  const grid=document.getElementById('langGrid');if(!grid)return;
   const sections=[
-  {
-    label:'English Accents',ids:['en-gb','en-us','en-in','en-au','en-ie']
-  },
-  {
-    label:'Indian Languages',ids:['ta','hi','te','kn','ml','bn','mr','gu','pa']
-  },
-  {
-    label:'International',ids:['ar','fr','de','es','pt','it','ru','ja','zh','ko','el','tr']
-  },
+    {label:'English Accents',ids:['en-gb','en-us','en-in','en-au','en-ie']},
+    {label:'Indian Languages',ids:['ta','hi','te','kn','ml','bn','mr','gu','pa']},
+    {label:'International',ids:['ar','fr','de','es','pt','it','ru','ja','zh','ko','el','tr']},
   ];
   grid.innerHTML='';
   sections.forEach(sec=>{
-    const lbl=document.createElement('div');
-    lbl.className='lang-section-label';
-    lbl.textContent=sec.label;
-    grid.appendChild(lbl);
+    const lbl=document.createElement('div');lbl.className='lang-section-label';lbl.textContent=sec.label;grid.appendChild(lbl);
     sec.ids.forEach(id=>{
-      const lang=LANGUAGES.find(l=>l.id===id);
-      if(!lang)return;
-      const btn=document.createElement('button');
-      btn.className='lang-btn'+(S.langId===id?' active':'');
-      btn.dataset.id=id;
+      const lang=LANGUAGES.find(l=>l.id===id);if(!lang)return;
+      const btn=document.createElement('button');btn.className='lang-btn'+(S.langId===id?' active':'');btn.dataset.id=id;
       btn.innerHTML=`<span class="lang-btn-flag">${lang.flag}</span><span class="lang-btn-name">${lang.name}</span><span class="lang-btn-sub">${lang.sub}</span>`;
-      btn.addEventListener('click',()=>selectLanguage(id));
-      grid.appendChild(btn);
+      btn.addEventListener('click',()=>selectLanguage(id));grid.appendChild(btn);
     });
   });
 }
 function selectLanguage(id){
-  S.langId=id;
-  saveS();
-  const lang=getLang(id);
-  S.micLang=lang.mic;
-  saveS();
-  const ml=document.getElementById('micLang');
-  if(ml)ml.value=lang.mic;
+  S.langId=id;saveS();const lang=getLang(id);S.micLang=lang.mic;saveS();
+  const ml=document.getElementById('micLang');if(ml)ml.value=lang.mic;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
-  autoSwitchVoice(lang.voiceLang);
-  updateLangBadge();
+  autoSwitchVoice(lang.voiceLang);updateLangBadge();
   showT('🌐','Language set',`${lang.flag} ${lang.name} — ${lang.sub}`);
 }
 function autoSwitchVoice(targetLang){
-  if(!window.speechSynthesis)return;
-  const voices=window.speechSynthesis.getVoices();
-  if(!voices.length)return;
+  if(!window.speechSynthesis)return;const voices=window.speechSynthesis.getVoices();if(!voices.length)return;
   const prefix=targetLang.split('-')[0].toLowerCase(),full=targetLang.toLowerCase();
-  const notFem=n=>{
-    const lo=n.toLowerCase();
-    return!lo.includes('female')&&!lo.includes('woman')&&!['samantha','victoria','karen','moira','fiona','kate','zira','susan','aria','jenny','natasha','libby','hazel','siri'].some(x=>lo.includes(x));
-  };
+  const notFem=n=>{const lo=n.toLowerCase();return!lo.includes('female')&&!lo.includes('woman')&&!['samantha','victoria','karen','moira','fiona','kate','zira','susan','aria','jenny','natasha','libby','hazel','siri'].some(x=>lo.includes(x));};
   let best=voices.find(v=>v.lang.toLowerCase()===full&&notFem(v.name));
   if(!best)best=voices.find(v=>v.lang.toLowerCase()===full);
   if(!best)best=voices.find(v=>v.lang.toLowerCase().startsWith(prefix)&&notFem(v.name));
   if(!best)best=voices.find(v=>v.lang.toLowerCase().startsWith(prefix));
-  if(best){
-    S.voice=best.name;
-    saveS();
-    const sel=document.getElementById('voiceSel');
-    if(sel)sel.value=best.name;
-    const vd=document.getElementById('voiceDisplay');
-    if(vd)vd.textContent=best.name;
-  }
+  if(best){S.voice=best.name;saveS();const sel=document.getElementById('voiceSel');if(sel)sel.value=best.name;const vd=document.getElementById('voiceDisplay');if(vd)vd.textContent=best.name;}
 }
 function updateLangBadge(){
   const lang=getLang(),badge=document.getElementById('langBadge');
-  if(badge){
-    const code=lang.id.includes('-')?lang.id.split('-')[1].toUpperCase():lang.id.substring(0,2).toUpperCase();
-    badge.textContent=`${lang.flag} ${code}`;
-  }
+  if(badge){const code=lang.id.includes('-')?lang.id.split('-')[1].toUpperCase():lang.id.substring(0,2).toUpperCase();badge.textContent=`${lang.flag} ${code}`;}
 }
 function buildSrcList(){
-  const el=document.getElementById('srcList');
-  if(!el)return;
+  const el=document.getElementById('srcList');if(!el)return;
   el.innerHTML=NEWS_SRCS.map(s=>`<label class="src-chk"><input type="checkbox" ${S.newsSources.includes(s.id)?'checked':''} onchange="tglSrc('${s.id}',this.checked)"/><span class="src-chk-name">${s.name}</span><span class="src-chk-dom">${s.domain}</span></label>`).join('');
 }
-function tglSrc(id,on){
-  if(on){
-    if(!S.newsSources.includes(id))S.newsSources.push(id);
-  }
-  else{
-    S.newsSources=S.newsSources.filter(x=>x!==id);
-  }
-  saveS();
-}
-function exportChats(){
-  const d=JSON.stringify(getChats(curUser),null,2);
-  Object.assign(document.createElement('a'),{
-    href:URL.createObjectURL(new Blob([d],{
-      type:'application/json'
-    })
-    ),download:`zippy-${curUser}-${new Date().toISOString().split('T')[0]}.json`
-  })
-  .click();
-}
-function clearAll(){
-  if(!confirm('⚠️ Delete ALL conversations? This cannot be undone.'))return;
-  localStorage.removeItem('zp_c_'+curUser);
-  newChat();
-  loadSB();
-  showT('🗑️','Cleared','All data deleted');
-}
-const getUsers=()=>{
-  try{
-    return JSON.parse(localStorage.getItem('zp_u')||'{}');
-  }
-  catch{
-    return{
-    };
-  }
-};
-const saveUsers=u=>{
-  try{
-    localStorage.setItem('zp_u',JSON.stringify(u));
-  }
-  catch{
-  }
-};
-const getChats=usr=>{
-  try{
-    return JSON.parse(localStorage.getItem('zp_c_'+usr)||'[]');
-  }
-  catch{
-    return[];
-  }
-};
+function tglSrc(id,on){if(on){if(!S.newsSources.includes(id))S.newsSources.push(id);}else{S.newsSources=S.newsSources.filter(x=>x!==id);}saveS();}
+function exportChats(){const d=JSON.stringify(getChats(curUser),null,2);Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([d],{type:'application/json'})),download:`zippy-${curUser}-${new Date().toISOString().split('T')[0]}.json`}).click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL conversations? This cannot be undone.'))return;localStorage.removeItem('zp_c_'+curUser);newChat();loadSB();showT('🗑️','Cleared','All data deleted');}
+
+const getUsers=()=>{try{return JSON.parse(localStorage.getItem('zp_u')||'{}');}catch{return{};}};
+const saveUsers=u=>{try{localStorage.setItem('zp_u',JSON.stringify(u));}catch{}};
+const getChats=usr=>{try{return JSON.parse(localStorage.getItem('zp_c_'+usr)||'[]');}catch{return[];}};
 function saveChats(usr,chats){
   const key='zp_c_'+usr;
-  const slim=chats.slice(-MAX_HIST_CHATS).map(c=>({
-    id:c.id,title:c.title,ts:c.ts,
-    dispMsgs:(c.dispMsgs||[]).slice(-MAX_HIST_MSGS).map(m=>({
-      role:m.role,content:typeof m.content==='string'?m.content.substring(0,CONTENT_CAP):m.content,time:m.time,lu:m.lu,files:(m.files||[]).map(f=>({
-        name:f.name,type:f.type,size:f.size,dataUrl:null
-      })
-      )
-    })
-    ),
-    apiHist:(c.apiHist||[]).slice(-16).map(m=>({
-      role:m.role,content:typeof m.content==='string'?m.content.substring(0,1200):m.content
-    })
-    )
-  })
-  );
-  for(let n=slim.length;
-  n>=1;
-  n--){
-    try{
-      localStorage.setItem(key,JSON.stringify(slim.slice(-n)));
-      return;
-    }
-    catch(e){
-      if(e.name!=='QuotaExceededError')break;
-    }
-  }
-  try{
-    const cur=slim.find(c=>c.id===curId);
-    if(cur)localStorage.setItem(key,JSON.stringify([cur]));
-  }
-  catch{
-  }
+  const slim=chats.slice(-MAX_HIST_CHATS).map(c=>({id:c.id,title:c.title,ts:c.ts,
+    dispMsgs:(c.dispMsgs||[]).slice(-MAX_HIST_MSGS).map(m=>({role:m.role,content:typeof m.content==='string'?m.content.substring(0,CONTENT_CAP):m.content,time:m.time,lu:m.lu,files:(m.files||[]).map(f=>({name:f.name,type:f.type,size:f.size,dataUrl:null}))})),
+    apiHist:(c.apiHist||[]).slice(-16).map(m=>({role:m.role,content:typeof m.content==='string'?m.content.substring(0,1200):m.content}))}));
+  for(let n=slim.length;n>=1;n--){try{localStorage.setItem(key,JSON.stringify(slim.slice(-n)));return;}catch(e){if(e.name!=='QuotaExceededError')break;}}
+  try{const cur=slim.find(c=>c.id===curId);if(cur)localStorage.setItem(key,JSON.stringify([cur]));}catch{}
 }
+
 // SYSTEM PROMPT — language instruction placed first and strongest
 function buildSys(){
   const now=new Date();
-  const ds=now.toLocaleDateString('en-IN',{
-    weekday:'long',year:'numeric',month:'long',day:'numeric'
-  });
-  const ts=now.toLocaleTimeString('en-IN',{
-    hour:'2-digit',minute:'2-digit'
-  });
-  const lang=getLang();
-  let p='';
+  const ds=now.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const lang=getLang();let p='';
   if(lang.prompt){
     p+=`╔══════════════════════════════════════╗\n`;
     p+=`║  ⚠️  MANDATORY LANGUAGE INSTRUCTION  ║\n`;
@@ -1286,13 +936,9 @@ function buildSys(){
     p+=`════════════════════════════════════════\n\n`;
   }
   p+=`[System: You are Zippy AI — a highly accurate, helpful assistant. Today is ${ds}, ${ts} IST.]\n\n`;
-  const tones={
-    friendly:'Respond warmly and encouragingly.',casual:'Respond like a knowledgeable friend — casual and direct.',formal:'Respond formally and professionally.',technical:'Respond with technical depth and precision.',concise:'Be extremely concise. Answer directly with no filler.'
-  };
+  const tones={friendly:'Respond warmly and encouragingly.',casual:'Respond like a knowledgeable friend — casual and direct.',formal:'Respond formally and professionally.',technical:'Respond with technical depth and precision.',concise:'Be extremely concise. Answer directly with no filler.'};
   p+=(tones[S.tone]||tones.friendly)+'\n';
-  const lens={
-    short:'Keep responses to 2-3 sentences unless more is essential.',standard:'Provide complete, well-structured responses.',detailed:'Be thorough with examples and context.',full:'Be comprehensive, covering all aspects.'
-  };
+  const lens={short:'Keep responses to 2-3 sentences unless more is essential.',standard:'Provide complete, well-structured responses.',detailed:'Be thorough with examples and context.',full:'Be comprehensive, covering all aspects.'};
   p+=(lens[S.len]||lens.standard)+'\n';
   if(!S.useEmoji)p+='Do not use emojis.\n';
   if(S.useTables)p+='Use markdown tables for comparisons.\n';
@@ -1305,195 +951,68 @@ function buildSys(){
   if(S.webSearch){
     const preferred=NEWS_SRCS.filter(s=>S.newsSources.includes(s.id)).map(s=>`${s.name} (${s.domain})`);
     p+=`\n[NEWS & CURRENT EVENTS — STRICT RULES]\nCRITICAL: For any news or current events query:\n1. Search for and report REAL, VERIFIED facts only.\n2. PREFERRED Indian sources (cite these over Wikipedia or Google News):\n   ${preferred.join(', ')}\n3. For international news: BBC (bbc.com), Reuters (reuters.com), AP News (apnews.com), Bloomberg (bloomberg.com), The Guardian (theguardian.com)\n4. NEVER use Wikipedia as a primary news source for current events.\n5. ALWAYS include the exact date of the news story.\n6. NEVER say you cannot access real-time data — use web search.\n7. If a fact is uncertain, write "(unverified)" next to it.\n8. Give equal coverage to all relevant reputable sources, not just one.\n`;
-    const ndMap={
-      brief:'Give a 2-3 sentence summary with source and date.',detailed:'Write a detailed multi-paragraph report with dates, key people, and sources.',indepth:'Write a comprehensive, analytical report with full context, multiple sources, and timeline.'
-    };
+    const ndMap={brief:'Give a 2-3 sentence summary with source and date.',detailed:'Write a detailed multi-paragraph report with dates, key people, and sources.',indepth:'Write a comprehensive, analytical report with full context, multiple sources, and timeline.'};
     p+=(ndMap[S.newsDepth]||ndMap.detailed)+'\n';
   }
   p+=`\n[FINANCIAL DATA — ACCURACY RULES]\nFor stock prices, gold prices, silver, oil, commodity prices, exchange rates:\n1. ⚠️ ALWAYS state: "Prices change every second — this data may be delayed."\n2. Always mention the date/time of your data.\n3. For Indian stocks: recommend NSE (nseindia.com) or BSE (bseindia.com) for live prices.\n4. For gold/silver/commodities: recommend MCX India (mcxindia.com) or Moneycontrol (moneycontrol.com).\n5. Never present a specific price as guaranteed current without a disclaimer.\n`;
   if(S.currProb)p+=`\n[PROBABILITY & FORECASTS]: Use current data as of ${ds}. Always state your data source and confidence level.\n`;
   return p;
 }
+
 // OCR
 let tessReady=false;
-function loadTess(){
-  return new Promise(res=>{
-    if(tessReady){
-      res();
-      return;
-    }
-    const s=document.createElement('script');
-    s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/tesseract.min.js';
-    s.onload=()=>{
-      tessReady=true;
-      res();
-    };
-    s.onerror=()=>res();
-    document.head.appendChild(s);
-  });
-}
-async function runOCR(obj){
-  try{
-    await loadTess();
-    if(typeof Tesseract==='undefined'){
-      obj.ocrText='';
-      obj.ocrDone=true;
-      updatePrev();
-      return;
-    }
-    const w=await Tesseract.createWorker('eng');
-    const{
-      data:{
-        text
-      }
-    }
-    =await w.recognize(obj.dataUrl);
-    await w.terminate();
-    obj.ocrText=text.trim();
-  }
-  catch(e){
-    console.warn('OCR fail',e);
-    obj.ocrText='';
-  }
-  obj.ocrDone=true;
-  updatePrev();
-}
+function loadTess(){return new Promise(res=>{if(tessReady){res();return;}const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/tesseract.min.js';s.onload=()=>{tessReady=true;res();};s.onerror=()=>res();document.head.appendChild(s);});}
+async function runOCR(obj){try{await loadTess();if(typeof Tesseract==='undefined'){obj.ocrText='';obj.ocrDone=true;updatePrev();return;}const w=await Tesseract.createWorker('eng');const{data:{text}}=await w.recognize(obj.dataUrl);await w.terminate();obj.ocrText=text.trim();}catch(e){console.warn('OCR fail',e);obj.ocrText='';}obj.ocrDone=true;updatePrev();}
+
 // FILES
 function handleFiles(ev){
   Array.from(ev.target.files).forEach(f=>{
-    if(attached.length>=MAX_FILES){
-      showT('⚠️','Limit','Max '+MAX_FILES+' files');
-      return;
-    }
+    if(attached.length>=MAX_FILES){showT('⚠️','Limit','Max '+MAX_FILES+' files');return;}
     const ext=f.name.split('.').pop().toLowerCase();
-    const obj={
-      name:f.name,type:f.type,size:f.size,dataUrl:null,textContent:null,ocrText:null,ocrDone:false
-    };
+    const obj={name:f.name,type:f.type,size:f.size,dataUrl:null,textContent:null,ocrText:null,ocrDone:false};
     const r=new FileReader();
-    r.onload=e=>{
-      obj.dataUrl=e.target.result;
-      if(f.type.startsWith('image/')){
-        attached.push(obj);
-        updatePrev();
-        runOCR(obj);
-      }
+    r.onload=e=>{obj.dataUrl=e.target.result;
+      if(f.type.startsWith('image/')){attached.push(obj);updatePrev();runOCR(obj);}
       else if(['text/plain','text/csv','application/json'].includes(f.type)||['txt','csv','json','md','log','xml','html','py','js','ts','java','c','cpp','go','rb'].includes(ext)){
-        const tr=new FileReader();
-        tr.onload=te=>{
-          obj.textContent=te.target.result;
-          obj.ocrDone=true;
-          attached.push(obj);
-          updatePrev();
-        };
-        tr.readAsText(f);
-      }
-      else{
-        showT('⚠️','Unsupported',`${f.name}: use images or text/CSV/JSON files`);
-      }
-    };
-    r.readAsDataURL(f);
-  });
-  ev.target.value='';
+        const tr=new FileReader();tr.onload=te=>{obj.textContent=te.target.result;obj.ocrDone=true;attached.push(obj);updatePrev();};tr.readAsText(f);
+      }else{showT('⚠️','Unsupported',`${f.name}: use images or text/CSV/JSON files`);}
+    };r.readAsDataURL(f);
+  });ev.target.value='';
 }
 async function openCamera(){
-  if(!navigator.mediaDevices?.getUserMedia){
-    alert('Camera not supported');
-    return;
-  }
-  if(attached.length>=MAX_FILES){
-    showT('⚠️','Limit','Max '+MAX_FILES+' files');
-    return;
-  }
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({
-      video:{
-        facingMode:'environment'
-      },
-      audio:false
-    });
-    const mo=document.createElement('div');
-    mo.className='modal-ov';
+  if(!navigator.mediaDevices?.getUserMedia){alert('Camera not supported');return;}
+  if(attached.length>=MAX_FILES){showT('⚠️','Limit','Max '+MAX_FILES+' files');return;}
+  try{const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    const mo=document.createElement('div');mo.className='modal-ov';
     mo.innerHTML=`<div class="modal-box" style="max-width:600px"><div class="modal-hdr" style="text-align:left;padding:20px 24px 16px"><div class="modal-title">📷 Camera</div><div class="modal-sub">Capture document or image</div></div><div class="modal-body"><video id="cv" autoplay playsinline style="width:100%;border-radius:12px;background:#000;max-height:320px;object-fit:cover"></video><canvas id="cc" style="display:none"></canvas><div class="modal-acts" style="margin-top:14px"><button class="modal-btn cancel" id="cCan">Cancel</button><button class="modal-btn primary" id="cCap">📸 Capture</button></div></div></div>`;
-    document.body.appendChild(mo);
-    document.getElementById('cv').srcObject=stream;
-    document.getElementById('cCan').onclick=()=>{
-      stream.getTracks().forEach(t=>t.stop());
-      mo.remove();
-    };
-    document.getElementById('cCap').onclick=()=>{
-      const v=document.getElementById('cv'),c=document.getElementById('cc');
-      c.width=v.videoWidth;
-      c.height=v.videoHeight;
-      c.getContext('2d').drawImage(v,0,0);
-      c.toBlob(blob=>{
-        const f=new File([blob],`photo_${Date.now()}.jpg`,{
-          type:'image/jpeg'
-        });
-        const obj={
-          name:f.name,type:f.type,size:f.size,dataUrl:c.toDataURL('image/jpeg'),textContent:null,ocrText:null,ocrDone:false
-        };
-        attached.push(obj);
-        updatePrev();
-        runOCR(obj);
-        stream.getTracks().forEach(t=>t.stop());
-        mo.remove();
-      },
-      'image/jpeg',0.9);
-    };
-  }
-  catch(e){
-    alert('Camera error: '+e.message);
-  }
+    document.body.appendChild(mo);document.getElementById('cv').srcObject=stream;
+    document.getElementById('cCan').onclick=()=>{stream.getTracks().forEach(t=>t.stop());mo.remove();};
+    document.getElementById('cCap').onclick=()=>{const v=document.getElementById('cv'),c=document.getElementById('cc');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(blob=>{const f=new File([blob],`photo_${Date.now()}.jpg`,{type:'image/jpeg'});const obj={name:f.name,type:f.type,size:f.size,dataUrl:c.toDataURL('image/jpeg'),textContent:null,ocrText:null,ocrDone:false};attached.push(obj);updatePrev();runOCR(obj);stream.getTracks().forEach(t=>t.stop());mo.remove();},'image/jpeg',0.9);};
+  }catch(e){alert('Camera error: '+e.message);}
 }
 function updatePrev(){
-  const c=document.getElementById('prevBar');
-  c.innerHTML='';
-  if(!attached.length){
-    c.style.display='none';
-    return;
-  }
-  c.style.display='flex';
+  const c=document.getElementById('prevBar');c.innerHTML='';
+  if(!attached.length){c.style.display='none';return;}c.style.display='flex';
   attached.forEach((f,i)=>{
-    const item=document.createElement('div');
-    item.className='prev-item';
+    const item=document.createElement('div');item.className='prev-item';
     if(f.type.startsWith('image/')){
-      let b='';
-      if(!f.ocrDone)b=`<div class="prev-badge bdg-scan">🔍 Scanning…</div>`;
+      let b='';if(!f.ocrDone)b=`<div class="prev-badge bdg-scan">🔍 Scanning…</div>`;
       else if(f.ocrText&&f.ocrText.length>3)b=`<div class="prev-badge bdg-ok">✓ ${f.ocrText.length} chars</div>`;
       else b=`<div class="prev-badge bdg-none">No text found</div>`;
       item.innerHTML=`<button class="prev-rm" onclick="rmFile(${i})">×</button><img src="${f.dataUrl}" class="prev-img" alt="${esc(f.name)}"/>${b}`;
-    }
-    else{
-      const hasContent=f.textContent&&f.textContent.length>0;
+    }else{const hasContent=f.textContent&&f.textContent.length>0;
       const badge=hasContent?`<div class="prev-badge bdg-ok">✓ ${f.textContent.length}c</div>`:`<div class="prev-badge bdg-scan">Reading…</div>`;
       item.innerHTML=`<div class="prev-file"><button class="prev-rm" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(220,38,38,.88);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;z-index:2" onclick="rmFile(${i})">×</button><div class="prev-file-ico">${getFI(f.type,f.name)}</div><div class="prev-file-name">${esc(f.name)}</div>${badge}</div>`;
-    }
-    c.appendChild(item);
+    }c.appendChild(item);
   });
 }
-function rmFile(i){
-  attached.splice(i,1);
-  updatePrev();
-}
+function rmFile(i){attached.splice(i,1);updatePrev();}
 function validateFiles(){
-  const stillScan=attached.some(f=>f.type.startsWith('image/')&&!f.ocrDone);
-  if(stillScan)return{
-    ok:false,reason:'scanning'
-  };
-  const noText=[],valid=[];
-  attached.forEach(f=>{
-    if(f.type.startsWith('image/')){
-      if(!f.ocrText||f.ocrText.length<=3)noText.push(f.name);
-      else valid.push(f);
-    }
-    else{
-      valid.push(f);
-    }
-  });
-  return{
-    ok:true,noText,valid
-  };
+  const stillScan=attached.some(f=>f.type.startsWith('image/')&&!f.ocrDone);if(stillScan)return{ok:false,reason:'scanning'};
+  const noText=[],valid=[];attached.forEach(f=>{if(f.type.startsWith('image/')){if(!f.ocrText||f.ocrText.length<=3)noText.push(f.name);else valid.push(f);}else{valid.push(f);}});
+  return{ok:true,noText,valid};
 }
+
 // PAYLOAD BUILDER
 function buildPayload(text,files,hist){
   const sys=buildSys(),lang=getLang();
@@ -1502,20 +1021,12 @@ function buildPayload(text,files,hist){
   const isProb=/\b(probability|chance|likelihood|odds|percent|predict|forecast|weather|rain)\b/i.test(text);
   const isCmp=/\b(compare|difference|vs|versus|between)\b/i.test(text);
   let msg=sys+'\n\n';
-  if(files.length){
-    const hasContent=files.some(f=>(f.ocrText&&f.ocrText.length>3)||f.textContent);
-    if(hasContent){
-      msg+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📎 ATTACHED FILE CONTENT — READ CAREFULLY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
-      files.forEach((f,i)=>{
-        msg+=`FILE ${i+1}: "${f.name}" (${f.type||'unknown'}, ${fmtSz(f.size)})\n`;
+  if(files.length){const hasContent=files.some(f=>(f.ocrText&&f.ocrText.length>3)||f.textContent);
+    if(hasContent){msg+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📎 ATTACHED FILE CONTENT — READ CAREFULLY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      files.forEach((f,i)=>{msg+=`FILE ${i+1}: "${f.name}" (${f.type||'unknown'}, ${fmtSz(f.size)})\n`;
         if(f.type.startsWith('image/')&&f.ocrText&&f.ocrText.length>3)msg+=`EXTRACTED TEXT:\n${f.ocrText}\n\n---\n`;
-        else if(f.textContent){
-          const content=f.textContent.length>10000?f.textContent.substring(0,10000)+'\n[...truncated]':f.textContent;
-          msg+=`FULL CONTENT:\n${content}\n\n---\n`;
-        }
-      });
-      msg+='\n⚠ Base your answer on the file content above.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
-    }
+        else if(f.textContent){const content=f.textContent.length>10000?f.textContent.substring(0,10000)+'\n[...truncated]':f.textContent;msg+=`FULL CONTENT:\n${content}\n\n---\n`;}
+      });msg+='\n⚠ Base your answer on the file content above.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';}
   }
   if(isNews)msg+=`[NEWS QUERY — search for REAL current news; use preferred sources; include exact dates]\n\n`;
   if(isFinancial)msg+=`[FINANCIAL QUERY — include delay disclaimer; recommend live price sources (NSE/BSE/MCX)]\n\n`;
@@ -1523,20 +1034,13 @@ function buildPayload(text,files,hist){
   if(isCmp&&S.useTables)msg+=`[Use a detailed markdown comparison table]\n\n`;
   if(lang.prompt)msg+=`[LANGUAGE REMINDER: ${lang.prompt}]\n\n`;
   msg+=`User: ${text}`;
-  return{
-    message:msg,history:hist
-  };
+  return{message:msg,history:hist};
 }
+
 // SOURCE CARD — uses favicon images
 function srcCard(s){
-  const url=s.url||'#';
-  let domain='';
-  try{
-    const u=new URL(url);
-    domain=u.hostname.replace(/^www\./,'');
-  }
-  catch{
-  }
+  const url=s.url||'#';let domain='';
+  try{const u=new URL(url);domain=u.hostname.replace(/^www\./,'');}catch{}
   const name=DOMAIN_NAMES[domain]||(domain.split('.')[0]||'Source');
   const dispName=name.charAt(0).toUpperCase()+name.slice(1);
   const title=(s.title&&s.title!==url&&s.title.length>3)?s.title:dispName;
@@ -1547,430 +1051,118 @@ function srcCard(s){
   const iconHtml=`<div class="src-ico-badge" style="background:${bgColor}"><img src="${faviconUrl}" alt="${esc(dispName)}" onerror="this.style.display='none';this.nextSibling.style.display='block'" style="width:20px;height:20px;border-radius:3px"/><span style="display:none;color:#fff;font-family:Syne,sans-serif;font-weight:800;font-size:13px">${initial}</span></div>`;
   return `<a class="src-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${iconHtml}<div class="src-info"><span class="src-name">${esc(dispName)}</span><span class="src-url">${esc(title.substring(0,55))}</span></div><svg class="src-arr" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;
 }
+
 // SOURCE PANEL POPUP
 function showSrcPanel(btn,srcKey){
   const ex=document.getElementById('src-panel-popup');
-  if(ex){
-    if(ex.dataset.key===srcKey){
-      ex.remove();
-      return;
-    }
-    ex.remove();
-  }
-  const sources=sourcesMap[srcKey];
-  if(!sources||!sources.length)return;
-  const panel=document.createElement('div');
-  panel.className='src-panel';
-  panel.id='src-panel-popup';
-  panel.dataset.key=srcKey;
+  if(ex){if(ex.dataset.key===srcKey){ex.remove();return;}ex.remove();}
+  const sources=sourcesMap[srcKey];if(!sources||!sources.length)return;
+  const panel=document.createElement('div');panel.className='src-panel';panel.id='src-panel-popup';panel.dataset.key=srcKey;
   panel.innerHTML=`<div class="src-panel-hdr"><span>🔗 Sources (${sources.length})</span><button class="src-panel-cls" onclick="document.getElementById('src-panel-popup')?.remove()">✕</button></div><div class="src-panel-body">${sources.map(s=>srcCard(s)).join('')}</div>`;
   document.body.appendChild(panel);
   const rect=btn.getBoundingClientRect(),pw=Math.min(360,window.innerWidth-32);
   let left=rect.left,bottom=window.innerHeight-rect.top+8;
-  if(left+pw>window.innerWidth-8)left=window.innerWidth-pw-8;
-  if(left<8)left=8;
+  if(left+pw>window.innerWidth-8)left=window.innerWidth-pw-8;if(left<8)left=8;
   const panelH=Math.min(sources.length*70+60,400);
   if(bottom+panelH>window.innerHeight-20)panel.style.cssText=`position:fixed;top:${rect.bottom+8}px;left:${left}px;width:${pw}px;z-index:600`;
   else panel.style.cssText=`position:fixed;bottom:${bottom}px;left:${left}px;width:${pw}px;z-index:600`;
-  setTimeout(()=>{
-    function close(e){
-      if(!panel.contains(e.target)&&e.target!==btn){
-        panel.remove();
-        document.removeEventListener('click',close);
-      }
-    }
-    document.addEventListener('click',close);
-  },
-  100);
+  setTimeout(()=>{function close(e){if(!panel.contains(e.target)&&e.target!==btn){panel.remove();document.removeEventListener('click',close);}}document.addEventListener('click',close);},100);
 }
+
 // HIGHLIGHT TOGGLE
 function toggleHighlight(btn,bblId){
-  const bbl=document.getElementById(bblId);
-  if(!bbl)return;
+  const bbl=document.getElementById(bblId);if(!bbl)return;
   const on=bbl.classList.toggle('hl-mode');
   btn.classList.toggle('hl-on',on);
   btn.textContent=on?'✨ Remove Highlights':'✨ Highlight';
   if(on)showT('✨','Highlights on','Bold = key facts · Headers = sections');
 }
+
 // THEME
-function syncIco(){
-  const i=getTheme()==='dark'?'🌙':'☀️';
-  ['atb1','atb2','atb3','thico'].forEach(id=>{
-    const e=document.getElementById(id);
-    if(e)e.textContent=i;
-  });
-}
-function getTheme(){
-  return document.documentElement.getAttribute('data-theme')||'light';
-}
-function setTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('zp_theme',t);
-  syncIco();
-}
-function toggleTheme(){
-  setTheme(getTheme()==='dark'?'light':'dark');
-}
-(()=>{
-  setTheme(localStorage.getItem('zp_theme')||'light');
-})
-();
+function syncIco(){const i=getTheme()==='dark'?'🌙':'☀️';['atb1','atb2','atb3','thico'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=i;});}
+function getTheme(){return document.documentElement.getAttribute('data-theme')||'light';}
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('zp_theme',t);syncIco();}
+function toggleTheme(){setTheme(getTheme()==='dark'?'light':'dark');}
+(()=>{setTheme(localStorage.getItem('zp_theme')||'light');})();
+
 // AUTH
-function showReg(){
-  hide('login-screen');
-  show('reg-screen');
-}
-function showLogin(){
-  hide('reg-screen');
-  hide('forgot-screen');
-  show('login-screen');
-}
-function showForgot(){
-  hide('login-screen');
-  show('forgot-screen');
-  resetForgot();
-}
-function show(id){
-  document.getElementById(id).style.display='flex';
-}
-function hide(id){
-  document.getElementById(id).style.display='none';
-}
-function gv(id){
-  return document.getElementById(id).value.trim();
-}
-function showErr(id,m){
-  const e=document.getElementById(id);
-  e.textContent=m;
-  e.style.display='block';
-}
+function showReg(){hide('login-screen');show('reg-screen');}
+function showLogin(){hide('reg-screen');hide('forgot-screen');show('login-screen');}
+function showForgot(){hide('login-screen');show('forgot-screen');resetForgot();}
+function show(id){document.getElementById(id).style.display='flex';}
+function hide(id){document.getElementById(id).style.display='none';}
+function gv(id){return document.getElementById(id).value.trim();}
+function showErr(id,m){const e=document.getElementById(id);e.textContent=m;e.style.display='block';}
 function eyeToggle(id,btn){
-  const inp=document.getElementById(id),sh=inp.type==='password';
-  inp.type=sh?'text':'password';
+  const inp=document.getElementById(id),sh=inp.type==='password';inp.type=sh?'text':'password';
   btn.querySelector('svg').innerHTML=sh?`<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`:`<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
 }
 function doReg(e){
-  e.preventDefault();
-  const u=gv('ru'),p=gv('rp'),p2=gv('rp2'),q1=gv('rq1'),a1=gv('ra1').toLowerCase(),q2=gv('rq2'),a2=gv('ra2').toLowerCase();
-  if(!u||!p){
-    showErr('rerr','❌ Username and password are required');
-    return;
-  }
-  if(p.length<4){
-    showErr('rerr','❌ Password must be at least 4 characters');
-    return;
-  }
-  if(p!==p2){
-    showErr('rerr','❌ Passwords do not match');
-    return;
-  }
-  if(!q1||!a1||!q2||!a2){
-    showErr('rerr','❌ Please answer both security questions');
-    return;
-  }
-  const users=getUsers();
-  if(users[u]){
-    showErr('rerr','❌ Username already taken');
-    return;
-  }
-  users[u]={
-    pw:p,q1,a1,q2,a2
-  };
-  saveUsers(users);
-  document.getElementById('rerr').style.display='none';
-  trigSave(u,p);
-  showLogin();
-  document.getElementById('lu').value=u;
-  document.getElementById('lp').focus();
+  e.preventDefault();const u=gv('ru'),p=gv('rp'),p2=gv('rp2'),q1=gv('rq1'),a1=gv('ra1').toLowerCase(),q2=gv('rq2'),a2=gv('ra2').toLowerCase();
+  if(!u||!p){showErr('rerr','❌ Username and password are required');return;}
+  if(p.length<4){showErr('rerr','❌ Password must be at least 4 characters');return;}
+  if(p!==p2){showErr('rerr','❌ Passwords do not match');return;}
+  if(!q1||!a1||!q2||!a2){showErr('rerr','❌ Please answer both security questions');return;}
+  const users=getUsers();if(users[u]){showErr('rerr','❌ Username already taken');return;}
+  users[u]={pw:p,q1,a1,q2,a2};saveUsers(users);
+  document.getElementById('rerr').style.display='none';trigSave(u,p);showLogin();
+  document.getElementById('lu').value=u;document.getElementById('lp').focus();
 }
 function doLogin(e){
-  e.preventDefault();
-  const u=gv('lu'),p=gv('lp');
-  const ud=getUsers()[u];
-  const pw=ud?(typeof ud==='string'?ud:ud.pw):null;
-  if(!pw||pw!==p){
-    document.getElementById('lerr').style.display='block';
-    return;
-  }
+  e.preventDefault();const u=gv('lu'),p=gv('lp');
+  const ud=getUsers()[u];const pw=ud?(typeof ud==='string'?ud:ud.pw):null;
+  if(!pw||pw!==p){document.getElementById('lerr').style.display='block';return;}
   document.getElementById('lerr').style.display='none';
-  localStorage.setItem('zp_ls',u);
-  trigSave(u,p);
-  curUser=u;
-  enterChat();
+  localStorage.setItem('zp_ls',u);trigSave(u,p);curUser=u;enterChat();
 }
-function trigSave(u,p){
-  const su=document.getElementById('su'),sp=document.getElementById('sp_');
-  if(su&&sp){
-    su.value=u;
-    sp.value=p;
-    document.getElementById('pw-save-form').dispatchEvent(new Event('submit',{
-      bubbles:true,cancelable:true
-    })
-    );
-  }
-}
-function resetForgot(){
-  ['fs2','fs3','fs4'].forEach(id=>document.getElementById(id).style.display='none');
-  document.getElementById('fs1').style.display='block';
-  ['fe1','fe2','fe3'].forEach(id=>{
-    document.getElementById(id).style.display='none';
-  });
-  document.getElementById('fu').value='';
-  forgotUser='';
-}
-function fS1(){
-  const u=gv('fu');
-  if(!u){
-    showErr('fe1','❌ Enter your username');
-    return;
-  }
-  const ud=getUsers()[u];
-  if(!ud||typeof ud==='string'||!ud.q1){
-    showErr('fe1','❌ Account not found');
-    return;
-  }
-  forgotUser=u;
-  document.getElementById('fq1l').textContent=ud.q1;
-  document.getElementById('fq2l').textContent=ud.q2;
-  document.getElementById('fe1').style.display='none';
-  document.getElementById('fs1').style.display='none';
-  document.getElementById('fs2').style.display='block';
-}
-function fS2(){
-  const a1=gv('fa1').toLowerCase(),a2=gv('fa2').toLowerCase();
-  const ud=getUsers()[forgotUser];
-  if(!a1||!a2){
-    showErr('fe2','❌ Please answer both questions');
-    return;
-  }
-  if(a1!==ud.a1||a2!==ud.a2){
-    showErr('fe2','❌ Wrong answers');
-    return;
-  }
-  document.getElementById('fe2').style.display='none';
-  document.getElementById('ruh').value=forgotUser;
-  document.getElementById('fs2').style.display='none';
-  document.getElementById('fs3').style.display='block';
-}
-function fS3(e){
-  e.preventDefault();
-  const p1=gv('np1'),p2=gv('np2');
-  if(p1.length<4){
-    showErr('fe3','❌ Min 4 characters');
-    return;
-  }
-  if(p1!==p2){
-    showErr('fe3','❌ Passwords do not match');
-    return;
-  }
-  const users=getUsers();
-  users[forgotUser].pw=p1;
-  saveUsers(users);
-  trigSave(forgotUser,p1);
-  document.getElementById('fe3').style.display='none';
-  document.getElementById('fs3').style.display='none';
-  document.getElementById('fs4').style.display='block';
-}
-function doLogout(){
-  stopSpeech();
-  localStorage.removeItem('zp_ls');
-  curUser='';
-  curId=null;
-  apiHist=[];
-  dispMsgs=[];
-  attached=[];
-  hide('chat-screen');
-  show('login-screen');
-  document.getElementById('lp').value='';
-  resetEmpty();
-}
+function trigSave(u,p){const su=document.getElementById('su'),sp=document.getElementById('sp_');if(su&&sp){su.value=u;sp.value=p;document.getElementById('pw-save-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));}}
+function resetForgot(){['fs2','fs3','fs4'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('fs1').style.display='block';['fe1','fe2','fe3'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById('fu').value='';forgotUser='';}
+function fS1(){const u=gv('fu');if(!u){showErr('fe1','❌ Enter your username');return;}const ud=getUsers()[u];if(!ud||typeof ud==='string'||!ud.q1){showErr('fe1','❌ Account not found');return;}forgotUser=u;document.getElementById('fq1l').textContent=ud.q1;document.getElementById('fq2l').textContent=ud.q2;document.getElementById('fe1').style.display='none';document.getElementById('fs1').style.display='none';document.getElementById('fs2').style.display='block';}
+function fS2(){const a1=gv('fa1').toLowerCase(),a2=gv('fa2').toLowerCase();const ud=getUsers()[forgotUser];if(!a1||!a2){showErr('fe2','❌ Please answer both questions');return;}if(a1!==ud.a1||a2!==ud.a2){showErr('fe2','❌ Wrong answers');return;}document.getElementById('fe2').style.display='none';document.getElementById('ruh').value=forgotUser;document.getElementById('fs2').style.display='none';document.getElementById('fs3').style.display='block';}
+function fS3(e){e.preventDefault();const p1=gv('np1'),p2=gv('np2');if(p1.length<4){showErr('fe3','❌ Min 4 characters');return;}if(p1!==p2){showErr('fe3','❌ Passwords do not match');return;}const users=getUsers();users[forgotUser].pw=p1;saveUsers(users);trigSave(forgotUser,p1);document.getElementById('fe3').style.display='none';document.getElementById('fs3').style.display='none';document.getElementById('fs4').style.display='block';}
+function doLogout(){stopSpeech();localStorage.removeItem('zp_ls');curUser='';curId=null;apiHist=[];dispMsgs=[];attached=[];hide('chat-screen');show('login-screen');document.getElementById('lp').value='';resetEmpty();}
 function enterChat(){
-  hide('login-screen');
-  hide('reg-screen');
-  hide('forgot-screen');
+  hide('login-screen');hide('reg-screen');hide('forgot-screen');
   document.getElementById('chat-screen').style.display='flex';
   const ini=curUser.substring(0,2).toUpperCase();
-  document.getElementById('sbav').textContent=ini;
-  document.getElementById('sbuname').textContent=curUser;
+  document.getElementById('sbav').textContent=ini;document.getElementById('sbuname').textContent=curUser;
   document.getElementById('sidebar').classList.toggle('collapsed',!sbOpen);
-  loadSB();
-  newChat();
-  checkOld(curUser);
-  loadS();
-  setTimeout(()=>{
-    loadVoices();
-    autoSwitchVoice(getLang().voiceLang);
-  },
-  500);
+  loadSB();newChat();checkOld(curUser);loadS();
+  setTimeout(()=>{loadVoices();autoSwitchVoice(getLang().voiceLang);},500);
 }
-window.addEventListener('load',()=>{
-  setTheme(localStorage.getItem('zp_theme')||'light');
-  loadS();
-  const s=localStorage.getItem('zp_ls');
-  if(s){
-    const u=getUsers();
-    if(u[s]){
-      curUser=s;
-      enterChat();
-      return;
-    }
-  }
-  document.getElementById('rem').checked=true;
-});
+window.addEventListener('load',()=>{setTheme(localStorage.getItem('zp_theme')||'light');loadS();const s=localStorage.getItem('zp_ls');if(s){const u=getUsers();if(u[s]){curUser=s;enterChat();return;}}document.getElementById('rem').checked=true;});
+
 // SIDEBAR
-function toggleSb(){
-  sbOpen=!sbOpen;
-  document.getElementById('sidebar').classList.toggle('collapsed',!sbOpen);
-  if(window.innerWidth<=768)document.getElementById('sbBack').classList.toggle('show',sbOpen);
-}
-function closeSbMobile(){
-  sbOpen=false;
-  document.getElementById('sidebar').classList.add('collapsed');
-  document.getElementById('sbBack').classList.remove('show');
-}
+function toggleSb(){sbOpen=!sbOpen;document.getElementById('sidebar').classList.toggle('collapsed',!sbOpen);if(window.innerWidth<=768)document.getElementById('sbBack').classList.toggle('show',sbOpen);}
+function closeSbMobile(){sbOpen=false;document.getElementById('sidebar').classList.add('collapsed');document.getElementById('sbBack').classList.remove('show');}
 let toastTmr=null;
-function showT(ico,ttl,msg){
-  document.querySelector('.toast-ico').textContent=ico;
-  document.getElementById('t-ttl').textContent=ttl;
-  document.getElementById('t-msg').textContent=msg;
-  const t=document.getElementById('toast');
-  t.classList.add('show');
-  clearTimeout(toastTmr);
-  toastTmr=setTimeout(()=>t.classList.remove('show'),3200);
-}
-function checkOld(user){
-  const chats=getChats(user),now=Date.now(),cut=OLD_DAYS*864e5;
-  const old=chats.filter(c=>(now-c.ts)>cut);
-  if(!old.length)return;
-  showSimpleModal('🗑️ Clean up?',`${old.length} old chat${old.length>1?'s':''} found. Delete?`,()=>{
-    saveChats(user,chats.filter(c=>(now-c.ts)<=cut));
-    loadSB();
-  });
-}
-function showSimpleModal(title,msg,onOk){
-  const ov=document.createElement('div');
-  ov.className='modal-ov';
-  ov.innerHTML=`<div class="modal-box"><div class="modal-hdr" style="text-align:left;padding:22px 24px 18px"><div class="modal-title">${title}</div><div class="modal-sub">${msg}</div></div><div class="modal-body" style="padding:16px 24px 20px"><div class="modal-acts"><button class="modal-btn cancel" id="mc">Cancel</button><button class="modal-btn primary" id="mo">OK</button></div></div></div>`;
-  document.body.appendChild(ov);
-  ov.querySelector('#mc').onclick=()=>ov.remove();
-  ov.querySelector('#mo').onclick=()=>{
-    ov.remove();
-    onOk();
-  };
-  ov.addEventListener('click',e=>{
-    if(e.target===ov)ov.remove();
-  });
-}
-function showDelModal(chatTitle,onConfirm){
-  const ov=document.createElement('div');
-  ov.className='modal-ov';
-  ov.innerHTML=`<div class="modal-box"><div class="modal-hdr"><div class="del-modal-icon">🗑️</div><div class="modal-title">Delete this conversation?</div><div class="modal-sub">Permanently delete this chat.</div></div><div class="modal-body"><div class="modal-chat-preview"><span class="modal-chat-ico">💬</span><div><div class="modal-chat-title">${esc(chatTitle||'Untitled')}</div><div class="modal-chat-meta">All messages will be erased</div></div></div><div class="modal-warn-box"><span class="modal-warn-ico">⚠️</span><div class="modal-warn-txt"><strong>This cannot be undone.</strong></div></div><div class="modal-acts"><button class="modal-btn cancel" id="dc">Keep it</button><button class="modal-btn danger" id="dd">🗑️ Delete forever</button></div></div></div>`;
-  document.body.appendChild(ov);
-  ov.querySelector('#dc').onclick=()=>ov.remove();
-  ov.querySelector('#dd').onclick=()=>{
-    ov.remove();
-    onConfirm();
-  };
-  ov.addEventListener('click',e=>{
-    if(e.target===ov)ov.remove();
-  });
-}
+function showT(ico,ttl,msg){document.querySelector('.toast-ico').textContent=ico;document.getElementById('t-ttl').textContent=ttl;document.getElementById('t-msg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),3200);}
+function checkOld(user){const chats=getChats(user),now=Date.now(),cut=OLD_DAYS*864e5;const old=chats.filter(c=>(now-c.ts)>cut);if(!old.length)return;showSimpleModal('🗑️ Clean up?',`${old.length} old chat${old.length>1?'s':''} found. Delete?`,()=>{saveChats(user,chats.filter(c=>(now-c.ts)<=cut));loadSB();});}
+function showSimpleModal(title,msg,onOk){const ov=document.createElement('div');ov.className='modal-ov';ov.innerHTML=`<div class="modal-box"><div class="modal-hdr" style="text-align:left;padding:22px 24px 18px"><div class="modal-title">${title}</div><div class="modal-sub">${msg}</div></div><div class="modal-body" style="padding:16px 24px 20px"><div class="modal-acts"><button class="modal-btn cancel" id="mc">Cancel</button><button class="modal-btn primary" id="mo">OK</button></div></div></div>`;document.body.appendChild(ov);ov.querySelector('#mc').onclick=()=>ov.remove();ov.querySelector('#mo').onclick=()=>{ov.remove();onOk();};ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});}
+function showDelModal(chatTitle,onConfirm){const ov=document.createElement('div');ov.className='modal-ov';ov.innerHTML=`<div class="modal-box"><div class="modal-hdr"><div class="del-modal-icon">🗑️</div><div class="modal-title">Delete this conversation?</div><div class="modal-sub">Permanently delete this chat.</div></div><div class="modal-body"><div class="modal-chat-preview"><span class="modal-chat-ico">💬</span><div><div class="modal-chat-title">${esc(chatTitle||'Untitled')}</div><div class="modal-chat-meta">All messages will be erased</div></div></div><div class="modal-warn-box"><span class="modal-warn-ico">⚠️</span><div class="modal-warn-txt"><strong>This cannot be undone.</strong></div></div><div class="modal-acts"><button class="modal-btn cancel" id="dc">Keep it</button><button class="modal-btn danger" id="dd">🗑️ Delete forever</button></div></div></div>`;document.body.appendChild(ov);ov.querySelector('#dc').onclick=()=>ov.remove();ov.querySelector('#dd').onclick=()=>{ov.remove();onConfirm();};ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});}
+
 // CHAT LIST
 function loadSB(){
-  const chats=getChats(curUser),el=document.getElementById('sblist');
-  el.innerHTML='';
-  if(!chats.length){
-    el.innerHTML=`<div class="sb-empty"><div class="sb-empty-ico">💬</div>No conversations yet.<br>Start a new chat!</div>`;
-    return;
-  }
+  const chats=getChats(curUser),el=document.getElementById('sblist');el.innerHTML='';
+  if(!chats.length){el.innerHTML=`<div class="sb-empty"><div class="sb-empty-ico">💬</div>No conversations yet.<br>Start a new chat!</div>`;return;}
   [...chats].reverse().forEach(c=>{
     const d=new Date(c.ts),now=new Date();
-    const ts=d.toDateString()===now.toDateString()?d.toLocaleTimeString([],{
-      hour:'2-digit',minute:'2-digit'
-    })
-    :d.toLocaleDateString([],{
-      month:'short',day:'numeric'
-    });
-    const div=document.createElement('div');
-    div.className='sb-item'+(c.id===curId?' active':'');
-    const ico=document.createElement('span');
-    ico.className='sb-item-ico';
-    ico.textContent='💬';
-    const info=document.createElement('div');
-    info.className='sb-item-info';
-    info.innerHTML=`<div class="sb-item-title">${esc(c.title)}</div><div class="sb-item-time">${ts}</div>`;
-    const del=document.createElement('button');
-    del.className='sb-del';
-    del.title='Delete';
-    del.textContent='✕';
-    div.appendChild(ico);
-    div.appendChild(info);
-    div.appendChild(del);
-    div.addEventListener('click',()=>{
-      loadChat(c.id);
-      if(window.innerWidth<=768)closeSbMobile();
-    });
-    del.addEventListener('click',e=>{
-      e.stopPropagation();
-      e.preventDefault();
-      showDelModal(c.title,()=>{
-        const updated=getChats(curUser).filter(x=>x.id!==c.id);
-        saveChats(curUser,updated);
-        if(curId===c.id)newChat();
-        else loadSB();
-      });
-    });
+    const ts=d.toDateString()===now.toDateString()?d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString([],{month:'short',day:'numeric'});
+    const div=document.createElement('div');div.className='sb-item'+(c.id===curId?' active':'');
+    const ico=document.createElement('span');ico.className='sb-item-ico';ico.textContent='💬';
+    const info=document.createElement('div');info.className='sb-item-info';info.innerHTML=`<div class="sb-item-title">${esc(c.title)}</div><div class="sb-item-time">${ts}</div>`;
+    const del=document.createElement('button');del.className='sb-del';del.title='Delete';del.textContent='✕';
+    div.appendChild(ico);div.appendChild(info);div.appendChild(del);
+    div.addEventListener('click',()=>{loadChat(c.id);if(window.innerWidth<=768)closeSbMobile();});
+    del.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();showDelModal(c.title,()=>{const updated=getChats(curUser).filter(x=>x.id!==c.id);saveChats(curUser,updated);if(curId===c.id)newChat();else loadSB();});});
     el.appendChild(div);
   });
 }
-function newChat(){
-  stopSpeech();
-  curId='c'+Date.now();
-  apiHist=[];
-  dispMsgs=[];
-  lastUserMsg='';
-  attached=[];
-  document.getElementById('chattitle').textContent='New Chat';
-  resetEmpty();
-  loadSB();
-  document.getElementById('msgin').focus();
-  updatePrev();
-}
-function resetEmpty(){
-  document.getElementById('msgwrap').innerHTML=`<div class="empty-wrap" id="emptywrap"><div class="zl hero">Z</div><h2>What can I help with?</h2><p>Ask anything — news, research, coding, maths, files, or just a conversation.</p><div class="chips-wrap"><div class="chip" onclick="chip('What is the latest news from India today?')">📰 India News</div><div class="chip" onclick="chip('Compare Python vs JavaScript for a beginner')">📊 Compare</div><div class="chip" onclick="chip('What is the probability of rain in Chennai this week?')">🌧 Probability</div><div class="chip" onclick="chip('Explain how neural networks work simply')">🤖 ML/AI</div><div class="chip" onclick="chip('Give me 5 startup ideas for 2026')">💡 Ideas</div><div class="chip" onclick="chip('What happened in global markets today?')">📈 Markets</div></div></div>`;
-}
-function loadChat(id){
-  const c=getChats(curUser).find(x=>x.id===id);
-  if(!c)return;
-  stopSpeech();
-  curId=id;
-  apiHist=c.apiHist||[];
-  dispMsgs=c.dispMsgs||[];
-  attached=[];
-  document.getElementById('chattitle').textContent=c.title;
-  document.getElementById('msgwrap').innerHTML='';
-  dispMsgs.forEach(m=>{
-    if(m.role==='user')renderUser(m.content,m.time,false,m.files);
-    else renderBot(m.content,m.time,false,m.lu||'',m.thinking||'',m.sources||[]);
-  });
-  document.getElementById('messages').scrollTop=9999;
-  loadSB();
-  updatePrev();
-}
-function saveCur(title){
-  let chats=getChats(curUser);
-  const ex=chats.find(c=>c.id===curId);
-  if(ex){
-    ex.dispMsgs=dispMsgs;
-    ex.apiHist=apiHist;
-    if(title)ex.title=title;
-  }
-  else chats.push({
-    id:curId,title:title||'New Chat',ts:Date.now(),dispMsgs,apiHist
-  });
-  saveChats(curUser,chats);
-  loadSB();
-}
+function newChat(){stopSpeech();curId='c'+Date.now();apiHist=[];dispMsgs=[];lastUserMsg='';attached=[];document.getElementById('chattitle').textContent='New Chat';resetEmpty();loadSB();document.getElementById('msgin').focus();updatePrev();}
+function resetEmpty(){document.getElementById('msgwrap').innerHTML=`<div class="empty-wrap" id="emptywrap"><div class="zl hero">Z</div><h2>What can I help with?</h2><p>Ask anything — news, research, coding, maths, files, or just a conversation.</p><div class="chips-wrap"><div class="chip" onclick="chip('What is the latest news from India today?')">📰 India News</div><div class="chip" onclick="chip('Compare Python vs JavaScript for a beginner')">📊 Compare</div><div class="chip" onclick="chip('What is the probability of rain in Chennai this week?')">🌧 Probability</div><div class="chip" onclick="chip('Explain how neural networks work simply')">🤖 ML/AI</div><div class="chip" onclick="chip('Give me 5 startup ideas for 2026')">💡 Ideas</div><div class="chip" onclick="chip('What happened in global markets today?')">📈 Markets</div></div></div>`;}
+function loadChat(id){const c=getChats(curUser).find(x=>x.id===id);if(!c)return;stopSpeech();curId=id;apiHist=c.apiHist||[];dispMsgs=c.dispMsgs||[];attached=[];document.getElementById('chattitle').textContent=c.title;document.getElementById('msgwrap').innerHTML='';dispMsgs.forEach(m=>{if(m.role==='user')renderUser(m.content,m.time,false,m.files);else renderBot(m.content,m.time,false,m.lu||'',m.thinking||'',m.sources||[]);});document.getElementById('messages').scrollTop=9999;loadSB();updatePrev();}
+function saveCur(title){let chats=getChats(curUser);const ex=chats.find(c=>c.id===curId);if(ex){ex.dispMsgs=dispMsgs;ex.apiHist=apiHist;if(title)ex.title=title;}else chats.push({id:curId,title:title||'New Chat',ts:Date.now(),dispMsgs,apiHist});saveChats(curUser,chats);loadSB();}
+
 // HELPERS
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const getT=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
@@ -1991,13 +1183,7 @@ function cpyCode(btn){const code=btn.closest('.code-wrap').querySelector('code')
 function renderUser(text,time,animate=true,files=null){
   rmEmpty();const ini=curUser.substring(0,2).toUpperCase();
   const row=document.createElement('div');row.className='mrow usr-row';if(!animate)row.classList.add('no-anim');
-  let imgs='';if(files&&files.length){files.forEach(f=>{if(f.type&&f.type.startsWith('image/')&&f.dataUrl)imgs+=`<img src="${
-  f.dataUrl
-}
-" class="msg-img" alt="${
-  esc(f.name)
-}
-"/>`;else if(f.name)imgs+=`<div class="msg-file-chip">${getFI(f.type,f.name)} ${esc(f.name)}</div>`;});}
+  let imgs='';if(files&&files.length){files.forEach(f=>{if(f.type&&f.type.startsWith('image/')&&f.dataUrl)imgs+=`<img src="${f.dataUrl}" class="msg-img" alt="${esc(f.name)}"/>`;else if(f.name)imgs+=`<div class="msg-file-chip">${getFI(f.type,f.name)} ${esc(f.name)}</div>`;});}
   const tHtml=S.showTime?`<div class="mtime">${time||getT()}</div>`:'';
   row.innerHTML=`<div class="msg-av usr-av">${ini}</div><div class="mbody"><div class="msender">${esc(curUser)}</div>${imgs}<div class="bbl usr-bbl">${esc(text)}</div>${tHtml}</div>`;
   document.getElementById('msgwrap').appendChild(row);scrollB();
@@ -2015,25 +1201,10 @@ function renderBot(md,time,animate=true,userMsg='',thinking='',sources=[]){
   const srcKey='src_'+mid;if(sources&&sources.length)sourcesMap[srcKey]=sources;
   const su=esc(userMsg).replace(/'/g,"\\'");
   const tHtml=S.showTime?`<div class="mtime">${time||getT()}</div>`:'';
-  const srcBtn=(S.showSrc&&sources&&sources.length)?`<button class="mac src-btn has-src" id="sb_${mid}" onclick="showSrcPanel(this,'${
-  srcKey
-}
-')">🔗 ${sources.length} Source${sources.length>1?'s':''}</button>`:'';
-  row.innerHTML=`<div class="msg-av zl msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl" id="bbl_${mid}">${thinkHtml}${accBadge}${html}</div>${tHtml}<div class="msg-acts"><button class="mac" id="rb_${mid}" onclick="toggleRead(this)"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>Read</button><button class="mac" id="hl_${mid}" onclick="toggleHighlight(this,'bbl_${
-  mid
-}
-')">✨ Highlight</button><button class="mac" onclick="cpyMsg(this,'${
-  mid
-}
-')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>${srcBtn}<button class="mac" onclick="retry('${
-  su
-}
-')"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Retry</button></div></div>`;
+  const srcBtn=(S.showSrc&&sources&&sources.length)?`<button class="mac src-btn has-src" id="sb_${mid}" onclick="showSrcPanel(this,'${srcKey}')">🔗 ${sources.length} Source${sources.length>1?'s':''}</button>`:'';
+  row.innerHTML=`<div class="msg-av zl msg">Z</div><div class="mbody"><div class="msender">Zippy AI</div><div class="bbl bot-bbl" id="bbl_${mid}">${thinkHtml}${accBadge}${html}</div>${tHtml}<div class="msg-acts"><button class="mac" id="rb_${mid}" onclick="toggleRead(this)"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>Read</button><button class="mac" id="hl_${mid}" onclick="toggleHighlight(this,'bbl_${mid}')">✨ Highlight</button><button class="mac" onclick="cpyMsg(this,'${mid}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>${srcBtn}<button class="mac" onclick="retry('${su}')"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Retry</button></div></div>`;
   row.querySelector(`#rb_${mid}`).dataset.txt=plain;
-  row.querySelector(`[onclick="cpyMsg(this,'${
-  mid
-}
-')"]`).dataset.txt=plain;
+  row.querySelector(`[onclick="cpyMsg(this,'${mid}')"]`).dataset.txt=plain;
   document.getElementById('msgwrap').appendChild(row);scrollB();
   if(S.autoRead)setTimeout(()=>speakText(plain),500);
 }
@@ -2096,10 +1267,7 @@ async function sendMsg(){
   if(isSending)return;const inp=document.getElementById('msgin'),btn=document.getElementById('sendbtn');let text=inp.value.trim();
   const chk=validateFiles();
   if(chk.reason==='scanning'){showT('🔍','Scanning…','Still reading image text, please wait a moment');return;}
-  if(chk.noText&&chk.noText.length){chk.noText.forEach(n=>{attached=attached.filter(f=>f.name!==n||!f.type.startsWith('image/'));});updatePrev();showT('❌','No text in image',`"${
-  chk.noText[0]
-}
-" — no readable text found, image removed`);if(!text&&!chk.valid.length)return;}
+  if(chk.noText&&chk.noText.length){chk.noText.forEach(n=>{attached=attached.filter(f=>f.name!==n||!f.type.startsWith('image/'));});updatePrev();showT('❌','No text in image',`"${chk.noText[0]}" — no readable text found, image removed`);if(!text&&!chk.valid.length)return;}
   const filesSnap=[...(chk.valid||[])];if(!text&&!filesSnap.length)return;
   if(!text&&filesSnap.length){const hasImg=filesSnap.some(f=>f.type.startsWith('image/'));text=hasImg?'What text is in this image? Read and summarise all content you can see.':'Read and summarise the content of this file.';}
   isSending=true;inp.value='';inp.style.height='auto';btn.disabled=true;stopSpeech();lastUserMsg=text;
@@ -2135,6 +1303,5 @@ const ta=document.getElementById('msgin');
 ta.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';const cc=document.getElementById('charCount');if(cc&&S.showCharCount){const len=this.value.length;cc.textContent=len;cc.className='char-count'+(len>800?' warn':'');}});
 ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&S.enterSend&&!isSending){e.preventDefault();sendMsg();}});
 </script>
-
 </body>
 </html>
